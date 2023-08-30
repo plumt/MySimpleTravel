@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MySimpleTravel</string>
+    <string name="app_name_dev">MySimpleTravel(DEV)</string>
 </resources>
