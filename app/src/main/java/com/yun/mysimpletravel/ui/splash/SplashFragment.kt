@@ -41,11 +41,8 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(), K
 
         //TODO 1순위 권한 체크
         //TODO 2순위 앱 버전 체크
-        //TODO 3순위 로그인 여부 체크
 
         //TODO 가입 도중에 앱을 종료하거나 뒤로 할 경우, SNS 로그아웃 시켜야함
-
-
 
         if (viewModel.automaticLoginStatus()) {
             // 로그인 정보 있음 > 홈 화면
