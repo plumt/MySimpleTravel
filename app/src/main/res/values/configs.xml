@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+    <!--  sdk token  -->
+    <string name="social_login_info_kakao_native_key">9702ab8a9c569a86da0cbfa80a10a8f0</string>
+    <string name="social_login_info_kakao_native_key_manifest">kakao9702ab8a9c569a86da0cbfa80a10a8f0</string>
+</resources>
