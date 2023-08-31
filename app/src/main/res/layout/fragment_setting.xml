@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -46,6 +46,19 @@
             app:layout_constraintStart_toStartOf="@id/gl_start"
             app:layout_constraintTop_toBottomOf="@id/gl_top"
             app:url="@{setting.userInfo.userProfileUrl}" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_setting"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            replaceAll="@{setting.settingList}"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ic_profile"
+            tools:listitem="@layout/item_setting" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
