@@ -9,9 +9,12 @@ import androidx.lifecycle.LiveData
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.base.BaseFragment
+import com.yun.mysimpletravel.common.constants.NavigationConstants
 import com.yun.mysimpletravel.common.manager.KakaoManager
+import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.databinding.FragmentLoginBinding
+import com.yun.mysimpletravel.util.Util
 import com.yun.mysimpletravel.util.Util.delayedHandler
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,11 +28,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(),
     override fun onBackEvent() {}
     override fun setVariable(): Int = BR.login
 
+    private lateinit var navigationManager: NavigationManager
     private lateinit var kakaoManager: KakaoManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navigationManager = NavigationManager(requireActivity(), view)
         kakaoManager = KakaoManager(requireActivity(), this)
 
         binding.ivKakaoLoginButton.setOnClickListener(onClickListener)
@@ -43,12 +48,23 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(),
         }
     }
 
+    /**
+     * 홈 화면 이동
+     */
+    private fun moveHomeScreen() {
+        navigationManager.movingScreen(
+            R.id.action_loginFragment_to_homeFragment,
+            NavigationConstants.Type.ENTER
+        )
+    }
+
     override fun kakaoError(t: Throwable) {
         t.printStackTrace()
     }
 
     override fun loginUserInfo(info: UserInfoDataModel) {
         viewModel.saveUserInfo(info)
-        Log.d("lys","loginUserInfo > $info")
+        moveHomeScreen()
+        Log.d("lys", "loginUserInfo > $info")
     }
 }

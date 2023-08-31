@@ -49,14 +49,16 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(), K
 
         if (viewModel.automaticLoginStatus()) {
             // 로그인 정보 있음 > 홈 화면
+            kakaoManager.snsTokenCheck()
         } else {
             // 로그인 정보 없음 > 로그인 화면
-//            moveLoginScreen()
-
-            kakaoManager.snsTokenCheck()
+            moveLoginScreen()
         }
     }
 
+    /**
+     * 로그인 화면 이동
+     */
     private fun moveLoginScreen(){
         delayedHandler(calculateTimeDifferenceInSeconds(viewModel.startingAppTime)) {
             navigationManager.movingScreen(
@@ -66,13 +68,32 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(), K
         }
     }
 
+    /**
+     * 홈 화면 이동
+     */
+    private fun moveHomeScreen(){
+        delayedHandler(calculateTimeDifferenceInSeconds(viewModel.startingAppTime)) {
+            navigationManager.movingScreen(
+                R.id.action_splashFragment_to_homeFragment,
+                NavigationConstants.Type.ENTER
+            )
+        }
+    }
+
+    /**
+     * 카카오 로그인 에러
+     */
     override fun kakaoError(t: Throwable) {
         moveLoginScreen()
         t.printStackTrace()
     }
 
+    /**
+     * 카카로 로그인 성공
+     */
     override fun loginUserInfo(info: UserInfoDataModel) {
         viewModel.saveUserInfo(info)
+        moveHomeScreen()
         Log.d("lys","loginUserInfo > $info")
     }
 }
