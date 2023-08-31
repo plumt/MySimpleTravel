@@ -10,6 +10,6 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(application: Application) : BaseViewModel(application) {
 
-    private val _isLoading = MutableLiveData<Boolean>(false)
+    private val _isLoading = MutableLiveData<Boolean>()
     override val isLoading: LiveData<Boolean> get() = _isLoading
 }

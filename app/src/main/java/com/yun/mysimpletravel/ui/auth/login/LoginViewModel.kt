@@ -19,17 +19,6 @@ class LoginViewModel @Inject constructor(
     private val sPrefs: PreferenceUtil
 ) : BaseViewModel(application) {
 
-    private val _isLoading = MutableLiveData<Boolean>(false)
+    private val _isLoading = MutableLiveData<Boolean>()
     override val isLoading: LiveData<Boolean> get() = _isLoading
-
-    /**
-     * 로그인 유저 정보 저장
-     */
-    fun saveUserInfo(info: UserInfoDataModel){
-        sPrefs.setString(mContext,SNS_ID,info.userId)
-        sPrefs.setString(mContext,NAME,info.userName)
-        sPrefs.setString(mContext,PROFILE,info.userProfileUrl)
-        sPrefs.setString(mContext, TYPE,info.loginType)
-    }
-
 }

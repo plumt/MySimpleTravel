@@ -18,11 +18,12 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.Base64
 
-class KakaoManager(private val context: Context, private val kakaoInterface: KakaoInterface) {
+class KakaoAuthManager(private val context: Context, private val kakaoInterface: KakaoInterface) {
 
     interface KakaoInterface {
         fun kakaoError(t: Throwable)
         fun loginUserInfo(info: UserInfoDataModel)
+        fun removeUser()
     }
 
     init {
@@ -31,19 +32,17 @@ class KakaoManager(private val context: Context, private val kakaoInterface: Kak
     }
 
     /**
-     * 커스텀 오류 메시지 출력
+     * kakao 토큰 검사
      */
-    private fun customException(message: String) = Throwable(message)
-
-    /**
-     * kakao sns login sdk setting
-     */
-    private fun kakaoSdkSetting() {
+    fun snsTokenCheck() {
         if (!isNetworkConnected(context)) {
             kakaoInterface.kakaoError(customException(NETWORK_NOT_CONNECT))
             return
         }
-        KakaoSdk.init(context, context.getString(R.string.social_login_info_kakao_native_key))
+        UserApiClient.instance.me { _, error ->
+            if (error != null) kakaoInterface.kakaoError(error)
+            else kakaoUserInfo()
+        }
     }
 
     /**
@@ -78,6 +77,42 @@ class KakaoManager(private val context: Context, private val kakaoInterface: Kak
     }
 
     /**
+     * 카카오 로그아웃
+     */
+    fun kakaoLogOut() {
+        UserApiClient.instance.logout { error ->
+            if (error != null) kakaoInterface.kakaoError(error)
+            else kakaoInterface.removeUser()
+        }
+    }
+
+    /**
+     * 카카오 회원탈퇴
+     */
+    fun kakaoSignOut() {
+        UserApiClient.instance.unlink { error ->
+            if (error != null) kakaoInterface.kakaoError(error)
+            else kakaoInterface.removeUser()
+        }
+    }
+
+    /**
+     * 커스텀 오류 메시지 출력
+     */
+    private fun customException(message: String) = Throwable(message)
+
+    /**
+     * kakao sns login sdk setting
+     */
+    private fun kakaoSdkSetting() {
+        if (!isNetworkConnected(context)) {
+            kakaoInterface.kakaoError(customException(NETWORK_NOT_CONNECT))
+            return
+        }
+        KakaoSdk.init(context, context.getString(R.string.social_login_info_kakao_native_key))
+    }
+
+    /**
      * 로그인 성공시 유저 정보 출력
      */
     private fun kakaoUserInfo() {
@@ -104,24 +139,13 @@ class KakaoManager(private val context: Context, private val kakaoInterface: Kak
         token?.let { kakaoUserInfo() }
     }
 
-    /**
-     * kakao 토큰 검사
-     */
-    fun snsTokenCheck() {
-        if (!isNetworkConnected(context)) {
-            kakaoInterface.kakaoError(customException(NETWORK_NOT_CONNECT))
-            return
-        }
-        UserApiClient.instance.me { _, error ->
-            if (error != null) kakaoInterface.kakaoError(error)
-            else kakaoUserInfo()
-        }
-    }
-
     private fun getHashKey() {
         var packageInfo: PackageInfo? = null
         try {
-            packageInfo = context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_SIGNATURES)
+            packageInfo = context.packageManager.getPackageInfo(
+                context.packageName,
+                PackageManager.GET_SIGNATURES
+            )
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
@@ -137,6 +161,5 @@ class KakaoManager(private val context: Context, private val kakaoInterface: Kak
 
             }
         }
-
     }
 }

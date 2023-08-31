@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class TravelFragment : BaseFragment<FragmentTravelBinding, TravelViewModel>() {
     override val viewModel: TravelViewModel by viewModels()
     override fun getResourceId(): Int = R.layout.fragment_travel
-    override fun isLoading(): LiveData<Boolean> = viewModel.isLoading
+    override fun isLoading(): LiveData<Boolean>? = viewModel.isLoading
     override fun isOnBackEvent(): Boolean = true
     override fun onBackEvent() {}
     override fun setVariable(): Int = BR.travel

@@ -10,6 +10,9 @@ import com.yun.mysimpletravel.common.constants.AuthConstants.Info.NAME
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.PROFILE
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.SNS_ID
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.TYPE
+import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.APP_VERSION
+import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOG_OUT
+import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.SIGN_OUT
 import com.yun.mysimpletravel.data.model.setting.SettingDataModel
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.util.PreferenceUtil
@@ -22,7 +25,7 @@ class SettingViewModel @Inject constructor(
     private val sPrefs: PreferenceUtil
 ) : BaseViewModel(application) {
 
-    private val _isLoading = MutableLiveData<Boolean>(false)
+    private val _isLoading = MutableLiveData<Boolean>()
     override val isLoading: LiveData<Boolean> get() = _isLoading
 
     private val _userInfo = MutableLiveData<UserInfoDataModel>()
@@ -51,17 +54,17 @@ class SettingViewModel @Inject constructor(
 
     private fun setSettingList() {
         val appVersion = SettingDataModel(
-            0,
+            APP_VERSION,
             "앱 버전 ${BuildConfig.VERSION_NAME}",
             "업데이트"
         )
         val logOut = SettingDataModel(
-            1,
+            LOG_OUT,
             "로그아웃",
             ""
         )
         val signOut = SettingDataModel(
-            2,
+            SIGN_OUT,
             "회원탈퇴",
             ""
         )

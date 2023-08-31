@@ -21,6 +21,7 @@
         android:layout_height="50dp"
         android:background="@color/white"
         android:clickable="true"
+        android:onClick="@{(v) -> settingListener.onItemClick(itemSetting, v)}"
         android:foreground="?attr/selectableItemBackgroundBorderless">
 
         <androidx.constraintlayout.widget.Guideline

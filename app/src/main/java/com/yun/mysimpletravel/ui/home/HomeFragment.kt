@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override val viewModel: HomeViewModel by viewModels()
     override fun getResourceId(): Int = R.layout.fragment_home
-    override fun isLoading(): LiveData<Boolean> = viewModel.isLoading
+    override fun isLoading(): LiveData<Boolean>? = viewModel.isLoading
     override fun isOnBackEvent(): Boolean = true
     override fun onBackEvent() {}
     override fun setVariable(): Int = BR.home

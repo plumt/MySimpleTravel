@@ -11,7 +11,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(application: Application) : BaseViewModel(application) {
 
     // 로딩 프로그레스바 변수
-    private val _isLoading = MutableLiveData<Boolean>(false)
+    private val _isLoading = MutableLiveData<Boolean>()
     override val isLoading: LiveData<Boolean> get() = _isLoading
 
     /**

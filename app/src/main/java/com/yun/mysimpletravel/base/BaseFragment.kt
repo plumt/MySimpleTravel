@@ -33,7 +33,7 @@ abstract class BaseFragment<B : ViewDataBinding, M : ViewModel> : Fragment() {
 
     abstract fun isOnBackEvent(): Boolean
 
-    abstract fun isLoading(): LiveData<Boolean>
+    abstract fun isLoading(): LiveData<Boolean>?
 
     val sharedVM: MainViewModel by activityViewModels()
 
@@ -66,7 +66,7 @@ abstract class BaseFragment<B : ViewDataBinding, M : ViewModel> : Fragment() {
             }
         }
 
-        isLoading().observe(viewLifecycleOwner) { isLoading ->
+        isLoading()?.observe(viewLifecycleOwner) { isLoading ->
             sharedVM.setLoading(isLoading)
         }
     }
