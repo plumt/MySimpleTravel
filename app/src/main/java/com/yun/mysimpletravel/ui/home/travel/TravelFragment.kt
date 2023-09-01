@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.databinding.FragmentTravelBinding
 import com.yun.mysimpletravel.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TravelFragment : BaseFragment<FragmentTravelBinding, TravelViewModel>() {
@@ -26,5 +28,10 @@ class TravelFragment : BaseFragment<FragmentTravelBinding, TravelViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        lifecycleScope.launch {
+            val result = viewModel.callNowWeatherApi()
+            binding.tvTitle.text = result
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.yun.mysimpletravel.base
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -25,6 +26,7 @@ open class BaseViewModel constructor(application: Application) : AndroidViewMode
                 response = apiResponse.body()
                 break
             } else {
+                Log.e("lys","error $retries")
                 retries++
             }
         }

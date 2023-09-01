@@ -7,7 +7,7 @@ class NowWeatherDataModel {
 
     data class Response(
         val header: Header,
-        val body: Body
+        val body: Body?
     )
 
     data class Header(
@@ -33,6 +33,7 @@ class NowWeatherDataModel {
         val category: String,
         val nx: String,
         val ny: String,
-        val obsrValue: String
+        val obsrValue: String?,     // 실황 값
+        val fcstValue: String?      // 예보 값
     )
 }
