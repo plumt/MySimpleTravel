@@ -1,16 +1,20 @@
 package com.yun.mysimpletravel.ui.home.setting
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yun.mysimpletravel.BuildConfig
+import com.yun.mysimpletravel.api.ApiRepository
 import com.yun.mysimpletravel.base.BaseViewModel
 import com.yun.mysimpletravel.base.ListLiveData
+import com.yun.mysimpletravel.common.constants.ApiConstants.ApiType.LOCATION
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.NAME
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.PROFILE
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.SNS_ID
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.TYPE
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.APP_VERSION
+import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOCATION_CHANGED
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOG_OUT
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.SIGN_OUT
 import com.yun.mysimpletravel.data.model.setting.SettingDataModel
@@ -18,11 +22,13 @@ import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.util.PreferenceUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import javax.inject.Named
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     application: Application,
-    private val sPrefs: PreferenceUtil
+    private val sPrefs: PreferenceUtil,
+    @Named(LOCATION) private val locationApi: ApiRepository
 ) : BaseViewModel(application) {
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -53,6 +59,11 @@ class SettingViewModel @Inject constructor(
     }
 
     private fun setSettingList() {
+        val locationChanged = SettingDataModel(
+            LOCATION_CHANGED,
+            "예)서귀포시",
+            "변경"
+        )
         val appVersion = SettingDataModel(
             APP_VERSION,
             "앱 버전 ${BuildConfig.VERSION_NAME}",
@@ -69,8 +80,15 @@ class SettingViewModel @Inject constructor(
             ""
         )
 
+        _settingList.add(locationChanged)
         _settingList.add(appVersion)
         _settingList.add(logOut)
         _settingList.add(signOut)
     }
+
+    suspend fun searchLocationCode(code: String){
+        val response = callApi({locationApi.searchLocationCode(code)})
+        Log.d("lys","response > $response")
+    }
+
 }

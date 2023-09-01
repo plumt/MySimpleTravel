@@ -4,5 +4,6 @@ class ApiConstants {
 
     object ApiType {
         const val WEATHER = "weather"
+        const val LOCATION = "location"
     }
 }

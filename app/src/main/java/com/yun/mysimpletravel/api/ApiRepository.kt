@@ -12,4 +12,6 @@ class ApiRepository @Inject constructor(private val api: Api) {
 
     suspend fun fcst(nx: String, ny: String, baseDate: String, baseTime: String) =
         api.fcst(nx, ny, baseDate, baseTime)
+
+    suspend fun searchLocationCode(regcode_pattern: String) = api.searchLocationCode(regcode_pattern)
 }

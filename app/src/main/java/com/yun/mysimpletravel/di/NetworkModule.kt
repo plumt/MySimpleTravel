@@ -3,6 +3,7 @@ package com.yun.mysimpletravel.di
 import android.content.Context
 import com.google.gson.GsonBuilder
 import com.yun.mysimpletravel.BuildConfig
+import com.yun.mysimpletravel.common.constants.ApiConstants.ApiType.LOCATION
 import com.yun.mysimpletravel.common.constants.ApiConstants.ApiType.WEATHER
 import dagger.Module
 import dagger.Provides
@@ -60,6 +61,14 @@ object NetworkModule {
         client: OkHttpClient,
         @ApplicationContext context: Context
     ): Retrofit = provideRetrofit(client, BuildConfig.WEATHER_URL)
+
+    @Named(LOCATION)
+    @Provides
+    @Singleton
+    fun provideLocationRetrofit(
+        client: OkHttpClient,
+        @ApplicationContext context: Context
+    ): Retrofit = provideRetrofit(client, BuildConfig.LOCATION_URL)
 
     @Named("test")
     @Provides

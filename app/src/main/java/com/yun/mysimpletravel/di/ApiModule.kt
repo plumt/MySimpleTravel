@@ -2,6 +2,7 @@ package com.yun.mysimpletravel.di
 
 import com.yun.mysimpletravel.api.Api
 import com.yun.mysimpletravel.api.ApiRepository
+import com.yun.mysimpletravel.common.constants.ApiConstants.ApiType.LOCATION
 import com.yun.mysimpletravel.common.constants.ApiConstants.ApiType.WEATHER
 import dagger.Module
 import dagger.Provides
@@ -24,4 +25,14 @@ object ApiModule {
     @Singleton
     @Provides
     fun providerWeatherRepository(@Named(WEATHER)api: Api) = ApiRepository(api)
+
+    @Named(LOCATION)
+    @Singleton
+    @Provides
+    fun providerLocationApi(@Named(LOCATION) retrofit: Retrofit): Api = retrofit.create(Api::class.java)
+
+    @Named(LOCATION)
+    @Singleton
+    @Provides
+    fun providerLocationRepository(@Named(LOCATION)api: Api) = ApiRepository(api)
 }

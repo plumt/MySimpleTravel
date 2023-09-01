@@ -5,12 +5,15 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
+import com.yun.mysimpletravel.common.constants.LocationConstants.Code.JEJU_ALL
 import com.yun.mysimpletravel.common.constants.NavigationConstants.Type.EXIT
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.APP_VERSION
+import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOCATION_CHANGED
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOG_OUT
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.SIGN_OUT
 import com.yun.mysimpletravel.common.manager.KakaoAuthManager
@@ -23,6 +26,7 @@ import com.yun.mysimpletravel.databinding.ItemSettingBinding
 import com.yun.mysimpletravel.util.PreferenceUtil
 import com.yun.mysimpletravel.util.Util
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -57,6 +61,13 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
             ) {
                 override fun onItemClick(item: SettingDataModel, view: View) {
                     when (item.id) {
+
+                        LOCATION_CHANGED -> {
+                            lifecycleScope.launch {
+                                viewModel.searchLocationCode(JEJU_ALL)
+                            }
+                        }
+
                         APP_VERSION -> {
                             if (!item.contents.isNullOrEmpty()) {
                                 // TODO 스토어 이동

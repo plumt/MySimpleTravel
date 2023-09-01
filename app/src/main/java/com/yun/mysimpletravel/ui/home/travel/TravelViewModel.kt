@@ -44,7 +44,6 @@ class TravelViewModel @Inject constructor(
      */
     suspend fun callNowWeatherApi(): String {
         val response = callApi({ weatherApi.srtFcst("55", "127", "20230901", "1400") })
-        Log.d("lys", "response > $response")
         var result = ""
         val filter = arrayListOf<String>()
         response?.let { res ->

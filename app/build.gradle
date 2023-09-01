@@ -18,8 +18,9 @@ android {
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "WEATHER_URL", weather_url
         buildConfigField "String", "SERVICE_KEY", serviceKey
+        buildConfigField "String", "WEATHER_URL", weather_url
+        buildConfigField "String", "LOCATION_URL", location_url
     }
 
     buildTypes {
