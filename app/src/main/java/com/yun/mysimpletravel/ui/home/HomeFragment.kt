@@ -1,6 +1,7 @@
 package com.yun.mysimpletravel.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -9,6 +10,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.BR
+import com.yun.mysimpletravel.BuildConfig
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.SETTING
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.TRAVEL
@@ -28,6 +30,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        /**
+         0 번째는 여행 관련 정보 페이지
+         1 번째는
+         2 번쨰는
+         3 번째는 유저 정보 확인 및 앱 설정 페이지
+         */
 
         binding.vpHome.run {
             isUserInputEnabled = false

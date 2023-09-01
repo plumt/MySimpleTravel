@@ -5,6 +5,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Handler
 import android.os.Looper
+import com.yun.mysimpletravel.BuildConfig
+import java.net.URLDecoder
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.math.abs
@@ -49,4 +51,6 @@ object Util {
             else -> false
         }
     }
+
+    fun serviceKey() = URLDecoder.decode(BuildConfig.SERVICE_KEY, "UTF-8")
 }

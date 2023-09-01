@@ -15,6 +15,10 @@ class SharedPreferenceManager @Inject constructor(
     private val context: Context,
     private val sPrefs: PreferenceUtil
 ) {
+
+    /**
+     * 회원탈퇴 및 로그아웃으로 유저 정보 초기화
+     */
     fun removeUserInfo() {
         sPrefs.setString(context, SNS_ID, "")
         sPrefs.setString(context, NAME, "")
@@ -22,6 +26,9 @@ class SharedPreferenceManager @Inject constructor(
         sPrefs.setString(context, TYPE, "")
     }
 
+    /**
+     * 로그인 유저 정보 저장
+     */
     fun setUserInfo(info: UserInfoDataModel) {
         sPrefs.setString(context, SNS_ID, info.userId)
         sPrefs.setString(context, NAME, info.userName)

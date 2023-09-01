@@ -35,9 +35,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
     override fun onBackEvent() {}
     override fun setVariable(): Int = BR.setting
 
-    lateinit var kakaoAuthManager: KakaoAuthManager
-    lateinit var sharedPreferenceManager: SharedPreferenceManager
-    lateinit var navigationManager: NavigationManager
+    private lateinit var kakaoAuthManager: KakaoAuthManager
+    private lateinit var sharedPreferenceManager: SharedPreferenceManager
+    private lateinit var navigationManager: NavigationManager
 
     @Inject
     lateinit var sPrefs: PreferenceUtil
@@ -68,7 +68,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
                         }
 
                         SIGN_OUT -> {
-                            //TODO 회원탈퇴 api 리턴 받은 이후 kakao 회원 탈퇴 코드 실행
+                            //TODO 회원탈퇴 api 리턴 받은 이후 kakao 회원 탈퇴가 코드 실행
                             kakaoAuthManager.kakaoSignOut()
                         }
                     }
