@@ -17,6 +17,7 @@ import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.APP_VER
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOCATION_CHANGED
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOG_OUT
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.SIGN_OUT
+import com.yun.mysimpletravel.data.model.location.LocationDataModel
 import com.yun.mysimpletravel.data.model.setting.SettingDataModel
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.util.PreferenceUtil
@@ -39,6 +40,9 @@ class SettingViewModel @Inject constructor(
 
     private val _settingList = ListLiveData<SettingDataModel>()
     val settingList: ListLiveData<SettingDataModel> get() = _settingList
+
+    private val _locationList = ListLiveData<LocationDataModel.Items>()
+    val locationList: ListLiveData<LocationDataModel.Items> get() = _locationList
 
     init {
         setUserInfo()
@@ -86,9 +90,10 @@ class SettingViewModel @Inject constructor(
         _settingList.add(signOut)
     }
 
-    suspend fun searchLocationCode(code: String){
+    suspend fun searchLocationCode(code: String): Boolean{
         val response = callApi({locationApi.searchLocationCode(code)})
         Log.d("lys","response > $response")
+        return response != null
     }
 
 }

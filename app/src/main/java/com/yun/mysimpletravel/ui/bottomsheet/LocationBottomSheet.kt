@@ -1,0 +1,93 @@
+package com.yun.mysimpletravel.ui.bottomsheet
+
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.yun.mysimpletravel.R
+import com.yun.mysimpletravel.base.Item
+import com.yun.mysimpletravel.databinding.DialogLocationBottomSheetBinding
+
+class LocationBottomSheet<ITEM : Item>(
+    private val list: List<ITEM>,
+    private val locationBottomSheetInterface: LocationBottomSheetInterface
+) : BottomSheetDialogFragment() {
+
+    interface LocationBottomSheetInterface {
+        fun onClick(item: Item)
+    }
+
+    override fun getTheme(): Int = R.style.RoundBottomSheetDialog
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val myDialog = super.onCreateDialog(savedInstanceState)
+        myDialog.setOnShowListener { dialogInterface ->
+            val bottomSheetDialog = dialogInterface as BottomSheetDialog
+
+            // 드래그로 닫히는 기능 막기
+            val bottomSheet =
+                dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.let {
+                val behavior = BottomSheetBehavior.from(it)
+                behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                behavior.skipCollapsed = true
+                behavior.isDraggable = false // 드래그 기능 막기
+            }
+
+//            if (percent) setupRatio(bottomSheetDialog)
+        }
+        return myDialog
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val binding = DialogLocationBottomSheetBinding.inflate(inflater, container, false)
+
+        // dialog의 배경을 투명하게 설정
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+
+
+//        binding.rvBottomSheet.run {
+//            adapter = object : BaseRecyclerAdapter.Create<LanguageDataModel, ItemLanguageBinding>(
+//                bindingVariableId = BR.itemLanguage,
+//                bindingListener = BR.languageListener,
+//                layoutResId = R.layout.item_language
+//            ) {
+//                override fun onItemLongClick(item: LanguageDataModel, view: View): Boolean = true
+//                override fun onItemClick(item: LanguageDataModel, view: View?) {
+//                    selectItem = item
+//                    myDialogListener.onClick(item)
+//                    notifyDataSetChanged()
+//                }
+//            }
+//            replace(list)
+//        }
+
+//        binding.btnResult.setOnClickListener {
+//            if(selectItem != null){
+//                myDialogListener.onChanged(selectItem!!)
+//            } else {
+//                dismiss()
+//            }
+//        }
+//
+//        binding.ivBack.setOnClickListener {
+//            dismiss()
+//        }
+
+        dialog?.setCancelable(true)
+
+        return binding.root
+    }
+
+}

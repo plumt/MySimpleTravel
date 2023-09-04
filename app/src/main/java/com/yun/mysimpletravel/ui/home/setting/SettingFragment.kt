@@ -10,6 +10,7 @@ import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
+import com.yun.mysimpletravel.base.Item
 import com.yun.mysimpletravel.common.constants.LocationConstants.Code.JEJU_ALL
 import com.yun.mysimpletravel.common.constants.NavigationConstants.Type.EXIT
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.APP_VERSION
@@ -23,6 +24,7 @@ import com.yun.mysimpletravel.data.model.setting.SettingDataModel
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.databinding.FragmentSettingBinding
 import com.yun.mysimpletravel.databinding.ItemSettingBinding
+import com.yun.mysimpletravel.ui.bottomsheet.LocationBottomSheet
 import com.yun.mysimpletravel.util.PreferenceUtil
 import com.yun.mysimpletravel.util.Util
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,7 +66,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
 
                         LOCATION_CHANGED -> {
                             lifecycleScope.launch {
-                                viewModel.searchLocationCode(JEJU_ALL)
+                                if(viewModel.searchLocationCode(JEJU_ALL)){
+                                    changeLocation()
+                                }
                             }
                         }
 
@@ -121,5 +125,14 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
         sharedPreferenceManager.removeUserInfo()
         moveLoginScreen()
         //TODO 로그인 화면으로 이동
+    }
+
+    private fun changeLocation(){
+        val locationBottomSheet = LocationBottomSheet(viewModel.locationList.value!!,object : LocationBottomSheet.LocationBottomSheetInterface{
+            override fun onClick(item: Item) {
+
+            }
+        })
+        locationBottomSheet.show(requireActivity().supportFragmentManager, locationBottomSheet.tag)
     }
 }
