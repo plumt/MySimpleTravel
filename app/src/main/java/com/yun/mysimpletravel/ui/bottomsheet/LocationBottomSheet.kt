@@ -10,17 +10,21 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
+import com.yun.mysimpletravel.base.BaseRecyclerAdapter
 import com.yun.mysimpletravel.base.Item
+import com.yun.mysimpletravel.base.replace
 import com.yun.mysimpletravel.databinding.DialogLocationBottomSheetBinding
+import com.yun.mysimpletravel.databinding.ItemLocationBinding
 
 class LocationBottomSheet<ITEM : Item>(
     private val list: List<ITEM>,
-    private val locationBottomSheetInterface: LocationBottomSheetInterface
+    private val locationBottomSheetInterface: LocationBottomSheetInterface<ITEM>
 ) : BottomSheetDialogFragment() {
 
-    interface LocationBottomSheetInterface {
-        fun onClick(item: Item)
+    interface LocationBottomSheetInterface<ITEM : Item> {
+        fun onClick(item: ITEM)
     }
 
     override fun getTheme(): Int = R.style.RoundBottomSheetDialog
@@ -57,21 +61,24 @@ class LocationBottomSheet<ITEM : Item>(
 
 
 
-//        binding.rvBottomSheet.run {
-//            adapter = object : BaseRecyclerAdapter.Create<LanguageDataModel, ItemLanguageBinding>(
-//                bindingVariableId = BR.itemLanguage,
-//                bindingListener = BR.languageListener,
-//                layoutResId = R.layout.item_language
-//            ) {
-//                override fun onItemLongClick(item: LanguageDataModel, view: View): Boolean = true
-//                override fun onItemClick(item: LanguageDataModel, view: View?) {
-//                    selectItem = item
-//                    myDialogListener.onClick(item)
-//                    notifyDataSetChanged()
-//                }
-//            }
-//            replace(list)
-//        }
+        binding.rvBottomLocation.run {
+            adapter =
+                object : BaseRecyclerAdapter.Create<ITEM, ItemLocationBinding>(
+                    bindingVariableId = BR.itemBottomLocation,
+                    bindingListener = BR.bottomLocationListener,
+                    layoutResId = R.layout.item_location
+                ) {
+                    override fun onItemLongClick(
+                        item: ITEM,
+                        view: View
+                    ): Boolean = true
+
+                    override fun onItemClick(item: ITEM, view: View) {
+                        locationBottomSheetInterface.onClick(item)
+                    }
+                }
+            replace(list)
+        }
 
 //        binding.btnResult.setOnClickListener {
 //            if(selectItem != null){

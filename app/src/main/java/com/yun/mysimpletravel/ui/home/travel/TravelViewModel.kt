@@ -23,6 +23,11 @@ import com.yun.mysimpletravel.common.constants.WeatherConstants.Sky.CLOUDY
 import com.yun.mysimpletravel.common.constants.WeatherConstants.Sky.OVERCAST
 import com.yun.mysimpletravel.common.constants.WeatherConstants.Sky.SUNNY
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -43,7 +48,11 @@ class TravelViewModel @Inject constructor(
      * 현재 날씨 > 단기 예보
      */
     suspend fun callNowWeatherApi(): String {
-        val response = callApi({ weatherApi.srtFcst("55", "127", "20230901", "1400") })
+        val baseTime = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(
+            Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())
+        )
+        val today = LocalDateTime.now().hour
+        val response = callApi({ weatherApi.srtFcst("61", "126", baseTime, "${today-1}00") })
         var result = ""
         val filter = arrayListOf<String>()
         response?.let { res ->

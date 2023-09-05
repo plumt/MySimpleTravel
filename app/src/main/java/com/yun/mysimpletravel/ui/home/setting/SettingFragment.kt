@@ -3,6 +3,7 @@ package com.yun.mysimpletravel.ui.home.setting
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
@@ -10,7 +11,6 @@ import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
-import com.yun.mysimpletravel.base.Item
 import com.yun.mysimpletravel.common.constants.LocationConstants.Code.JEJU_ALL
 import com.yun.mysimpletravel.common.constants.NavigationConstants.Type.EXIT
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.APP_VERSION
@@ -20,13 +20,13 @@ import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.SIGN_OU
 import com.yun.mysimpletravel.common.manager.KakaoAuthManager
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.common.manager.SharedPreferenceManager
+import com.yun.mysimpletravel.data.model.location.LocationDataModel
 import com.yun.mysimpletravel.data.model.setting.SettingDataModel
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.databinding.FragmentSettingBinding
 import com.yun.mysimpletravel.databinding.ItemSettingBinding
 import com.yun.mysimpletravel.ui.bottomsheet.LocationBottomSheet
 import com.yun.mysimpletravel.util.PreferenceUtil
-import com.yun.mysimpletravel.util.Util
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -66,8 +66,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
 
                         LOCATION_CHANGED -> {
                             lifecycleScope.launch {
-                                if(viewModel.searchLocationCode(JEJU_ALL)){
-                                    changeLocation()
+                                val response = viewModel.searchLocationCode(JEJU_ALL)
+                                if (response?.regcodes != null) {
+                                    changeLocation(response.regcodes)
                                 }
                             }
                         }
@@ -127,12 +128,15 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
         //TODO 로그인 화면으로 이동
     }
 
-    private fun changeLocation(){
-        val locationBottomSheet = LocationBottomSheet(viewModel.locationList.value!!,object : LocationBottomSheet.LocationBottomSheetInterface{
-            override fun onClick(item: Item) {
-
-            }
-        })
+    private fun changeLocation(param: ArrayList<LocationDataModel.Items>) {
+        val locationBottomSheet =
+            LocationBottomSheet(
+                param,
+                object : LocationBottomSheet.LocationBottomSheetInterface<LocationDataModel.Items> {
+                    override fun onClick(item: LocationDataModel.Items) {
+                        Toast.makeText(requireActivity(), item.name, Toast.LENGTH_SHORT).show()
+                    }
+                })
         locationBottomSheet.show(requireActivity().supportFragmentManager, locationBottomSheet.tag)
     }
 }

@@ -41,8 +41,8 @@ class SettingViewModel @Inject constructor(
     private val _settingList = ListLiveData<SettingDataModel>()
     val settingList: ListLiveData<SettingDataModel> get() = _settingList
 
-    private val _locationList = ListLiveData<LocationDataModel.Items>()
-    val locationList: ListLiveData<LocationDataModel.Items> get() = _locationList
+//    private val _locationList = ListLiveData<LocationDataModel.Items>()
+//    val locationList: ListLiveData<LocationDataModel.Items> get() = _locationList
 
     init {
         setUserInfo()
@@ -90,10 +90,12 @@ class SettingViewModel @Inject constructor(
         _settingList.add(signOut)
     }
 
-    suspend fun searchLocationCode(code: String): Boolean{
-        val response = callApi({locationApi.searchLocationCode(code)})
-        Log.d("lys","response > $response")
-        return response != null
+    suspend fun searchLocationCode(code: String): LocationDataModel.RS? {
+        val response = callApi({ locationApi.searchLocationCode(code) })
+        response?.regcodes?.forEachIndexed { index, items ->
+            items.id = index
+        }
+        return response
     }
 
 }
