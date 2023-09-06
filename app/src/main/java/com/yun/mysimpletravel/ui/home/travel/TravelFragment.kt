@@ -33,12 +33,10 @@ class TravelFragment : BaseFragment<FragmentTravelBinding, TravelViewModel>() {
 
             val weatherInfo = viewModel.nowWeather()
             if (weatherInfo != null) {
-
                 binding.tvWeather.text =
-                    "날씨 : ${weatherInfo.currentWeather}\n온도 : ${weatherInfo.currentTemperature}\n상태 : ${weatherInfo.currentWeatherDetail}"
-                binding.ivWeather.setWeatherImages(weatherInfo.currentImagePath)
+                    "${weatherInfo.weatherState}\n${weatherInfo.weatherTemperature}\n${weatherInfo.weatherDetail}\n${weatherInfo.weatherDust}\n${weatherInfo.weatherUDust}\n${weatherInfo.weatherUV}"
+                binding.ivWeather.setWeatherImages(weatherInfo.weatherImagePath)
             }
-
         }
     }
 }

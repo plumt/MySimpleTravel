@@ -33,4 +33,9 @@ object WeatherUtil {
      */
     fun Document.weatherDetail() =
         select(".temperature_info .summary_list").firstOrNull()?.text() ?: ""
+
+    fun Document.weatherDust() = select(".today_chart_list .item_today")?.get(0)?.text()?:""
+    fun Document.weatherUDust() = select(".today_chart_list .item_today")?.get(1)?.text()?:""
+
+    fun Document.weatherUV() = select(".today_chart_list .item_today")?.get(2)?.text()?:""
 }

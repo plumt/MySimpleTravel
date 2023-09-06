@@ -63,7 +63,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
         TabLayoutMediator(binding.tabLayout, binding.vpHome) { tab, position ->
             tab.text = when (position) {
-                TRAVEL -> "HOME"
+                TRAVEL -> "TRAVEL"
                 SETTING -> "SETTING"
                 else -> "TAB $position"
             }
