@@ -16,16 +16,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object ApiModule {
 
-    @Named(WEATHER)
-    @Singleton
-    @Provides
-    fun providerWeatherApi(@Named(WEATHER) retrofit: Retrofit): Api = retrofit.create(Api::class.java)
-
-    @Named(WEATHER)
-    @Singleton
-    @Provides
-    fun providerWeatherRepository(@Named(WEATHER)api: Api) = ApiRepository(api)
-
     @Named(LOCATION)
     @Singleton
     @Provides

@@ -31,7 +31,7 @@ class TravelFragment : BaseFragment<FragmentTravelBinding, TravelViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
 
-            val weatherInfo = viewModel.testWeather()
+            val weatherInfo = viewModel.nowWeather()
             if (weatherInfo != null) {
 
                 binding.tvWeather.text =

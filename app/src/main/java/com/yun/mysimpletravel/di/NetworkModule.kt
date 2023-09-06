@@ -53,15 +53,6 @@ object NetworkModule {
 //            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(client)
             .build()
-
-    @Named(WEATHER)
-    @Provides
-    @Singleton
-    fun provideWeatherRetrofit(
-        client: OkHttpClient,
-        @ApplicationContext context: Context
-    ): Retrofit = provideRetrofit(client, BuildConfig.WEATHER_URL)
-
     @Named(LOCATION)
     @Provides
     @Singleton
