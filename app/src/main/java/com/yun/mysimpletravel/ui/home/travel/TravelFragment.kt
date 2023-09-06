@@ -5,11 +5,12 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
-import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.BR
+import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.databinding.FragmentTravelBinding
 import com.yun.mysimpletravel.ui.home.HomeViewModel
+import com.yun.mysimpletravel.util.ViewUtil.setWeatherImages
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -28,10 +29,16 @@ class TravelFragment : BaseFragment<FragmentTravelBinding, TravelViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         lifecycleScope.launch {
-            val result = viewModel.callNowWeatherApi()
-            binding.tvTitle.text = result
+
+            val weatherInfo = viewModel.testWeather()
+            if (weatherInfo != null) {
+
+                binding.tvWeather.text =
+                    "날씨 : ${weatherInfo.currentWeather}\n온도 : ${weatherInfo.currentTemperature}\n상태 : ${weatherInfo.currentWeatherDetail}"
+                binding.ivWeather.setWeatherImages(weatherInfo.currentImagePath)
+            }
+
         }
     }
 }

@@ -10,6 +10,7 @@ class LocationDataModel {
     data class Items(
         override var id: Int,
         val code: String,
-        var name: String
+        var name: String,
+        var fullName: String
     ) : Item()
 }

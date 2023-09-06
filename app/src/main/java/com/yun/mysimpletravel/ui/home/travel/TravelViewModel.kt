@@ -7,111 +7,62 @@ import androidx.lifecycle.MutableLiveData
 import com.yun.mysimpletravel.api.ApiRepository
 import com.yun.mysimpletravel.base.BaseViewModel
 import com.yun.mysimpletravel.common.constants.ApiConstants.ApiType.WEATHER
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Category.POP
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Category.PTY
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Category.REH
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Category.SKY
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Category.T1H
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Category.VEC
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Category.WSD
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Pty.NOT
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Pty.RAIN
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Pty.RAIN_SNOW
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Pty.SHOWER
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Pty.SNOW
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Sky.CLOUDY
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Sky.OVERCAST
-import com.yun.mysimpletravel.common.constants.WeatherConstants.Sky.SUNNY
+import com.yun.mysimpletravel.common.constants.LocationConstants
+import com.yun.mysimpletravel.data.model.weather.NowWeatherDataModel
+import com.yun.mysimpletravel.util.PreferenceUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.util.Date
-import java.util.Locale
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.jsoup.Jsoup
 import javax.inject.Inject
 import javax.inject.Named
 
 @HiltViewModel
 class TravelViewModel @Inject constructor(
     application: Application,
+    private val sPrefs: PreferenceUtil,
     @Named(WEATHER) private val weatherApi: ApiRepository
 ) : BaseViewModel(application) {
 
-    private val _isLoading = MutableLiveData<Boolean>()
+    private val _isLoading = MutableLiveData<Boolean>(true)
     override val isLoading: LiveData<Boolean> get() = _isLoading
 
     init {
         Log.d("lys", "TravelViewModel")
     }
 
-    /**
-     * 현재 날씨 > 단기 예보
-     */
-    suspend fun callNowWeatherApi(): String {
-        val baseTime = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(
-            Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())
-        )
-        val today = LocalDateTime.now().hour
-        val response = callApi({ weatherApi.srtFcst("61", "126", baseTime, "${today-1}00") })
-        var result = ""
-        val filter = arrayListOf<String>()
-        response?.let { res ->
-            res.response.body?.items?.item?.forEachIndexed { _, item ->
-                if (filter.find { it == item.category } != null) return@forEachIndexed
-                filter.add(item.category)
-                when (item.category) {
-                    T1H -> {
-                        // 온도
-                        result += "온도 : ${item.fcstValue}\n"
-                    }
+    suspend fun testWeather(): NowWeatherDataModel.WeatherInfo? {
+        val url =
+            "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query="
+//            "https://search.naver.com/search.naver?where=nexearch&amp;sm=top_hty&amp;fbm=1&amp;ie=utf8&amp;query="
+        val location = sPrefs.getString(mContext, LocationConstants.Key.FULL_NAME)
+        if (location.isNullOrEmpty()) return null
+        val result = withContext(Dispatchers.IO) {
+            // 네트워크 작업 수행
+            val doc = Jsoup.connect(url + location + "날씨").get()
+            val currentWeather = doc.select(".weather_main")[0].text()
+            val currentTemperature = doc.select(".temperature_text")[0].text()
+            val currentImagePath = setImagePath(doc.select(".weather_main i")[0].className())
+            val currentWeatherDetail = doc.select(".temperature_info .summary_list")[0].text()
 
-                    REH -> {
-                        // 습도
-                        result += "습도 : ${item.fcstValue}\n"
-                    }
-
-                    VEC -> {
-                        // 풍향
-                        result += "풍향 : ${item.fcstValue}\n"
-                    }
-
-                    WSD -> {
-                        // 풍속
-                        result += "풍속 : ${item.fcstValue}\n"
-                    }
-
-                    POP -> {
-                        // 강수 확률
-                        result += "강수확률 : ${item.fcstValue}\n"
-                    }
-
-                    PTY -> {
-                        // 강수형태
-                        val pty = when (item.fcstValue) {
-                            NOT -> "없음"
-                            RAIN -> "비"
-                            RAIN_SNOW -> "비/눈"
-                            SNOW -> "눈"
-                            SHOWER -> "소나기"
-                            else -> ""
-                        }
-                        result += "강수형태 : $pty\n"
-                    }
-
-                    SKY -> {
-                        val sky = when (item.fcstValue) {
-                            SUNNY -> "맑음"
-                            CLOUDY -> "구름 많음"
-                            OVERCAST -> "흐림"
-                            else -> ""
-                        }
-                        result += "하늘상태 : $sky\n"
-                    }
-                }
-            }
+            NowWeatherDataModel.WeatherInfo(currentWeather,currentTemperature,currentImagePath,currentWeatherDetail)
         }
+
+        // 결과를 처리
+        Log.d("lys", "testWeather 현재 날씨 > ${result.currentWeather}")
+        Log.d("lys", "testWeather 현재 온도 > ${result.currentTemperature}")
+        Log.d("lys", "testWeather 현재 상태 > ${result.currentWeatherDetail}")
+        Log.d("lys", "testWeather 이미지 > ${result.currentImagePath}")
+        setLoading(false)
         return result
     }
 
+    private fun setImagePath(url: String): String =
+        "https://ssl.pstatic.net/sstatic/keypage/outside/scui/weather_new_new/img/weather_svg/${
+            url.replace("wt_", "").replace("ico_", "flat_").replace(" ", "_")
+        }.svg"
 
+    private fun setLoading(loading: Boolean) {
+        _isLoading.value = loading
+    }
 }

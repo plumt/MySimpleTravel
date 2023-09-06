@@ -13,6 +13,13 @@ import com.yun.mysimpletravel.common.constants.AuthConstants.Info.NAME
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.PROFILE
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.SNS_ID
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.TYPE
+import com.yun.mysimpletravel.common.constants.LocationConstants
+import com.yun.mysimpletravel.common.constants.LocationConstants.FilterName.JEJU
+import com.yun.mysimpletravel.common.constants.LocationConstants.FilterName.JEJU_PROVINCE
+import com.yun.mysimpletravel.common.constants.LocationConstants.FilterName.SEOGWIP
+import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_ALL
+import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_JEJU
+import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_SEOGWIP
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.APP_VERSION
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOCATION_CHANGED
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOG_OUT
@@ -62,25 +69,26 @@ class SettingViewModel @Inject constructor(
         )
     }
 
-    private fun setSettingList() {
+    private fun setSettingList(locationName: String = "") {
+        _settingList.clear(true)
         val locationChanged = SettingDataModel(
             LOCATION_CHANGED,
-            "예)서귀포시",
-            "변경"
+            locationName.ifEmpty { locationNameCheck() },
+            "*변경"
         )
         val appVersion = SettingDataModel(
             APP_VERSION,
-            "앱 버전 ${BuildConfig.VERSION_NAME}",
-            "업데이트"
+            "*앱 버전 ${BuildConfig.VERSION_NAME}",
+            "*업데이트"
         )
         val logOut = SettingDataModel(
             LOG_OUT,
-            "로그아웃",
+            "*로그아웃",
             ""
         )
         val signOut = SettingDataModel(
             SIGN_OUT,
-            "회원탈퇴",
+            "*회원탈퇴",
             ""
         )
 
@@ -91,11 +99,38 @@ class SettingViewModel @Inject constructor(
     }
 
     suspend fun searchLocationCode(code: String): LocationDataModel.RS? {
+        setLoading(loading = true)
         val response = callApi({ locationApi.searchLocationCode(code) })
         response?.regcodes?.forEachIndexed { index, items ->
             items.id = index
+            items.name = locationNameFilter(items.name, code)
+            items.fullName = locationNameFilter(items.name, JEJU_JEJU)
         }
+        setLoading(loading = false)
         return response
     }
 
+
+    private fun setLoading(loading: Boolean) {
+        _isLoading.value = loading
+    }
+
+    fun updateSelectLocationData(locationName: String){
+        setSettingList(locationName)
+    }
+
+    private fun locationNameCheck(): String {
+        val name = sPrefs.getString(mContext, LocationConstants.Key.NAME)
+        return if (name.isNullOrEmpty()) "*지역을 설정해 주세요"
+        else name
+    }
+
+    fun locationNameFilter(name: String, code: String): String {
+        val result = name.replace(JEJU_PROVINCE, "")
+        return when (code) {
+            JEJU_JEJU -> result.replace(JEJU, "")
+            JEJU_SEOGWIP -> result.replace(SEOGWIP, "")
+            else -> result
+        }.trim()
+    }
 }

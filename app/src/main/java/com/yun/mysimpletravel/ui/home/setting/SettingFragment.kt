@@ -11,7 +11,12 @@ import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
-import com.yun.mysimpletravel.common.constants.LocationConstants.Code.JEJU_ALL
+import com.yun.mysimpletravel.common.constants.LocationConstants
+import com.yun.mysimpletravel.common.constants.LocationConstants.LocationCode.JEJU
+import com.yun.mysimpletravel.common.constants.LocationConstants.LocationCode.SEOGWIP
+import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_ALL
+import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_JEJU
+import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_SEOGWIP
 import com.yun.mysimpletravel.common.constants.NavigationConstants.Type.EXIT
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.APP_VERSION
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOCATION_CHANGED
@@ -26,7 +31,9 @@ import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.databinding.FragmentSettingBinding
 import com.yun.mysimpletravel.databinding.ItemSettingBinding
 import com.yun.mysimpletravel.ui.bottomsheet.LocationBottomSheet
+import com.yun.mysimpletravel.ui.home.HomeViewModel
 import com.yun.mysimpletravel.util.PreferenceUtil
+import com.yun.mysimpletravel.util.Util.delayedHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,6 +47,10 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
     override fun isOnBackEvent(): Boolean = true
     override fun onBackEvent() {}
     override fun setVariable(): Int = BR.setting
+
+    private val homeViewModel: HomeViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    )
 
     private lateinit var kakaoAuthManager: KakaoAuthManager
     private lateinit var sharedPreferenceManager: SharedPreferenceManager
@@ -56,6 +67,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
         navigationManager = NavigationManager(requireActivity(), view)
 
         binding.rvSetting.run {
+            setHasFixedSize(true)
             adapter = object : BaseRecyclerAdapter.Create<SettingDataModel, ItemSettingBinding>(
                 layoutResId = R.layout.item_setting,
                 bindingVariableId = BR.itemSetting,
@@ -125,7 +137,6 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
     override fun removeUser() {
         sharedPreferenceManager.removeUserInfo()
         moveLoginScreen()
-        //TODO 로그인 화면으로 이동
     }
 
     private fun changeLocation(param: ArrayList<LocationDataModel.Items>) {
@@ -134,7 +145,21 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
                 param,
                 object : LocationBottomSheet.LocationBottomSheetInterface<LocationDataModel.Items> {
                     override fun onClick(item: LocationDataModel.Items) {
-                        Toast.makeText(requireActivity(), item.name, Toast.LENGTH_SHORT).show()
+                        lifecycleScope.launch {
+                            when (item.code) {
+                                JEJU -> viewModel.searchLocationCode(JEJU_JEJU)
+                                SEOGWIP -> viewModel.searchLocationCode(JEJU_SEOGWIP)
+                                else -> {
+                                    Log.d("lys", "select > ${item.code}")
+                                    sharedPreferenceManager.updateLocation(
+                                        name = item.name,
+                                        fullName = item.fullName
+                                    )
+                                    viewModel.updateSelectLocationData(item.fullName)
+                                    null
+                                }
+                            }?.regcodes?.let { changeLocation(it) }
+                        }
                     }
                 })
         locationBottomSheet.show(requireActivity().supportFragmentManager, locationBottomSheet.tag)

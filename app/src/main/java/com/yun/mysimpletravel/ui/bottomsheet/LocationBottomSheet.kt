@@ -41,27 +41,22 @@ class LocationBottomSheet<ITEM : Item>(
                 val behavior = BottomSheetBehavior.from(it)
                 behavior.state = BottomSheetBehavior.STATE_EXPANDED
                 behavior.skipCollapsed = true
-                behavior.isDraggable = false // 드래그 기능 막기
+                behavior.isDraggable = true // 드래그 기능 막기
             }
-
 //            if (percent) setupRatio(bottomSheetDialog)
         }
         return myDialog
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val binding = DialogLocationBottomSheetBinding.inflate(inflater, container, false)
-
         // dialog의 배경을 투명하게 설정
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-
-
         binding.rvBottomLocation.run {
+            setHasFixedSize(true)
             adapter =
                 object : BaseRecyclerAdapter.Create<ITEM, ItemLocationBinding>(
                     bindingVariableId = BR.itemBottomLocation,
@@ -75,26 +70,12 @@ class LocationBottomSheet<ITEM : Item>(
 
                     override fun onItemClick(item: ITEM, view: View) {
                         locationBottomSheetInterface.onClick(item)
+                        dismiss()
                     }
                 }
             replace(list)
         }
-
-//        binding.btnResult.setOnClickListener {
-//            if(selectItem != null){
-//                myDialogListener.onChanged(selectItem!!)
-//            } else {
-//                dismiss()
-//            }
-//        }
-//
-//        binding.ivBack.setOnClickListener {
-//            dismiss()
-//        }
-
         dialog?.setCancelable(true)
-
         return binding.root
     }
-
 }

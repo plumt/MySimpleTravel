@@ -1,12 +1,9 @@
 package com.yun.mysimpletravel.common.manager
 
 import android.content.Context
-import com.yun.mysimpletravel.MySimpleTravelApplication
+import android.util.Log
 import com.yun.mysimpletravel.common.constants.AuthConstants
-import com.yun.mysimpletravel.common.constants.AuthConstants.Info.NAME
-import com.yun.mysimpletravel.common.constants.AuthConstants.Info.PROFILE
-import com.yun.mysimpletravel.common.constants.AuthConstants.Info.SNS_ID
-import com.yun.mysimpletravel.common.constants.AuthConstants.Info.TYPE
+import com.yun.mysimpletravel.common.constants.LocationConstants
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.util.PreferenceUtil
 import javax.inject.Inject
@@ -20,20 +17,27 @@ class SharedPreferenceManager @Inject constructor(
      * 회원탈퇴 및 로그아웃으로 유저 정보 초기화
      */
     fun removeUserInfo() {
-        sPrefs.setString(context, SNS_ID, "")
-        sPrefs.setString(context, NAME, "")
-        sPrefs.setString(context, PROFILE, "")
-        sPrefs.setString(context, TYPE, "")
+        sPrefs.setString(context, AuthConstants.Info.SNS_ID, "")
+        sPrefs.setString(context, AuthConstants.Info.NAME, "")
+        sPrefs.setString(context, AuthConstants.Info.PROFILE, "")
+        sPrefs.setString(context, AuthConstants.Info.TYPE, "")
     }
 
     /**
      * 로그인 유저 정보 저장
      */
-    fun setUserInfo(info: UserInfoDataModel) {
-        sPrefs.setString(context, SNS_ID, info.userId)
-        sPrefs.setString(context, NAME, info.userName)
-        sPrefs.setString(context, PROFILE, info.userProfileUrl)
-        sPrefs.setString(context, TYPE, info.loginType)
+    fun setUserInfo(info: UserInfoDataModel?) {
+        if (info == null) return
+        sPrefs.setString(context, AuthConstants.Info.SNS_ID, info.userId)
+        sPrefs.setString(context, AuthConstants.Info.NAME, info.userName)
+        sPrefs.setString(context, AuthConstants.Info.PROFILE, info.userProfileUrl)
+        sPrefs.setString(context, AuthConstants.Info.TYPE, info.loginType)
+    }
+
+    fun updateLocation(name: String?, fullName: String?) {
+        if (name == null || fullName == null) return
+        sPrefs.setString(context, LocationConstants.Key.NAME, name)
+        sPrefs.setString(context, LocationConstants.Key.FULL_NAME, fullName)
     }
 
 }

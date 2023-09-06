@@ -36,4 +36,11 @@ class NowWeatherDataModel {
         val obsrValue: String?,     // 실황 값
         val fcstValue: String?      // 예보 값
     )
+
+    data class WeatherInfo(
+        val currentWeather: String,
+        val currentTemperature: String,
+        val currentImagePath: String,
+        val currentWeatherDetail: String
+    )
 }

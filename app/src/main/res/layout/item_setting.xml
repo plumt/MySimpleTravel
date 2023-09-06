@@ -39,7 +39,7 @@
             app:layout_constraintGuide_percent="0.9" />
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tv_weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
@@ -58,9 +58,9 @@
             android:text="@{itemSetting.contents}"
             android:textColor="@color/color_666666"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_weather"
             app:layout_constraintEnd_toEndOf="@id/gl_end"
-            app:layout_constraintTop_toTopOf="@id/tv_title" />
+            app:layout_constraintTop_toTopOf="@id/tv_weather" />
 
         <View
             android:layout_width="0dp"

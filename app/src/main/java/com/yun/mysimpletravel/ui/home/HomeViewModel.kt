@@ -12,4 +12,5 @@ class HomeViewModel @Inject constructor(application: Application) : BaseViewMode
 
     private val _isLoading = MutableLiveData<Boolean>()
     override val isLoading: LiveData<Boolean> get() = _isLoading
+
 }
