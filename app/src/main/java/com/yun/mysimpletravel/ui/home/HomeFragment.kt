@@ -13,9 +13,13 @@ import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.ZoomOutPageTransformer
+import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.COMMUNITY
+import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.DIARY
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.SETTING
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.TRAVEL
 import com.yun.mysimpletravel.databinding.FragmentHomeBinding
+import com.yun.mysimpletravel.ui.home.community.CommunityFragment
+import com.yun.mysimpletravel.ui.home.diary.DiaryFragment
 import com.yun.mysimpletravel.ui.home.setting.SettingFragment
 import com.yun.mysimpletravel.ui.home.travel.TravelFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,6 +51,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 override fun createFragment(position: Int): Fragment =
                     when (position) {
                         TRAVEL -> TravelFragment()
+                        DIARY -> DiaryFragment()
+                        COMMUNITY -> CommunityFragment()
                         SETTING -> SettingFragment()
                         else -> Fragment()
                     }
@@ -55,6 +61,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
+                    viewModel.setScreen(position)
                     Log.d("lys", "onPageSelected > $position")
                 }
             })
@@ -64,9 +71,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         TabLayoutMediator(binding.tabLayout, binding.vpHome) { tab, position ->
             tab.text = when (position) {
                 TRAVEL -> "TRAVEL"
+                DIARY -> "DIARY"
+                COMMUNITY -> "COMMUNITY"
                 SETTING -> "SETTING"
                 else -> "TAB $position"
             }
         }.attach()
+
+
+        viewModel.screen.observe(viewLifecycleOwner){
+            Log.d("lys","home observ > $it")
+        }
     }
 }

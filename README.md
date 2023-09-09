@@ -6,6 +6,13 @@
 
 ---
 
+1. 날씨, 여행 관광 정보
+2. 나의 여행 계획
+3. 커뮤니티
+4. 설정
+
+---
+
 1. Android Gradle Plugin Version 7.3.1
 2. Gradle Version 7.4
 3. Hilt Version 2.42

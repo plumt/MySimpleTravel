@@ -37,7 +37,10 @@ class TravelViewModel @Inject constructor(
      */
     suspend fun nowWeather(): NowWeatherDataModel.WeatherInfo? {
         val location = sPrefs.getString(mContext, LocationConstants.Key.FULL_NAME)
-        if (location.isNullOrEmpty()) return null
+        if (location.isNullOrEmpty()) {
+            setLoading(false)
+            return null
+        }
 
         return try {
             val doc = withContext(Dispatchers.IO) {

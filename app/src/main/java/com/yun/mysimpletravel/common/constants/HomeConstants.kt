@@ -4,7 +4,8 @@ class HomeConstants {
 
     object Screen {
         const val TRAVEL = 0
-
+        const val DIARY = 1
+        const val COMMUNITY = 2
         const val SETTING = 3
     }
 }

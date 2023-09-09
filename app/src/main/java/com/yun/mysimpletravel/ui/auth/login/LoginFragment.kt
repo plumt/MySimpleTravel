@@ -68,6 +68,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(),
      */
     override fun kakaoError(t: Throwable) {
         t.printStackTrace()
+        Log.e("lys","login error > ${t.message}")
     }
 
     /**

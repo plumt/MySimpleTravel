@@ -1,6 +1,7 @@
 package com.yun.mysimpletravel.ui.home.travel
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
@@ -38,5 +39,34 @@ class TravelFragment : BaseFragment<FragmentTravelBinding, TravelViewModel>() {
                 binding.ivWeather.setWeatherImages(weatherInfo.weatherImagePath)
             }
         }
+
+        homeViewModel.screen.observe(viewLifecycleOwner){
+            Log.d("lys","observ screen > $it")
+        }
+    }
+
+    override fun onDestroy() {
+        Log.d("lys","onDestroy")
+        super.onDestroy()
+    }
+
+    override fun onDestroyView() {
+        Log.d("lys","onDestroyView")
+        super.onDestroyView()
+    }
+
+    override fun onPause() {
+        Log.d("lys","onPause")
+        super.onPause()
+    }
+
+    override fun onStop() {
+        Log.d("lys","onStop")
+        super.onStop()
+    }
+
+    override fun onResume() {
+        Log.d("lys","onResume")
+        super.onResume()
     }
 }
