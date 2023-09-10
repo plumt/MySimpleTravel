@@ -4,8 +4,14 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="url"
+            type="String" />
+
+        <variable
+            name="name"
             type="String" />
     </data>
 
@@ -21,11 +27,35 @@
             app:cardCornerRadius="200dp"
             app:cardElevation="0dp">
 
-            <ImageView
-                setProfile="@{url}"
-                android:scaleType="centerCrop"
-                android:layout_width="100dp"
-                android:layout_height="100dp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <ImageView
+                    android:id="@+id/iv_profile"
+                    setProfile="@{url}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@{name}"
+                    android:textSize="15sp"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/black"
+                    android:visibility="@{name.equals(``) ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_profile"
+                    app:layout_constraintStart_toEndOf="@id/iv_profile"
+                    app:layout_constraintTop_toTopOf="@id/iv_profile" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
