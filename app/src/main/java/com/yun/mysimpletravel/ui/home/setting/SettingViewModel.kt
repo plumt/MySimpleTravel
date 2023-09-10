@@ -24,6 +24,8 @@ import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.APP_VER
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOCATION_CHANGED
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOG_OUT
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.SIGN_OUT
+import com.yun.mysimpletravel.common.constants.SettingConstants.ViewType.CONTENT
+import com.yun.mysimpletravel.common.constants.SettingConstants.ViewType.TITLE
 import com.yun.mysimpletravel.data.model.location.LocationDataModel
 import com.yun.mysimpletravel.data.model.setting.SettingDataModel
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
@@ -71,31 +73,48 @@ class SettingViewModel @Inject constructor(
 
     private fun setSettingList(locationName: String = "") {
         _settingList.clear(true)
-        val locationChanged = SettingDataModel(
-            LOCATION_CHANGED,
-            locationName.ifEmpty { locationNameCheck() },
-            "*변경"
+        val locationChanged = arrayListOf(
+            SettingDataModel(LOCATION_CHANGED + TITLE, TITLE, "*위치", ""),
+            SettingDataModel(
+                LOCATION_CHANGED,
+                CONTENT,
+                locationName.ifEmpty { locationNameCheck() },
+                "*변경"
+            )
         )
-        val appVersion = SettingDataModel(
-            APP_VERSION,
-            "*앱 버전 ${BuildConfig.VERSION_NAME}",
-            "*업데이트"
+        val appVersion = arrayListOf(
+            SettingDataModel(APP_VERSION + TITLE, TITLE,"*기기",""),
+            SettingDataModel(
+                APP_VERSION,
+                CONTENT,
+                "*앱 버전 ${BuildConfig.VERSION_NAME}",
+                "*업데이트"
+            )
         )
-        val logOut = SettingDataModel(
-            LOG_OUT,
-            "*로그아웃",
-            ""
-        )
-        val signOut = SettingDataModel(
-            SIGN_OUT,
-            "*회원탈퇴",
-            ""
+        val auth = arrayListOf(
+            SettingDataModel(LOG_OUT + TITLE, TITLE, "*계정",""),
+            SettingDataModel(
+                LOG_OUT,
+                CONTENT,
+                "*로그아웃",
+                ""
+            ),
+            SettingDataModel(
+                SIGN_OUT,
+                CONTENT,
+                "*회원탈퇴",
+                ""
+            )
         )
 
-        _settingList.add(locationChanged)
-        _settingList.add(appVersion)
-        _settingList.add(logOut)
-        _settingList.add(signOut)
+
+        _settingList.addAll(locationChanged)
+        _settingList.addAll(appVersion)
+        _settingList.addAll(auth)
+//        _settingList.add(locationChanged)
+//        _settingList.add(appVersion)
+//        _settingList.add(logOut)
+//        _settingList.add(signOut)
     }
 
     suspend fun searchLocationCode(code: String): LocationDataModel.RS? {
@@ -115,7 +134,7 @@ class SettingViewModel @Inject constructor(
         _isLoading.value = loading
     }
 
-    fun updateSelectLocationData(locationName: String){
+    fun updateSelectLocationData(locationName: String) {
         setSettingList(locationName)
     }
 

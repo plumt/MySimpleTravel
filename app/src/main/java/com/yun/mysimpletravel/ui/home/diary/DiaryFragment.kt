@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.BR
+import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
-import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.DIARY
 import com.yun.mysimpletravel.databinding.FragmentDiaryBinding
 import com.yun.mysimpletravel.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,12 +27,5 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding, DiaryViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeViewModel.screen.observe(viewLifecycleOwner){screen ->
-            if(screen == DIARY){
-                binding.layoutParent.visibility = View.VISIBLE
-            } else {
-                binding.layoutParent.visibility = View.INVISIBLE
-            }
-        }
     }
 }
