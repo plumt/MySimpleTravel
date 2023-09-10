@@ -1,7 +1,6 @@
 package com.yun.mysimpletravel.ui.home.setting
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yun.mysimpletravel.BuildConfig
@@ -17,7 +16,6 @@ import com.yun.mysimpletravel.common.constants.LocationConstants
 import com.yun.mysimpletravel.common.constants.LocationConstants.FilterName.JEJU
 import com.yun.mysimpletravel.common.constants.LocationConstants.FilterName.JEJU_PROVINCE
 import com.yun.mysimpletravel.common.constants.LocationConstants.FilterName.SEOGWIP
-import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_ALL
 import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_JEJU
 import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_SEOGWIP
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.APP_VERSION
@@ -50,9 +48,6 @@ class SettingViewModel @Inject constructor(
     private val _settingList = ListLiveData<SettingDataModel>()
     val settingList: ListLiveData<SettingDataModel> get() = _settingList
 
-//    private val _locationList = ListLiveData<LocationDataModel.Items>()
-//    val locationList: ListLiveData<LocationDataModel.Items> get() = _locationList
-
     init {
         setUserInfo()
         setSettingList()
@@ -71,59 +66,31 @@ class SettingViewModel @Inject constructor(
         )
     }
 
+    /**
+     * 설정 리스트
+     */
     private fun setSettingList(locationName: String = "") {
         _settingList.clear(true)
-        val locationChanged = arrayListOf(
-            SettingDataModel(LOCATION_CHANGED + TITLE, TITLE, "*위치", ""),
-            SettingDataModel(
-                LOCATION_CHANGED,
-                CONTENT,
-                locationName.ifEmpty { locationNameCheck() },
-                "*변경"
-            )
-        )
-        val appVersion = arrayListOf(
-            SettingDataModel(APP_VERSION + TITLE, TITLE,"*기기",""),
-            SettingDataModel(
-                APP_VERSION,
-                CONTENT,
-                "*앱 버전 ${BuildConfig.VERSION_NAME}",
-                "*업데이트"
-            )
-        )
-        val auth = arrayListOf(
-            SettingDataModel(LOG_OUT + TITLE, TITLE, "*계정",""),
-            SettingDataModel(
-                LOG_OUT,
-                CONTENT,
-                "*로그아웃",
-                ""
-            ),
-            SettingDataModel(
-                SIGN_OUT,
-                CONTENT,
-                "*회원탈퇴",
-                ""
-            )
-        )
-
-
-        _settingList.addAll(locationChanged)
-        _settingList.addAll(appVersion)
-        _settingList.addAll(auth)
-//        _settingList.add(locationChanged)
-//        _settingList.add(appVersion)
-//        _settingList.add(logOut)
-//        _settingList.add(signOut)
+        addSettings(LOCATION_CHANGED + TITLE, "*위치", TITLE)
+        addSettings(LOCATION_CHANGED, locationName.ifEmpty { locNmChk() }, content = "*변경")
+        addSettings(APP_VERSION + TITLE, "*기기", TITLE)
+        addSettings(APP_VERSION, "*앱 버전 ${BuildConfig.VERSION_NAME}", content = "*업데이트")
+        addSettings(LOG_OUT + TITLE, "*계정", TITLE)
+        addSettings(LOG_OUT, "*로그아웃")
+        addSettings(SIGN_OUT, "*회원탈퇴")
     }
 
-    suspend fun searchLocationCode(code: String): LocationDataModel.RS? {
+    private fun addSettings(id: Int, title: String, viewType: Int = CONTENT, content: String = "") {
+        _settingList.add(SettingDataModel(id, viewType, title, content))
+    }
+
+    suspend fun searchLocCode(code: String): LocationDataModel.RS? {
         setLoading(loading = true)
         val response = callApi({ locationApi.searchLocationCode(code) })
         response?.regcodes?.forEachIndexed { index, items ->
             items.id = index
-            items.name = locationNameFilter(items.name, code)
-            items.fullName = locationNameFilter(items.name, JEJU_JEJU)
+            items.name = locNmFilter(items.name, code)
+            items.fullName = locNmFilter(items.name, JEJU_JEJU)
         }
         setLoading(loading = false)
         return response
@@ -134,17 +101,17 @@ class SettingViewModel @Inject constructor(
         _isLoading.value = loading
     }
 
-    fun updateSelectLocationData(locationName: String) {
+    fun updateSelLocData(locationName: String) {
         setSettingList(locationName)
     }
 
-    private fun locationNameCheck(): String {
+    private fun locNmChk(): String {
         val name = sPrefs.getString(mContext, LocationConstants.Key.NAME)
         return if (name.isNullOrEmpty()) "*지역을 설정해 주세요"
         else name
     }
 
-    fun locationNameFilter(name: String, code: String): String {
+    private fun locNmFilter(name: String, code: String): String {
         val result = name.replace(JEJU_PROVINCE, "")
         return when (code) {
             JEJU_JEJU -> result.replace(JEJU, "")
