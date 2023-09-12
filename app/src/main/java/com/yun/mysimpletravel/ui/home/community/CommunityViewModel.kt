@@ -28,7 +28,6 @@ class CommunityViewModel @Inject constructor(application: Application) :
             CommunityDataModel.RS(
                 0,
                 UserInfoDataModel("test", "testNm", profile, ""),
-                "testTitle",
                 "testContents",
                 img
             )
@@ -37,7 +36,6 @@ class CommunityViewModel @Inject constructor(application: Application) :
             CommunityDataModel.RS(
                 1,
                 UserInfoDataModel("test", "testNm", profile, ""),
-                "testTitle",
                 "testContents",
                 img
             )
@@ -46,7 +44,6 @@ class CommunityViewModel @Inject constructor(application: Application) :
             CommunityDataModel.RS(
                 2,
                 UserInfoDataModel("test", "testNm", profile, ""),
-                "testTitle",
                 "testContents",
                 img
             )
@@ -55,7 +52,6 @@ class CommunityViewModel @Inject constructor(application: Application) :
             CommunityDataModel.RS(
                 3,
                 UserInfoDataModel("test", "testNm", profile, ""),
-                "testTitle",
                 "testContents",
                 img
             )
@@ -64,7 +60,6 @@ class CommunityViewModel @Inject constructor(application: Application) :
             CommunityDataModel.RS(
                 4,
                 UserInfoDataModel("test", "testNm", profile, ""),
-                "testTitle",
                 "testContents",
                 img
             )
@@ -74,8 +69,7 @@ class CommunityViewModel @Inject constructor(application: Application) :
             CommunityDataModel.RS(
               5,
                 UserInfoDataModel("test", "testNm", profile, ""),
-                "testTitle",
-                "testContents",
+                "testContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContents",
                 img
             )
         )
@@ -84,7 +78,6 @@ class CommunityViewModel @Inject constructor(application: Application) :
             CommunityDataModel.RS(
                 6,
                 UserInfoDataModel("test", "testNm", profile, ""),
-                "testTitle",
                 "testContents",
                 img
             )

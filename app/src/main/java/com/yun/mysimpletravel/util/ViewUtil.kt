@@ -49,8 +49,6 @@ object ViewUtil {
         try {
             Glide.with(this)
                 .load(url)
-                .override(SIZE_ORIGINAL)
-                .centerCrop()
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background)
                 .into(this)

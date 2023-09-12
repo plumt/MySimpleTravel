@@ -27,12 +27,13 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             app:cardCornerRadius="200dp"
             app:cardElevation="0dp">
 
@@ -51,15 +52,13 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
             android:includeFontPadding="false"
             android:text="@{name}"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:visibility="@{name.equals(``) ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/iv_profile"
-            app:layout_constraintStart_toEndOf="@id/iv_profile"
-            app:layout_constraintTop_toTopOf="@id/iv_profile" />
+            android:visibility="@{name.equals(``) ? View.GONE : View.VISIBLE}" />
 
     </LinearLayout>
 

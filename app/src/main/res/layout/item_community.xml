@@ -19,23 +19,21 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:clickable="true"
-        android:onClick="@{(v) -> communityListener.onItemClick(itemCommunity, v)}">
+        android:background="@color/white">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.1" />
+            app:layout_constraintGuide_percent="0.05" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9" />
+            app:layout_constraintGuide_percent="0.95" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_top"
@@ -49,29 +47,41 @@
             layout="@layout/view_profile"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
+            app:height="@{`30`}"
             app:layout_constraintStart_toStartOf="@id/gl_start"
             app:layout_constraintTop_toBottomOf="@id/gl_top"
             app:name="@{itemCommunity.userInfo.userName}"
-            app:width="@{`30`}"
-            app:height="@{`30`}"
-            app:url="@{itemCommunity.userInfo.userProfileUrl}" />
+            app:url="@{itemCommunity.userInfo.userProfileUrl}"
+            app:width="@{`30`}" />
 
-        <ImageView
-            android:id="@+id/iv_contents"
-            android:layout_width="match_parent"
-            setCommunity="@{itemCommunity.fileUrl}"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/ic_profile" />
-
-        <TextView
-            android:id="@+id/tv_contents"
+        <LinearLayout
+            android:id="@+id/layout_community"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{itemCommunity.contents}"
-            android:textColor="@color/black"
-            android:gravity="left|center_vertical"
-            app:layout_constraintTop_toBottomOf="@id/iv_contents" />
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:onClick="@{(v) -> communityListener.onItemClick(itemCommunity, v)}"
+            android:tag="detail"
+            app:layout_constraintTop_toBottomOf="@id/ic_profile">
 
+            <include
+                android:id="@+id/ic_community"
+                layout="@layout/view_community"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:contents="@{itemCommunity.contents}"
+                app:fileUrl="@{itemCommunity.fileUrl}" />
+        </LinearLayout>
+
+
+        <include
+            layout="@layout/view_community_react"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:click="@{(v) -> communityListener.onItemClick(itemCommunity, v)}"
+            app:layout_constraintTop_toBottomOf="@id/layout_community" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

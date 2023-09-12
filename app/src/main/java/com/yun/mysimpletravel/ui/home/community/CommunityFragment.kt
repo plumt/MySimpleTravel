@@ -2,6 +2,7 @@ package com.yun.mysimpletravel.ui.home.community
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import com.yun.mysimpletravel.R
@@ -37,7 +38,7 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
                 bindingListener = BR.communityListener
             ){
                 override fun onItemClick(item: CommunityDataModel.RS, view: View) {
-
+                    Toast.makeText(requireActivity(),view.tag.toString(),Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onItemLongClick(item: CommunityDataModel.RS, view: View): Boolean = true

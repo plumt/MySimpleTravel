@@ -38,19 +38,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
 
         navigationManager = NavigationManager(requireActivity(), view)
         kakaoManager = KakaoAuthManager(requireActivity(), this)
-
-        //TODO 1순위 권한 체크
-        //TODO 2순위 앱 버전 체크
-
-        //TODO 가입 도중에 앱을 종료하거나 뒤로 할 경우, SNS 로그아웃 시켜야함
-
-        if (viewModel.automaticLoginStatus()) {
-            // 로그인 정보 있음 > 홈 화면
-            kakaoManager.snsTokenCheck()
-        } else {
-            // 로그인 정보 없음 > 로그인 화면
-            moveLoginScreen()
-        }
     }
 
     /**
@@ -92,4 +79,21 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
      * 카카오 로그아웃 / 회원탈퇴
      */
     override fun removeUser() {}
+
+    override fun onResume() {
+        super.onResume()
+
+        //TODO 1순위 권한 체크
+        //TODO 2순위 앱 버전 체크
+
+        //TODO 가입 도중에 앱을 종료하거나 뒤로 할 경우, SNS 로그아웃 시켜야함
+
+        if (viewModel.automaticLoginStatus()) {
+            // 로그인 정보 있음 > 홈 화면
+            kakaoManager.snsTokenCheck()
+        } else {
+            // 로그인 정보 없음 > 로그인 화면
+            moveLoginScreen()
+        }
+    }
 }
