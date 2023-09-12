@@ -28,7 +28,7 @@ import com.yun.mysimpletravel.data.model.setting.SettingDataModel
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.databinding.FragmentSettingBinding
 import com.yun.mysimpletravel.databinding.ItemSettingBinding
-import com.yun.mysimpletravel.ui.bottomsheet.LocationBottomSheet
+import com.yun.mysimpletravel.ui.bottomsheet.location.LocationBottomSheet
 import com.yun.mysimpletravel.ui.home.HomeViewModel
 import com.yun.mysimpletravel.util.PreferenceUtil
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.yun.mysimpletravel.ui.bottomsheet
+package com.yun.mysimpletravel.ui.bottomsheet.location
 
 import android.app.Dialog
 import android.graphics.Color
