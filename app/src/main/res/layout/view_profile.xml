@@ -13,13 +13,22 @@
         <variable
             name="name"
             type="String" />
+
+        <variable
+            name="width"
+            type="String" />
+
+        <variable
+            name="height"
+            type="String" />
     </data>
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
@@ -27,37 +36,30 @@
             app:cardCornerRadius="200dp"
             app:cardElevation="0dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <ImageView
+                android:id="@+id/iv_profile"
+                setHeight="@{height}"
+                setProfile="@{url}"
+                setWidth="@{width}"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-
-                <ImageView
-                    android:id="@+id/iv_profile"
-                    setProfile="@{url}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="@{name}"
-                    android:textSize="15sp"
-                    android:includeFontPadding="false"
-                    android:textColor="@color/black"
-                    android:visibility="@{name.equals(``) ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_profile"
-                    app:layout_constraintStart_toEndOf="@id/iv_profile"
-                    app:layout_constraintTop_toTopOf="@id/iv_profile" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop" />
 
         </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:includeFontPadding="false"
+            android:text="@{name}"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:visibility="@{name.equals(``) ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_profile"
+            app:layout_constraintStart_toEndOf="@id/iv_profile"
+            app:layout_constraintTop_toTopOf="@id/iv_profile" />
 
     </LinearLayout>
 

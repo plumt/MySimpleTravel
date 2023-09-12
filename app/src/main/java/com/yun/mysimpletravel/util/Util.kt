@@ -5,6 +5,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Handler
 import android.os.Looper
+import android.util.TypedValue
+import android.view.View
 import com.yun.mysimpletravel.BuildConfig
 import java.net.URLDecoder
 import java.time.LocalDateTime
@@ -51,6 +53,12 @@ object Util {
             else -> false
         }
     }
+
+    fun dpToPx(dp: String, view: View) = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        dp.toFloat(),
+        view.resources.displayMetrics
+    ).toInt()
 
     fun serviceKey() = URLDecoder.decode(BuildConfig.SERVICE_KEY, "UTF-8")
 }

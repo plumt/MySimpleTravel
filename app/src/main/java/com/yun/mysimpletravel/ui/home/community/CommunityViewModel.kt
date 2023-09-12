@@ -21,8 +21,73 @@ class CommunityViewModel @Inject constructor(application: Application) :
     val communityList: ListLiveData<CommunityDataModel.RS> get() = _communityList
 
     init {
-        _communityList.add(CommunityDataModel.RS(
-            0, UserInfoDataModel("test","testNm","",""),"testTitle","testContents", arrayListOf()
-        ))
+        val profile =
+            "https://k.kakaocdn.net/dn/bog87f/btss3F1JVQw/18XAftomGevqjvJ4h2t09k/img_640x640.jpg"
+        val img = "https://t1.daumcdn.net/cfile/tistory/2463694C53D0A5D806"
+        _communityList.add(
+            CommunityDataModel.RS(
+                0,
+                UserInfoDataModel("test", "testNm", profile, ""),
+                "testTitle",
+                "testContents",
+                img
+            )
+        )
+        _communityList.add(
+            CommunityDataModel.RS(
+                1,
+                UserInfoDataModel("test", "testNm", profile, ""),
+                "testTitle",
+                "testContents",
+                img
+            )
+        )
+        _communityList.add(
+            CommunityDataModel.RS(
+                2,
+                UserInfoDataModel("test", "testNm", profile, ""),
+                "testTitle",
+                "testContents",
+                img
+            )
+        )
+        _communityList.add(
+            CommunityDataModel.RS(
+                3,
+                UserInfoDataModel("test", "testNm", profile, ""),
+                "testTitle",
+                "testContents",
+                img
+            )
+        )
+        _communityList.add(
+            CommunityDataModel.RS(
+                4,
+                UserInfoDataModel("test", "testNm", profile, ""),
+                "testTitle",
+                "testContents",
+                img
+            )
+        )
+
+        _communityList.add(
+            CommunityDataModel.RS(
+              5,
+                UserInfoDataModel("test", "testNm", profile, ""),
+                "testTitle",
+                "testContents",
+                img
+            )
+        )
+
+        _communityList.add(
+            CommunityDataModel.RS(
+                6,
+                UserInfoDataModel("test", "testNm", profile, ""),
+                "testTitle",
+                "testContents",
+                img
+            )
+        )
     }
 }
