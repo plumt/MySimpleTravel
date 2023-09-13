@@ -8,6 +8,7 @@ class CommunityDataModel {
         override var id: Int,
         val userInfo: UserInfoDataModel,
         val contents: String,
-        val fileUrl: String
+        val fileUrl: String,
+        var fullSize: Boolean
     ) : Item()
 }

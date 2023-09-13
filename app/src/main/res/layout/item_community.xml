@@ -70,6 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:contents="@{itemCommunity.contents}"
+                app:fullSize="@{itemCommunity.fullSize}"
                 app:fileUrl="@{itemCommunity.fileUrl}" />
         </LinearLayout>
 

@@ -11,6 +11,10 @@
         <variable
             name="contents"
             type="String" />
+
+        <variable
+            name="fullSize"
+            type="Boolean" />
     </data>
 
 
@@ -48,9 +52,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:maxLines="2"
             android:ellipsize="end"
             android:gravity="left|center_vertical"
+            android:maxLines="@{fullSize ? 300 : 2}"
             android:text="@{contents}"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="@id/gl_end"

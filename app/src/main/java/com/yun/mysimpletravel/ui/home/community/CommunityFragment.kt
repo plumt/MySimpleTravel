@@ -47,7 +47,8 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
 
                         when (view.tag.toString()) {
                             "detail" -> {
-                                view.findViewById<TextView>(R.id.tv_contents).maxLines = Int.MAX_VALUE
+                                item.fullSize = !item.fullSize
+                                notifyItemChanged(item.id)
                             }
                             "like" -> {
                                 Toast.makeText(requireActivity(), "*좋아요", Toast.LENGTH_SHORT).show()

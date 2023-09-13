@@ -23,14 +23,14 @@ class CommunityViewModel @Inject constructor(application: Application) :
     val communityList: ListLiveData<CommunityDataModel.RS> get() = _communityList
 
     init {
-        delayedHandler(100){
+        delayedHandler(100) {
             setData()
         }
     }
 
     fun setData(clear: Boolean = false): Boolean {
-        Log.d("lys","setData")
-        if(clear){
+        Log.d("lys", "setData")
+        if (clear) {
             // 초기화
             _communityList.clear(true)
         }
@@ -39,64 +39,18 @@ class CommunityViewModel @Inject constructor(application: Application) :
             "https://k.kakaocdn.net/dn/bog87f/btss3F1JVQw/18XAftomGevqjvJ4h2t09k/img_640x640.jpg"
         val img = "https://t1.daumcdn.net/cfile/tistory/2463694C53D0A5D806"
 //        val img = "https://k.kakaocdn.net/dn/bog87f/btss3F1JVQw/18XAftomGevqjvJ4h2t09k/img_640x640.jpg"
-        _communityList.add(
-            CommunityDataModel.RS(
-                _communityList.sizes(),
-                UserInfoDataModel("test", "testNm", profile, ""),
-                "testContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContents",
-                img
-            )
-        )
-        _communityList.add(
-            CommunityDataModel.RS(
-                _communityList.sizes(),
-                UserInfoDataModel("test", "testNm", profile, ""),
-                "testContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContents",
-                img
-            )
-        )
-        _communityList.add(
-            CommunityDataModel.RS(
-                _communityList.sizes(),
-                UserInfoDataModel("test", "testNm", profile, ""),
-                "testContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContents",
-                img
-            )
-        )
-        _communityList.add(
-            CommunityDataModel.RS(
-                _communityList.sizes(),
-                UserInfoDataModel("test", "testNm", profile, ""),
-                "testContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContents",
-                img
-            )
-        )
-        _communityList.add(
-            CommunityDataModel.RS(
-                _communityList.sizes(),
-                UserInfoDataModel("test", "testNm", profile, ""),
-                "testContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContents",
-                img
-            )
-        )
 
-        _communityList.add(
-            CommunityDataModel.RS(
-                _communityList.sizes(),
-                UserInfoDataModel("test", "testNm", profile, ""),
-                "testContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContents",
-                img
+        for (i in 0..8) {
+            _communityList.add(
+                CommunityDataModel.RS(
+                    _communityList.sizes(),
+                    UserInfoDataModel("test", "testNm", profile, ""),
+                    "testContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContents",
+                    img,
+                    false
+                )
             )
-        )
-
-        _communityList.add(
-            CommunityDataModel.RS(
-                _communityList.sizes(),
-                UserInfoDataModel("test", "testNm", profile, ""),
-                "testContents",
-                img
-            )
-        )
+        }
         setLoading(false)
         return true
     }
