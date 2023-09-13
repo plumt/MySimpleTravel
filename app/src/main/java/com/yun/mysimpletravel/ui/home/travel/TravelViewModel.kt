@@ -31,11 +31,19 @@ class TravelViewModel @Inject constructor(
     private val _isLoading = MutableLiveData<Boolean>(true)
     override val isLoading: LiveData<Boolean> get() = _isLoading
 
+    private val _isWeatherLoading = MutableLiveData<Boolean>(false)
+    val isWeatherLoading: LiveData<Boolean> get() = _isWeatherLoading
+
+    init {
+        setLoading(false)
+    }
+
     /**
      * 현재 날씨
      * 네이버 크롤링 사용
      */
     suspend fun nowWeather(): NowWeatherDataModel.WeatherInfo? {
+        setWeatherLoading(true)
         val location = sPrefs.getString(mContext, LocationConstants.Key.FULL_NAME)
         if (location.isNullOrEmpty()) {
             setLoading(false)
@@ -47,6 +55,7 @@ class TravelViewModel @Inject constructor(
                 Jsoup.connect("${BuildConfig.WEATHER_URL}${location}날씨").get()
             }
 
+            setWeatherLoading(false)
             NowWeatherDataModel.WeatherInfo(
                 doc.weatherState(),
                 doc.weatherTemperature(),
@@ -57,7 +66,7 @@ class TravelViewModel @Inject constructor(
                 doc.weatherUV()
             ).also { setLoading(false) }
         } catch (e: Exception) {
-            setLoading(false)
+            setWeatherLoading(false)
             e.printStackTrace()
             null
         }
@@ -65,5 +74,9 @@ class TravelViewModel @Inject constructor(
 
     private fun setLoading(loading: Boolean) {
         _isLoading.value = loading
+    }
+
+    private fun setWeatherLoading(loading: Boolean){
+        _isWeatherLoading.value = loading
     }
 }

@@ -22,6 +22,9 @@ abstract class BaseFragment<B : ViewDataBinding, M : ViewModel> : Fragment() {
 
     lateinit var binding: B
 
+    val isBindingInitialized get() = this::binding.isInitialized
+
+
     abstract val viewModel: M
 
     abstract fun setVariable(): Int

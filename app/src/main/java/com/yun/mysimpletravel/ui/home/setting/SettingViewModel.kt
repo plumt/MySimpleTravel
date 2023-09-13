@@ -1,6 +1,7 @@
 package com.yun.mysimpletravel.ui.home.setting
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yun.mysimpletravel.BuildConfig
@@ -89,8 +90,8 @@ class SettingViewModel @Inject constructor(
         val response = callApi({ locationApi.searchLocationCode(code) })
         response?.regcodes?.forEachIndexed { index, items ->
             items.id = index
+            items.fullName = items.name
             items.name = locNmFilter(items.name, code)
-            items.fullName = locNmFilter(items.name, JEJU_JEJU)
         }
         setLoading(loading = false)
         return response

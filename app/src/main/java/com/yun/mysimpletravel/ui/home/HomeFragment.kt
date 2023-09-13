@@ -24,6 +24,10 @@ import com.yun.mysimpletravel.ui.home.setting.SettingFragment
 import com.yun.mysimpletravel.ui.home.travel.TravelFragment
 import dagger.hilt.android.AndroidEntryPoint
 
+interface ViewPagerCallback {
+    fun onPageSelected(position: Int)
+}
+
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override val viewModel: HomeViewModel by viewModels()
@@ -32,6 +36,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun isOnBackEvent(): Boolean = true
     override fun onBackEvent() {}
     override fun setVariable(): Int = BR.home
+
+    private val travelFragment = TravelFragment()
+    private val diaryFragment = DiaryFragment()
+    private val communityFragment = CommunityFragment()
+    private val settingFragment = SettingFragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,24 +54,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
         binding.vpHome.run {
             isUserInputEnabled = false
-//            setPageTransformer(ZoomOutPageTransformer()) // 전환 애니메이션
+            setPageTransformer(ZoomOutPageTransformer()) // 전환 애니메이션
             adapter = object : FragmentStateAdapter(this@HomeFragment) {
                 override fun getItemCount(): Int = 4
                 override fun createFragment(position: Int): Fragment =
-                    when (position) {
-                        TRAVEL -> TravelFragment()
-                        DIARY -> DiaryFragment()
-                        COMMUNITY -> CommunityFragment()
-                        SETTING -> SettingFragment()
-                        else -> Fragment()
-                    }
+                    screen(position) ?: Fragment()
             }
 
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    viewModel.setScreen(position)
-                    Log.d("lys", "onPageSelected > $position")
+                    travelFragment.onPageSelected(position)
+                    diaryFragment.onPageSelected(position)
+                    communityFragment.onPageSelected(position)
+                    settingFragment.onPageSelected(position)
                 }
             })
         }
@@ -77,10 +82,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 else -> "TAB $position"
             }
         }.attach()
+    }
 
-
-        viewModel.screen.observe(viewLifecycleOwner){
-            Log.d("lys","home observ > $it")
-        }
+    private fun screen(position: Int): Fragment? = when (position) {
+        TRAVEL -> travelFragment
+        DIARY -> diaryFragment
+        COMMUNITY -> communityFragment
+        SETTING -> settingFragment
+        else -> null
     }
 }

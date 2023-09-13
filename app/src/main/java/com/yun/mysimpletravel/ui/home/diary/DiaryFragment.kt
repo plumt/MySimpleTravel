@@ -7,12 +7,14 @@ import androidx.lifecycle.LiveData
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
+import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.DIARY
 import com.yun.mysimpletravel.databinding.FragmentDiaryBinding
 import com.yun.mysimpletravel.ui.home.HomeViewModel
+import com.yun.mysimpletravel.ui.home.ViewPagerCallback
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DiaryFragment : BaseFragment<FragmentDiaryBinding, DiaryViewModel>() {
+class DiaryFragment : BaseFragment<FragmentDiaryBinding, DiaryViewModel>(), ViewPagerCallback {
     override val viewModel: DiaryViewModel by viewModels()
     override fun getResourceId(): Int = R.layout.fragment_diary
     override fun isLoading(): LiveData<Boolean>? = viewModel.isLoading
@@ -24,8 +26,24 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding, DiaryViewModel>() {
         ownerProducer = { requireParentFragment() }
     )
 
+    override fun onPageSelected(position: Int) {
+        if(position == DIARY){
+            visibilityParentLayout(View.VISIBLE)
+        } else {
+            visibilityParentLayout(View.INVISIBLE)
+        }
+    }
+
+    private fun visibilityParentLayout(visibility: Int){
+        if(isBindingInitialized) binding.layoutParent.visibility = visibility
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        init()
+    }
+
+    private fun init() {
 
     }
 }

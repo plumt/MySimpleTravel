@@ -8,6 +8,7 @@ import com.yun.mysimpletravel.base.BaseViewModel
 import com.yun.mysimpletravel.base.ListLiveData
 import com.yun.mysimpletravel.data.model.community.CommunityDataModel
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
+import com.yun.mysimpletravel.util.Util
 import com.yun.mysimpletravel.util.Util.delayedHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -23,9 +24,7 @@ class CommunityViewModel @Inject constructor(application: Application) :
     val communityList: ListLiveData<CommunityDataModel.RS> get() = _communityList
 
     init {
-        delayedHandler(100) {
-            setData()
-        }
+
     }
 
     fun setData(clear: Boolean = false): Boolean {
@@ -40,10 +39,11 @@ class CommunityViewModel @Inject constructor(application: Application) :
         val img = "https://t1.daumcdn.net/cfile/tistory/2463694C53D0A5D806"
 //        val img = "https://k.kakaocdn.net/dn/bog87f/btss3F1JVQw/18XAftomGevqjvJ4h2t09k/img_640x640.jpg"
 
+        val list = arrayListOf<CommunityDataModel.RS>()
         for (i in 0..8) {
-            _communityList.add(
+            list.add(
                 CommunityDataModel.RS(
-                    _communityList.sizes(),
+                    _communityList.sizes() + list.size,
                     UserInfoDataModel("test", "testNm", profile, ""),
                     "testContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContents",
                     img,
@@ -51,11 +51,18 @@ class CommunityViewModel @Inject constructor(application: Application) :
                 )
             )
         }
-        setLoading(false)
-        return true
+        Util.delayedHandler(1000) {
+            _communityList.addAll(list)
+            setLoading(false)
+        }
+            return true
     }
 
     fun setLoading(loading: Boolean) {
         _isLoading.value = loading
+    }
+
+    fun test(){
+        Log.d("lys","test")
     }
 }
