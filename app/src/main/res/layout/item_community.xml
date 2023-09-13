@@ -78,6 +78,7 @@
             layout="@layout/view_community_react"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/ic_community_react"
             android:layout_marginTop="10dp"
             app:click="@{(v) -> communityListener.onItemClick(itemCommunity, v)}"
             app:layout_constraintTop_toBottomOf="@id/layout_community" />

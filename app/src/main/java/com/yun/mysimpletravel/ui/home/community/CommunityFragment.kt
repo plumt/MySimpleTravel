@@ -13,6 +13,7 @@ import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
+import com.yun.mysimpletravel.common.constants.CommunityConstants
 import com.yun.mysimpletravel.data.model.community.CommunityDataModel
 import com.yun.mysimpletravel.databinding.FragmentCommunityBinding
 import com.yun.mysimpletravel.databinding.ItemCommunityBinding
@@ -44,21 +45,18 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
                     bindingListener = BR.communityListener
                 ) {
                     override fun onItemClick(item: CommunityDataModel.RS, view: View) {
-
                         when (view.tag.toString()) {
-                            "detail" -> {
+                            CommunityConstants.ViewTag.DETAIL -> {
                                 item.fullSize = !item.fullSize
                                 notifyItemChanged(item.id)
                             }
-                            "like" -> {
+
+                            CommunityConstants.ViewTag.LIKE -> {
                                 Toast.makeText(requireActivity(), "*좋아요", Toast.LENGTH_SHORT).show()
                             }
-                            "comment" -> {
-                                Toast.makeText(requireActivity(), "*댓글", Toast.LENGTH_SHORT).show()
-                            }
 
-                            else -> {
-                                Toast.makeText(requireActivity(), "???", Toast.LENGTH_SHORT).show()
+                            CommunityConstants.ViewTag.COMMENT -> {
+                                Toast.makeText(requireActivity(), "*댓글", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
@@ -67,11 +65,9 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
                         true
                 }
 
-            addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    if(viewModel.communityList.sizes() > 0 &&!recyclerView.canScrollVertically(1) && !viewModel.isLoading.value!!){
-                        viewModel.setLoading(true)
-                        Toast.makeText(requireActivity(),"바닥",Toast.LENGTH_SHORT).show()
+                    if (viewModel.communityList.sizes() > 0 && !recyclerView.canScrollVertically(1) && !viewModel.isLoading.value!!) {
                         viewModel.setData()
                     }
                 }
@@ -79,11 +75,9 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
         }
 
         binding.refreshLayout.setOnRefreshListener {
-            viewModel.setLoading(true)
-            if(viewModel.setData(true)){
+            if (viewModel.setData(true)) {
                 binding.refreshLayout.isRefreshing = false
             }
         }
-
     }
 }

@@ -29,12 +29,12 @@ class CommunityViewModel @Inject constructor(application: Application) :
     }
 
     fun setData(clear: Boolean = false): Boolean {
-        Log.d("lys", "setData")
+        setLoading(true)
         if (clear) {
             // 초기화
             _communityList.clear(true)
         }
-        setLoading(true)
+
         val profile =
             "https://k.kakaocdn.net/dn/bog87f/btss3F1JVQw/18XAftomGevqjvJ4h2t09k/img_640x640.jpg"
         val img = "https://t1.daumcdn.net/cfile/tistory/2463694C53D0A5D806"
