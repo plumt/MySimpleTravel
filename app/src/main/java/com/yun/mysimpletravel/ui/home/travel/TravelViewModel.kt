@@ -3,6 +3,7 @@ package com.yun.mysimpletravel.ui.home.travel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.yun.mysimpletravel.BuildConfig
 import com.yun.mysimpletravel.base.BaseViewModel
 import com.yun.mysimpletravel.common.constants.LocationConstants
@@ -18,6 +19,7 @@ import com.yun.mysimpletravel.util.WeatherUtil.weatherUDust
 import com.yun.mysimpletravel.util.WeatherUtil.weatherUV
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import java.lang.Exception
@@ -77,6 +79,13 @@ class TravelViewModel @Inject constructor(
             setWeatherLoading(false)
             e.printStackTrace()
             false
+        }
+    }
+
+    fun weatherRefresh() {
+        if (isWeatherLoading.value!!) return
+        viewModelScope.launch {
+            nowWeather()
         }
     }
 
