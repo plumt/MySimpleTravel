@@ -86,14 +86,12 @@ class SettingViewModel @Inject constructor(
     }
 
     suspend fun searchLocCode(code: String): LocationDataModel.RS? {
-        setLoading(loading = true)
         val response = callApi({ locationApi.searchLocationCode(code) })
         response?.regcodes?.forEachIndexed { index, items ->
             items.id = index
             items.fullName = locNmFilter(items.name).trim()
             items.name = locNmFilter(items.name, code).trim()
         }
-        setLoading(loading = false)
         return response
     }
 

@@ -19,12 +19,26 @@ import com.yun.mysimpletravel.databinding.DialogLocationBottomSheetBinding
 import com.yun.mysimpletravel.databinding.ItemLocationBinding
 
 class LocationBottomSheet<ITEM : Item>(
-    private val list: List<ITEM>,
     private val locationBottomSheetInterface: LocationBottomSheetInterface<ITEM>
 ) : BottomSheetDialogFragment() {
 
     interface LocationBottomSheetInterface<ITEM : Item> {
-        fun onClick(item: ITEM)
+        fun onLocationItemClick(item: ITEM)
+    }
+
+    private val list = ArrayList<ITEM>()
+    private lateinit var binding: DialogLocationBottomSheetBinding
+
+    fun setLocationList(locationList: List<ITEM>) {
+        if (!::binding.isInitialized) return
+        list.clear()
+        list.addAll(locationList)
+        binding.rvBottomLocation.replace(list)
+    }
+
+    fun setLoading(loading: Boolean) {
+        if (!::binding.isInitialized) return
+        binding.loadingProgress.visibility = if (loading) View.VISIBLE else View.INVISIBLE
     }
 
     override fun getTheme(): Int = R.style.RoundBottomSheetDialog
@@ -47,14 +61,16 @@ class LocationBottomSheet<ITEM : Item>(
         }
         return myDialog
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = DialogLocationBottomSheetBinding.inflate(inflater, container, false)
+        binding = DialogLocationBottomSheetBinding.inflate(inflater, container, false)
         // dialog의 배경을 투명하게 설정
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         binding.rvBottomLocation.run {
             setHasFixedSize(true)
             adapter =
@@ -69,8 +85,8 @@ class LocationBottomSheet<ITEM : Item>(
                     ): Boolean = true
 
                     override fun onItemClick(item: ITEM, view: View) {
-                        locationBottomSheetInterface.onClick(item)
-                        dismiss()
+                        locationBottomSheetInterface.onLocationItemClick(item)
+//                        dismiss()
                     }
                 }
             replace(list)

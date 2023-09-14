@@ -6,8 +6,8 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
-import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.BR
+import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.SETTING
@@ -39,7 +39,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>(),
-    KakaoAuthManager.KakaoInterface, ViewPagerCallback {
+    KakaoAuthManager.KakaoInterface, ViewPagerCallback,
+    LocationBottomSheet.LocationBottomSheetInterface<LocationDataModel.Items> {
     override val viewModel: SettingViewModel by viewModels()
     override fun getResourceId(): Int = R.layout.fragment_setting
     override fun isLoading(): LiveData<Boolean>? = viewModel.isLoading
@@ -55,6 +56,8 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
     private lateinit var sharedPreferenceManager: SharedPreferenceManager
     private lateinit var navigationManager: NavigationManager
 
+    private lateinit var locationBottomSheet: LocationBottomSheet<LocationDataModel.Items>
+
     @Inject
     lateinit var sPrefs: PreferenceUtil
 
@@ -66,8 +69,8 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
         }
     }
 
-    private fun visibilityParentLayout(visibility: Int){
-        if(isBindingInitialized) binding.layoutParent.visibility = visibility
+    private fun visibilityParentLayout(visibility: Int) {
+        if (isBindingInitialized) binding.layoutParent.visibility = visibility
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,6 +79,8 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
         kakaoAuthManager = KakaoAuthManager(requireActivity(), this)
         sharedPreferenceManager = SharedPreferenceManager(requireActivity(), sPrefs)
         navigationManager = NavigationManager(requireActivity(), view)
+
+        locationBottomSheet = LocationBottomSheet(this)
 
         binding.rvSetting.run {
             setHasFixedSize(true)
@@ -89,9 +94,13 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
 
                         LOCATION_CHANGED -> {
                             lifecycleScope.launch {
-                                val response = viewModel.searchLocCode(JEJU_ALL)
-                                if (response?.regcodes != null) {
-                                    changeLocation(response.regcodes)
+                                locationBottomSheet.setLoading(true)
+                                locationBottomSheet.show(
+                                    requireActivity().supportFragmentManager,
+                                    locationBottomSheet.tag
+                                )
+                                viewModel.searchLocCode(JEJU_ALL)?.regcodes?.let {
+                                    changeLocation(it)
                                 }
                             }
                         }
@@ -149,29 +158,31 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
         moveLoginScreen()
     }
 
+    /**
+     * location bottom sheet item click
+     */
+    override fun onLocationItemClick(item: LocationDataModel.Items) {
+        lifecycleScope.launch {
+            locationBottomSheet.setLoading(true)
+            when (item.code) {
+                JEJU -> viewModel.searchLocCode(JEJU_JEJU)
+                SEOGWIP -> viewModel.searchLocCode(JEJU_SEOGWIP)
+                else -> {
+                    Log.d("lys", "select > ${item.code}")
+                    sharedPreferenceManager.updateLocation(
+                        name = item.name,
+                        fullName = item.fullName
+                    )
+                    viewModel.updateSelLocData(item.fullName)
+                    locationBottomSheet.dismiss()
+                    null
+                }
+            }?.regcodes?.let { changeLocation(it) }
+        }
+    }
+
     private fun changeLocation(param: ArrayList<LocationDataModel.Items>) {
-        val locationBottomSheet =
-            LocationBottomSheet(
-                param,
-                object : LocationBottomSheet.LocationBottomSheetInterface<LocationDataModel.Items> {
-                    override fun onClick(item: LocationDataModel.Items) {
-                        lifecycleScope.launch {
-                            when (item.code) {
-                                JEJU -> viewModel.searchLocCode(JEJU_JEJU)
-                                SEOGWIP -> viewModel.searchLocCode(JEJU_SEOGWIP)
-                                else -> {
-                                    Log.d("lys", "select > ${item.code}")
-                                    sharedPreferenceManager.updateLocation(
-                                        name = item.name,
-                                        fullName = item.fullName
-                                    )
-                                    viewModel.updateSelLocData(item.fullName)
-                                    null
-                                }
-                            }?.regcodes?.let { changeLocation(it) }
-                        }
-                    }
-                })
-        locationBottomSheet.show(requireActivity().supportFragmentManager, locationBottomSheet.tag)
+        locationBottomSheet.setLocationList(param)
+        locationBottomSheet.setLoading(false)
     }
 }
