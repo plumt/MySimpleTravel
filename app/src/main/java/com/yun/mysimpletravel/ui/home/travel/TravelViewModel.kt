@@ -10,9 +10,9 @@ import com.yun.mysimpletravel.common.constants.LocationConstants
 import com.yun.mysimpletravel.data.model.weather.NowWeatherDataModel
 import com.yun.mysimpletravel.util.PreferenceUtil
 import com.yun.mysimpletravel.util.WeatherUtil.weatherCompare
-import com.yun.mysimpletravel.util.WeatherUtil.weatherIcon
 import com.yun.mysimpletravel.util.WeatherUtil.weatherDetail
 import com.yun.mysimpletravel.util.WeatherUtil.weatherDust
+import com.yun.mysimpletravel.util.WeatherUtil.weatherIcon
 import com.yun.mysimpletravel.util.WeatherUtil.weatherState
 import com.yun.mysimpletravel.util.WeatherUtil.weatherTemperature
 import com.yun.mysimpletravel.util.WeatherUtil.weatherUDust
@@ -22,7 +22,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel

@@ -32,6 +32,7 @@ object ViewUtil {
     @BindingAdapter("setWeatherImages")
     @JvmStatic
     fun ImageView.setWeatherImages(path: String?) {
+        if(path == null) return
         try {
             GlideToVectorYou
                 .init()

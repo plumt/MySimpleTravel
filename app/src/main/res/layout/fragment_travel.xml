@@ -13,12 +13,12 @@
     </data>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/layout_parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_parent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white">
@@ -36,20 +36,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/ic_now_weather"
-                >
+                app:layout_constraintTop_toBottomOf="@id/ic_now_weather">
+
                 <Button
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"/>
+                    android:layout_height="300dp" />
+
                 <Button
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"/>
+                    android:layout_height="300dp" />
+
                 <Button
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"/>
+                    android:layout_height="300dp" />
+
                 <Button
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"/>
+                    android:layout_height="300dp" />
 
             </LinearLayout>
 

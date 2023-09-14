@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yun.mysimpletravel.base.BaseViewModel
-import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.TRAVEL
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

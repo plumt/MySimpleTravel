@@ -27,16 +27,21 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding, DiaryViewModel>(), View
     )
 
     override fun onPageSelected(position: Int) {
-        if(position == DIARY){
+        if (position == DIARY) {
             visibilityParentLayout(View.VISIBLE)
         } else {
             visibilityParentLayout(View.INVISIBLE)
         }
     }
 
-    private fun visibilityParentLayout(visibility: Int){
-        if(isBindingInitialized) binding.layoutParent.visibility = visibility
+    override fun onReselected() {
+
     }
+
+    private fun visibilityParentLayout(visibility: Int) {
+        if (isBindingInitialized) binding.layoutParent.visibility = visibility
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

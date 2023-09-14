@@ -1,18 +1,17 @@
 package com.yun.mysimpletravel.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
-import com.yun.mysimpletravel.base.ZoomOutPageTransformer
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.COMMUNITY
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.DIARY
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.SETTING
@@ -26,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 interface ViewPagerCallback {
     fun onPageSelected(position: Int)
+    fun onReselected()
 }
 
 @AndroidEntryPoint
@@ -82,6 +82,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 else -> "TAB $position"
             }
         }.attach()
+
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    TRAVEL -> travelFragment.onReselected()
+                    DIARY -> diaryFragment.onReselected()
+                    COMMUNITY -> communityFragment.onReselected()
+                    SETTING -> settingFragment.onReselected()
+                }
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {}
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+        })
     }
 
     private fun screen(position: Int): Fragment? = when (position) {

@@ -9,7 +9,6 @@ import com.yun.mysimpletravel.base.ListLiveData
 import com.yun.mysimpletravel.data.model.community.CommunityDataModel
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.util.Util
-import com.yun.mysimpletravel.util.Util.delayedHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -55,14 +54,14 @@ class CommunityViewModel @Inject constructor(application: Application) :
             _communityList.addAll(list)
             setLoading(false)
         }
-            return true
+        return true
     }
 
     fun setLoading(loading: Boolean) {
         _isLoading.value = loading
     }
 
-    fun test(){
-        Log.d("lys","test")
+    fun test() {
+        Log.d("lys", "test")
     }
 }

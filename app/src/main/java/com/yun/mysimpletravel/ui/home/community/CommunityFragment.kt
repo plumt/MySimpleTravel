@@ -1,7 +1,6 @@
 package com.yun.mysimpletravel.ui.home.community
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -43,8 +42,14 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
         }
     }
 
-    private fun visibilityParentLayout(visibility: Int){
-        if(isBindingInitialized) binding.layoutParent.visibility = visibility
+    override fun onReselected() {
+        if (isBindingInitialized) {
+            binding.rvCommunity.smoothScrollToPosition(0)
+        }
+    }
+
+    private fun visibilityParentLayout(visibility: Int) {
+        if (isBindingInitialized) binding.layoutParent.visibility = visibility
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,6 +100,7 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
             }
         }
     }
+
     private fun init() {
         Util.delayedHandler(100) {
             viewModel.setData(clear = true)

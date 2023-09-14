@@ -12,20 +12,21 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/layout_parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/layout_parent"
         android:background="@color/white">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="top">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/tb_coordinator"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="?android:attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:title="@string/app_name"
                 app:titleTextColor="@color/white" />

@@ -10,12 +10,10 @@ import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.TRAVEL
-import com.yun.mysimpletravel.common.constants.LocationConstants
 import com.yun.mysimpletravel.databinding.FragmentTravelBinding
 import com.yun.mysimpletravel.ui.home.HomeViewModel
 import com.yun.mysimpletravel.ui.home.ViewPagerCallback
 import com.yun.mysimpletravel.util.PreferenceUtil
-import com.yun.mysimpletravel.util.ViewUtil.setWeatherImages
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,6 +38,10 @@ class TravelFragment : BaseFragment<FragmentTravelBinding, TravelViewModel>(), V
         } else {
             visibilityParentLayout(View.INVISIBLE)
         }
+    }
+
+    override fun onReselected() {
+        if (isBindingInitialized) binding.layoutParent.smoothScrollTo(0, 0)
     }
 
     private fun visibilityParentLayout(visibility: Int) {

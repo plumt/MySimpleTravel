@@ -69,6 +69,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
         }
     }
 
+    override fun onReselected() {
+    }
+
     private fun visibilityParentLayout(visibility: Int) {
         if (isBindingInitialized) binding.layoutParent.visibility = visibility
     }
