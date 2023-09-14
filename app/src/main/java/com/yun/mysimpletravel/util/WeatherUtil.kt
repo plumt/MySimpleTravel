@@ -38,4 +38,9 @@ object WeatherUtil {
     fun Document.weatherUDust() = select(".today_chart_list .item_today")?.get(1)?.text()?:""
 
     fun Document.weatherUV() = select(".today_chart_list .item_today")?.get(2)?.text()?:""
+
+    /**
+     * 어제보다 높거나 낮은 정도
+     */
+    fun Document.weatherCompare() = select(".temperature_info .temperature").firstOrNull()?.text() ?: ""
 }

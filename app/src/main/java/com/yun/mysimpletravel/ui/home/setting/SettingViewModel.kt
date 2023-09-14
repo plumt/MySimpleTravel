@@ -90,8 +90,8 @@ class SettingViewModel @Inject constructor(
         val response = callApi({ locationApi.searchLocationCode(code) })
         response?.regcodes?.forEachIndexed { index, items ->
             items.id = index
-            items.fullName = items.name
-            items.name = locNmFilter(items.name, code)
+            items.fullName = locNmFilter(items.name).trim()
+            items.name = locNmFilter(items.name, code).trim()
         }
         setLoading(loading = false)
         return response
@@ -120,4 +120,6 @@ class SettingViewModel @Inject constructor(
             else -> result
         }.trim()
     }
+
+    private fun locNmFilter(name: String): String = name.replace(JEJU_PROVINCE, "")
 }

@@ -54,7 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
         binding.vpHome.run {
             isUserInputEnabled = false
-            setPageTransformer(ZoomOutPageTransformer()) // 전환 애니메이션
+//            setPageTransformer(ZoomOutPageTransformer()) // 전환 애니메이션
             adapter = object : FragmentStateAdapter(this@HomeFragment) {
                 override fun getItemCount(): Int = 4
                 override fun createFragment(position: Int): Fragment =

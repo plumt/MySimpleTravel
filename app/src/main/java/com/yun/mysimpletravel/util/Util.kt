@@ -8,6 +8,10 @@ import android.os.Looper
 import android.util.TypedValue
 import android.view.View
 import com.yun.mysimpletravel.BuildConfig
+import com.yun.mysimpletravel.common.constants.WeatherConstants.State.BAD
+import com.yun.mysimpletravel.common.constants.WeatherConstants.State.GOOD
+import com.yun.mysimpletravel.common.constants.WeatherConstants.State.NOMAL
+import com.yun.mysimpletravel.common.constants.WeatherConstants.State.WORST
 import java.net.URLDecoder
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
@@ -61,4 +65,26 @@ object Util {
     ).toInt()
 
     fun serviceKey() = URLDecoder.decode(BuildConfig.SERVICE_KEY, "UTF-8")
+
+    fun dustCheck(str: String?): Int {
+        return if (str == null) 0
+        else when {
+            str.contains("좋음") -> GOOD
+            str.contains("보통") -> NOMAL
+            str.contains("매우") -> WORST
+            str.contains("나쁨") -> BAD
+            else -> 0
+        }
+    }
+
+    fun uvCheck(str: String?): Int {
+        return if (str == null) 0
+        else when {
+            str.contains("좋음") -> GOOD
+            str.contains("보통") -> NOMAL
+            str.contains("매우") -> WORST
+            str.contains("높음") -> BAD
+            else -> 0
+        }
+    }
 }

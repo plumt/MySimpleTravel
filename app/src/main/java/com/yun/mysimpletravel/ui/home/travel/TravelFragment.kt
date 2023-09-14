@@ -56,12 +56,6 @@ class TravelFragment : BaseFragment<FragmentTravelBinding, TravelViewModel>(), V
     private fun init() {
         lifecycleScope.launch {
             val weatherInfo = viewModel.nowWeather()
-            if (weatherInfo != null) {
-                val locNm = sPrefs.getString(requireActivity(), LocationConstants.Key.FULL_NAME)
-                binding.tvWeather.text =
-                    "${locNm}\n${weatherInfo.weatherState}\n${weatherInfo.weatherTemperature}\n${weatherInfo.weatherDetail}\n${weatherInfo.weatherDust}\n${weatherInfo.weatherUDust}\n${weatherInfo.weatherUV}"
-                binding.ivWeather.setWeatherImages(weatherInfo.weatherImagePath)
-            }
         }
     }
 

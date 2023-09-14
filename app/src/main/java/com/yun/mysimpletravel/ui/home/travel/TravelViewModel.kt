@@ -8,6 +8,7 @@ import com.yun.mysimpletravel.base.BaseViewModel
 import com.yun.mysimpletravel.common.constants.LocationConstants
 import com.yun.mysimpletravel.data.model.weather.NowWeatherDataModel
 import com.yun.mysimpletravel.util.PreferenceUtil
+import com.yun.mysimpletravel.util.WeatherUtil.weatherCompare
 import com.yun.mysimpletravel.util.WeatherUtil.weatherIcon
 import com.yun.mysimpletravel.util.WeatherUtil.weatherDetail
 import com.yun.mysimpletravel.util.WeatherUtil.weatherDust
@@ -34,6 +35,9 @@ class TravelViewModel @Inject constructor(
     private val _isWeatherLoading = MutableLiveData<Boolean>(false)
     val isWeatherLoading: LiveData<Boolean> get() = _isWeatherLoading
 
+    private val _nowWeather = MutableLiveData<NowWeatherDataModel.WeatherInfo>()
+    val nowWeather: LiveData<NowWeatherDataModel.WeatherInfo> get() = _nowWeather
+
     init {
         setLoading(false)
     }
@@ -42,41 +46,49 @@ class TravelViewModel @Inject constructor(
      * 현재 날씨
      * 네이버 크롤링 사용
      */
-    suspend fun nowWeather(): NowWeatherDataModel.WeatherInfo? {
+    suspend fun nowWeather(): Boolean {
         setWeatherLoading(true)
         val location = sPrefs.getString(mContext, LocationConstants.Key.FULL_NAME)
         if (location.isNullOrEmpty()) {
             setLoading(false)
-            return null
+            return false
         }
 
         return try {
             val doc = withContext(Dispatchers.IO) {
                 Jsoup.connect("${BuildConfig.WEATHER_URL}${location}날씨").get()
             }
-
             setWeatherLoading(false)
-            NowWeatherDataModel.WeatherInfo(
-                doc.weatherState(),
-                doc.weatherTemperature(),
-                doc.weatherIcon(),
-                doc.weatherDetail(),
-                doc.weatherDust(),
-                doc.weatherUDust(),
-                doc.weatherUV()
+            setNowWeather(
+                NowWeatherDataModel.WeatherInfo(
+                    location = sPrefs.getString(mContext, LocationConstants.Key.FULL_NAME) ?: "-",
+                    weatherState = doc.weatherState(),
+                    weatherTemperature = doc.weatherTemperature(),
+                    weatherImagePath = doc.weatherIcon(),
+                    weatherDetail = doc.weatherDetail(),
+                    weatherDust = doc.weatherDust(),
+                    weatherUDust = doc.weatherUDust(),
+                    weatherUV = doc.weatherUV(),
+                    weatherCompare = doc.weatherCompare()
+                )
             ).also { setLoading(false) }
+            true
         } catch (e: Exception) {
             setWeatherLoading(false)
             e.printStackTrace()
-            null
+            false
         }
+    }
+
+    private fun setNowWeather(weather: NowWeatherDataModel.WeatherInfo) {
+        _nowWeather.value = weather
     }
 
     private fun setLoading(loading: Boolean) {
         _isLoading.value = loading
     }
 
-    private fun setWeatherLoading(loading: Boolean){
+    private fun setWeatherLoading(loading: Boolean) {
         _isWeatherLoading.value = loading
     }
 }

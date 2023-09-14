@@ -16,6 +16,7 @@ import com.yun.mysimpletravel.databinding.FragmentSplashBinding
 import com.yun.mysimpletravel.util.Util.calculateTimeDifferenceInSeconds
 import com.yun.mysimpletravel.util.Util.delayedHandler
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.Exception
 
 @AndroidEntryPoint
 class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
@@ -44,8 +45,12 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
      * 로그인 화면 이동
      */
     private fun moveLoginScreen() {
-        delayedHandler(calculateTimeDifferenceInSeconds(viewModel.startingAppTime)) {
-            navigationManager.movingScreen(R.id.action_splashFragment_to_loginFragment, ENTER)
+        try {
+            delayedHandler(calculateTimeDifferenceInSeconds(viewModel.startingAppTime)) {
+                navigationManager.movingScreen(R.id.action_splashFragment_to_loginFragment, ENTER)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -53,8 +58,12 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
      * 홈 화면 이동
      */
     private fun moveHomeScreen() {
-        delayedHandler(calculateTimeDifferenceInSeconds(viewModel.startingAppTime)) {
-            navigationManager.movingScreen(R.id.action_splashFragment_to_homeFragment, ENTER)
+        try {
+            delayedHandler(calculateTimeDifferenceInSeconds(viewModel.startingAppTime)) {
+                navigationManager.movingScreen(R.id.action_splashFragment_to_homeFragment, ENTER)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
