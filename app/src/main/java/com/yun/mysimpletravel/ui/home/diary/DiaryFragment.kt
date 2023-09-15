@@ -11,6 +11,7 @@ import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.DIARY
 import com.yun.mysimpletravel.databinding.FragmentDiaryBinding
 import com.yun.mysimpletravel.ui.home.HomeViewModel
 import com.yun.mysimpletravel.ui.home.ViewPagerCallback
+import com.yun.mysimpletravel.ui.popup.ButtonPopup
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,8 +45,8 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding, DiaryViewModel>(), View
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         init()
+
     }
 
     private fun init() {

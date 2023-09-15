@@ -32,6 +32,7 @@ import com.yun.mysimpletravel.databinding.ItemSettingBinding
 import com.yun.mysimpletravel.ui.bottomsheet.location.LocationBottomSheet
 import com.yun.mysimpletravel.ui.home.HomeViewModel
 import com.yun.mysimpletravel.ui.home.ViewPagerCallback
+import com.yun.mysimpletravel.ui.popup.ButtonPopup
 import com.yun.mysimpletravel.util.PreferenceUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -55,6 +56,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
     private lateinit var kakaoAuthManager: KakaoAuthManager
     private lateinit var sharedPreferenceManager: SharedPreferenceManager
     private lateinit var navigationManager: NavigationManager
+    private lateinit var buttonPopup: ButtonPopup
 
     private lateinit var locationBottomSheet: LocationBottomSheet<LocationDataModel.Items>
 
@@ -82,8 +84,8 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
         kakaoAuthManager = KakaoAuthManager(requireActivity(), this)
         sharedPreferenceManager = SharedPreferenceManager(requireActivity(), sPrefs)
         navigationManager = NavigationManager(requireActivity(), view)
-
         locationBottomSheet = LocationBottomSheet(this)
+        buttonPopup = ButtonPopup(requireActivity())
 
         binding.rvSetting.run {
             setHasFixedSize(true)
@@ -115,12 +117,23 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
                         }
 
                         LOG_OUT -> {
-                            kakaoAuthManager.kakaoLogOut()
+                            buttonPopup.showPopup("*알림","*로그아웃 하시겠습니까?","*로그아웃","*취소",
+                            object : ButtonPopup.ButtonDialogListener{
+                                override fun onButtonClick(result: Boolean) {
+                                    if(result) kakaoAuthManager.kakaoLogOut()
+                                }
+                            })
+
                         }
 
                         SIGN_OUT -> {
                             //TODO 회원탈퇴 api 리턴 받은 이후 kakao 회원 탈퇴가 코드 실행
-                            kakaoAuthManager.kakaoSignOut()
+                            buttonPopup.showPopup("*알림","*회원탈퇴 하시겠습니까?","*회원탈퇴","*취소",
+                                object : ButtonPopup.ButtonDialogListener{
+                                    override fun onButtonClick(result: Boolean) {
+                                        if(result) kakaoAuthManager.kakaoSignOut()
+                                    }
+                                })
                         }
                     }
                 }

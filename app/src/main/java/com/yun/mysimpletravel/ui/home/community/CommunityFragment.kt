@@ -47,16 +47,11 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
 
     override fun onReselected() {
         if (isBindingInitialized) {
-
-            val behavior = (binding.appBarLayout.layoutParams as? CoordinatorLayout.LayoutParams)
-                ?.behavior as? AppBarLayout.Behavior
-
-            behavior?.topAndBottomOffset = 0
-
-            val params = (binding.fab.layoutParams as CoordinatorLayout.LayoutParams)
-            val behavior2 = params.behavior as HideBottomViewOnScrollBehavior
-            behavior2.slideUp(binding.fab)
-
+            ((binding.appBarLayout.layoutParams as? CoordinatorLayout.LayoutParams)
+                ?.behavior as? AppBarLayout.Behavior)?.topAndBottomOffset = 0
+            ((binding.fab.layoutParams as CoordinatorLayout.LayoutParams).behavior as HideBottomViewOnScrollBehavior).slideUp(
+                binding.fab
+            )
             binding.rvCommunity.smoothScrollToPosition(0)
         }
     }

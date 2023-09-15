@@ -18,6 +18,7 @@
         android:background="@color/white">
 
         <TextView
+            android:id="@+id/tv_test"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Diary Screen!"
