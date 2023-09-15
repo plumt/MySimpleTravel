@@ -193,7 +193,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
                         name = item.name,
                         fullName = item.fullName
                     )
-                    viewModel.updateSelLocData(item.fullName)
+                    viewModel.updateSelLocData(item.name)
                     locationBottomSheet.dismiss()
                     null
                 }

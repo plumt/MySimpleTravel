@@ -80,6 +80,7 @@ class ButtonPopup(private val context: Context) {
             dialog.apply {
                 window?.requestFeature(Window.FEATURE_NO_TITLE)
                 window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                window?.attributes?.windowAnimations = R.style.DialogAnimation
 //                setOnDismissListener {
 //                    myDialogListener.onResultClicked(false)
 //                }

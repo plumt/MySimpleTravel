@@ -16,10 +16,12 @@ import com.yun.mysimpletravel.base.BaseRecyclerAdapter
 import com.yun.mysimpletravel.common.constants.CommunityConstants
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.COMMUNITY
 import com.yun.mysimpletravel.common.interfaces.ViewPagerInterface
+import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.data.model.community.CommunityDataModel
 import com.yun.mysimpletravel.databinding.FragmentCommunityBinding
 import com.yun.mysimpletravel.databinding.ItemCommunityBinding
 import com.yun.mysimpletravel.ui.home.HomeViewModel
+import com.yun.mysimpletravel.ui.popup.community.CommunityCreatePopup
 import com.yun.mysimpletravel.util.Util
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,6 +39,9 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
         ownerProducer = { requireParentFragment() }
     )
 
+    private lateinit var navigationManager: NavigationManager
+    private lateinit var communityCreatePopup: CommunityCreatePopup
+
     private fun visibilityParentLayout(visibility: Int) {
         if (isBindingInitialized) binding.layoutParent.visibility = visibility
     }
@@ -45,6 +50,9 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
         super.onViewCreated(view, savedInstanceState)
 
         init()
+
+        navigationManager = NavigationManager(requireActivity(), view)
+        communityCreatePopup = CommunityCreatePopup(requireActivity(), communityCreateInterface)
 
         binding.rvCommunity.run {
             adapter =
@@ -88,6 +96,19 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
                 binding.refreshLayout.isRefreshing = false
             }
         }
+
+        binding.fab.setOnClickListener(clickListener)
+    }
+
+    private val communityCreateInterface = object : CommunityCreatePopup.CommunityCreateInterface {
+        override fun onButtonClick(result: Boolean) {
+            if (result) {
+                viewModel.setData(clear = true)
+                Toast.makeText(requireActivity(), "저장", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireActivity(), "취소", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun init() {
@@ -96,16 +117,36 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
         }
     }
 
+    private val clickListener = View.OnClickListener { v ->
+        when (v) {
+            binding.fab -> {
+                moveCreateScreen()
+            }
+        }
+    }
+
+    private fun moveCreateScreen() {
+        communityCreatePopup.showPopup()
+//        navigationManager.movingScreen(R.id.action_homeFragment_to_communityCreateFragment,
+//            NavigationConstants.Type.ENTER
+//        )
+    }
+
+    /**
+     * 화면 최상단으로 스크롤
+     */
+    private fun topScroll() {
+        ((binding.appBarLayout.layoutParams as? CoordinatorLayout.LayoutParams)?.behavior as? AppBarLayout.Behavior)?.topAndBottomOffset =
+            0
+        ((binding.fab.layoutParams as CoordinatorLayout.LayoutParams).behavior as HideBottomViewOnScrollBehavior).slideUp(
+            binding.fab
+        )
+        binding.rvCommunity.smoothScrollToPosition(0)
+    }
+
     override fun moveScreen(position: Int) {}
     override fun onReselected(position: Int) {
-        if (position == COMMUNITY && isBindingInitialized) {
-            ((binding.appBarLayout.layoutParams as? CoordinatorLayout.LayoutParams)
-                ?.behavior as? AppBarLayout.Behavior)?.topAndBottomOffset = 0
-            ((binding.fab.layoutParams as CoordinatorLayout.LayoutParams).behavior as HideBottomViewOnScrollBehavior).slideUp(
-                binding.fab
-            )
-            binding.rvCommunity.smoothScrollToPosition(0)
-        }
+        if (position == COMMUNITY && isBindingInitialized) topScroll()
     }
 
     override fun onPageSelected(position: Int) {

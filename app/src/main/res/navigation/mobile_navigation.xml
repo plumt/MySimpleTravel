@@ -9,7 +9,7 @@
         android:id="@+id/splashFragment"
         android:name="com.yun.mysimpletravel.ui.splash.SplashFragment"
         android:label="SplashFragment"
-        tools:layout="@layout/fragment_splash" >
+        tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -19,18 +19,18 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        tools:layout="@layout/fragment_login"
         android:name="com.yun.mysimpletravel.ui.auth.login.LoginFragment"
-        android:label="LoginFragment" >
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        tools:layout="@layout/fragment_home"
         android:name="com.yun.mysimpletravel.ui.home.HomeFragment"
-        android:label="HomeFragment" >
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
