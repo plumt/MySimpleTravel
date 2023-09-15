@@ -3,9 +3,12 @@ package com.yun.mysimpletravel.ui.home.community
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
@@ -44,6 +47,16 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
 
     override fun onReselected() {
         if (isBindingInitialized) {
+
+            val behavior = (binding.appBarLayout.layoutParams as? CoordinatorLayout.LayoutParams)
+                ?.behavior as? AppBarLayout.Behavior
+
+            behavior?.topAndBottomOffset = 0
+
+            val params = (binding.fab.layoutParams as CoordinatorLayout.LayoutParams)
+            val behavior2 = params.behavior as HideBottomViewOnScrollBehavior
+            behavior2.slideUp(binding.fab)
+
             binding.rvCommunity.smoothScrollToPosition(0)
         }
     }
