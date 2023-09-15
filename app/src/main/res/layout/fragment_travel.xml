@@ -28,7 +28,6 @@
                 layout="@layout/view_now_weather"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:click="@{(v) -> travel.weatherRefresh()}"
                 app:loading="@{travel.isWeatherLoading &amp;&amp; !travel.isLoading}"
                 app:weather="@{travel.nowWeather}" />
 

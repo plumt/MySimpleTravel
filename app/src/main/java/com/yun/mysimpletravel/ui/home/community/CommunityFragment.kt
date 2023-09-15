@@ -15,17 +15,17 @@ import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
 import com.yun.mysimpletravel.common.constants.CommunityConstants
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.COMMUNITY
+import com.yun.mysimpletravel.common.interfaces.ViewPagerInterface
 import com.yun.mysimpletravel.data.model.community.CommunityDataModel
 import com.yun.mysimpletravel.databinding.FragmentCommunityBinding
 import com.yun.mysimpletravel.databinding.ItemCommunityBinding
 import com.yun.mysimpletravel.ui.home.HomeViewModel
-import com.yun.mysimpletravel.ui.home.ViewPagerCallback
 import com.yun.mysimpletravel.util.Util
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewModel>(),
-    ViewPagerCallback {
+    ViewPagerInterface {
     override val viewModel: CommunityViewModel by viewModels()
     override fun setVariable(): Int = BR.community
     override fun getResourceId(): Int = R.layout.fragment_community
@@ -36,25 +36,6 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
     private val homeViewModel: HomeViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
     )
-
-    override fun onPageSelected(position: Int) {
-        if (position == COMMUNITY) {
-            visibilityParentLayout(View.VISIBLE)
-        } else {
-            visibilityParentLayout(View.INVISIBLE)
-        }
-    }
-
-    override fun onReselected() {
-        if (isBindingInitialized) {
-            ((binding.appBarLayout.layoutParams as? CoordinatorLayout.LayoutParams)
-                ?.behavior as? AppBarLayout.Behavior)?.topAndBottomOffset = 0
-            ((binding.fab.layoutParams as CoordinatorLayout.LayoutParams).behavior as HideBottomViewOnScrollBehavior).slideUp(
-                binding.fab
-            )
-            binding.rvCommunity.smoothScrollToPosition(0)
-        }
-    }
 
     private fun visibilityParentLayout(visibility: Int) {
         if (isBindingInitialized) binding.layoutParent.visibility = visibility
@@ -112,6 +93,26 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
     private fun init() {
         Util.delayedHandler(100) {
             viewModel.setData(clear = true)
+        }
+    }
+
+    override fun moveScreen(position: Int) {}
+    override fun onReselected(position: Int) {
+        if (position == COMMUNITY && isBindingInitialized) {
+            ((binding.appBarLayout.layoutParams as? CoordinatorLayout.LayoutParams)
+                ?.behavior as? AppBarLayout.Behavior)?.topAndBottomOffset = 0
+            ((binding.fab.layoutParams as CoordinatorLayout.LayoutParams).behavior as HideBottomViewOnScrollBehavior).slideUp(
+                binding.fab
+            )
+            binding.rvCommunity.smoothScrollToPosition(0)
+        }
+    }
+
+    override fun onPageSelected(position: Int) {
+        if (position == COMMUNITY) {
+            visibilityParentLayout(View.VISIBLE)
+        } else {
+            visibilityParentLayout(View.INVISIBLE)
         }
     }
 }

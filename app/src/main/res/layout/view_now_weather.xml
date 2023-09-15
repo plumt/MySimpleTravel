@@ -11,10 +11,6 @@
         <import type="com.yun.mysimpletravel.common.constants.WeatherConstants" />
 
         <variable
-            name="click"
-            type="android.view.View.OnClickListener" />
-
-        <variable
             name="weather"
             type="com.yun.mysimpletravel.data.model.weather.NowWeatherDataModel.WeatherInfo" />
 
@@ -52,7 +48,6 @@
             android:layout_marginBottom="5dp"
             android:clickable="true"
             app:rippleColor="@android:color/transparent"
-            android:onClick="@{click}"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="10dp"
             app:cardElevation="5dp"

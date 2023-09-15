@@ -1,6 +1,7 @@
 package com.yun.mysimpletravel.ui.home.travel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -59,6 +60,7 @@ class TravelViewModel @Inject constructor(
             val doc = withContext(Dispatchers.IO) {
                 Jsoup.connect("${BuildConfig.WEATHER_URL}${location}날씨").get()
             }
+            Log.d("weather","doc > $doc")
             setWeatherLoading(false)
             setNowWeather(
                 NowWeatherDataModel.WeatherInfo(
@@ -78,13 +80,6 @@ class TravelViewModel @Inject constructor(
             setWeatherLoading(false)
             e.printStackTrace()
             false
-        }
-    }
-
-    fun weatherRefresh() {
-        if (isWeatherLoading.value!!) return
-        viewModelScope.launch {
-            nowWeather()
         }
     }
 
