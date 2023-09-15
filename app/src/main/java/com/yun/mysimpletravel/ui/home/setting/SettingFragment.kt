@@ -117,21 +117,27 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
                         }
 
                         LOG_OUT -> {
-                            buttonPopup.showPopup("*알림","*로그아웃 하시겠습니까?","*로그아웃","*취소",
-                            object : ButtonPopup.ButtonDialogListener{
-                                override fun onButtonClick(result: Boolean) {
-                                    if(result) kakaoAuthManager.kakaoLogOut()
-                                }
-                            })
+                            buttonPopup.showPopup(requireActivity().getString(R.string.tv_btn_popup_notice_title),
+                                requireActivity().getString(R.string.tv_btn_popup_log_out_message),
+                                requireActivity().getString(R.string.btn_btn_popup_log_out_nm),
+                                requireActivity().getString(R.string.btn_btn_popup_cancel_nm),
+                                object : ButtonPopup.ButtonDialogListener {
+                                    override fun onButtonClick(result: Boolean) {
+                                        if (result) kakaoAuthManager.kakaoLogOut()
+                                    }
+                                })
 
                         }
 
                         SIGN_OUT -> {
                             //TODO 회원탈퇴 api 리턴 받은 이후 kakao 회원 탈퇴가 코드 실행
-                            buttonPopup.showPopup("*알림","*회원탈퇴 하시겠습니까?","*회원탈퇴","*취소",
-                                object : ButtonPopup.ButtonDialogListener{
+                            buttonPopup.showPopup(requireActivity().getString(R.string.tv_btn_popup_notice_title),
+                                requireActivity().getString(R.string.tv_btn_popup_sign_out_message),
+                                requireActivity().getString(R.string.btn_btn_popup_sign_out_nm),
+                                requireActivity().getString(R.string.btn_btn_popup_cancel_nm),
+                                object : ButtonPopup.ButtonDialogListener {
                                     override fun onButtonClick(result: Boolean) {
-                                        if(result) kakaoAuthManager.kakaoSignOut()
+                                        if (result) kakaoAuthManager.kakaoSignOut()
                                     }
                                 })
                         }

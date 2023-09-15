@@ -1,4 +1,28 @@
 <resources>
     <string name="app_name">MySimpleTravel</string>
     <string name="app_name_dev">MySimpleTravel(DEV)</string>
+
+    <!--  Setting  -->
+    <string name="tv_setting_location_title">위치</string>
+    <string name="tv_setting_device_title">기기</string>
+    <string name="tv_setting_auth_title">계정</string>
+    <string name="tv_setting_location_changed">변경</string>
+    <string name="tv_setting_app_version">앱 버전</string>
+    <string name="tv_setting_app_update">업데이트</string>
+    <string name="tv_setting_log_out">로그 아웃</string>
+    <string name="tv_setting_sign_out">회원 탈퇴</string>
+    <string name="tv_setting_no_select_location">지역을 설정해 주세요</string>
+
+    <!--  Loading Popup  -->
+    <string name="tv_loading_popup_notice_message">데이터를 가져오고 있습니다</string>
+    
+    <!--  Button Popup  -->
+    <string name="btn_btn_popup_cancel_nm">취소</string>
+    <string name="tv_btn_popup_notice_title">알림</string>
+    <string name="btn_btn_popup_log_out_nm">로그 아웃</string>
+    <string name="btn_btn_popup_sign_out_nm">회원 탈퇴</string>
+    <string name="tv_btn_popup_sign_out_message">회원 탈퇴 하시겠습니까?</string>
+    <string name="tv_btn_popup_log_out_message">로그 아웃 하시겠습니까?</string>
+
+
 </resources>

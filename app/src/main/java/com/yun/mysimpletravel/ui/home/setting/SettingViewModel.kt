@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yun.mysimpletravel.BuildConfig
+import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.api.ApiRepository
 import com.yun.mysimpletravel.base.BaseViewModel
 import com.yun.mysimpletravel.base.ListLiveData
@@ -70,14 +71,31 @@ class SettingViewModel @Inject constructor(
      * 설정 리스트
      */
     private fun setSettingList(locationName: String = "") {
+        mContext.getString(R.string.tv_setting_location_title)
         _settingList.clear(true)
-        addSettings(LOCATION_CHANGED + TITLE, "*위치", TITLE)
-        addSettings(LOCATION_CHANGED, locationName.ifEmpty { locNmChk() }, content = "*변경")
-        addSettings(APP_VERSION + TITLE, "*기기", TITLE)
-        addSettings(APP_VERSION, "*앱 버전 ${BuildConfig.VERSION_NAME}", content = "*업데이트")
-        addSettings(LOG_OUT + TITLE, "*계정", TITLE)
-        addSettings(LOG_OUT, "*로그아웃")
-        addSettings(SIGN_OUT, "*회원탈퇴")
+        addSettings(
+            LOCATION_CHANGED + TITLE,
+            mContext.getString(R.string.tv_setting_location_title),
+            TITLE
+        )
+        addSettings(
+            LOCATION_CHANGED,
+            locationName.ifEmpty { locNmChk() },
+            content = mContext.getString(R.string.tv_setting_location_changed)
+        )
+        addSettings(
+            APP_VERSION + TITLE,
+            mContext.getString(R.string.tv_setting_device_title),
+            TITLE
+        )
+        addSettings(
+            APP_VERSION,
+            "${mContext.getString(R.string.tv_setting_app_version)} ${BuildConfig.VERSION_NAME}",
+            content = mContext.getString(R.string.tv_setting_app_update)
+        )
+        addSettings(LOG_OUT + TITLE, mContext.getString(R.string.tv_setting_auth_title), TITLE)
+        addSettings(LOG_OUT, mContext.getString(R.string.tv_setting_log_out))
+        addSettings(SIGN_OUT, mContext.getString(R.string.tv_setting_sign_out))
     }
 
     private fun addSettings(id: Int, title: String, viewType: Int = CONTENT, content: String = "") {
@@ -105,7 +123,7 @@ class SettingViewModel @Inject constructor(
 
     private fun locNmChk(): String {
         val name = sPrefs.getString(mContext, LocationConstants.Key.NAME)
-        return if (name.isNullOrEmpty()) "*지역을 설정해 주세요"
+        return if (name.isNullOrEmpty()) mContext.getString(R.string.tv_setting_no_select_location)
         else name
     }
 

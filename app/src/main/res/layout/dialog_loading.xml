@@ -11,12 +11,12 @@
         android:layout_height="wrap_content"
         android:indeterminateTint="@color/color_FBA53B" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="*데이터를 가져오고 있습니다"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/tv_loading_popup_notice_message"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
 
 </LinearLayout>
