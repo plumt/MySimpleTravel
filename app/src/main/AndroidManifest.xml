@@ -30,6 +30,10 @@
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="com.kakao.vectormap.APP_KEY"
+            android:value="@string/social_login_info_kakao_native_key"/>
+
         <!-- Kakao 로그인 -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"

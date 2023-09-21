@@ -6,6 +6,7 @@ class HomeConstants {
         const val TRAVEL = 0
         const val DIARY = 1
         const val COMMUNITY = 2
-        const val SETTING = 3
+        const val MAP = 3
+        const val SETTING = 4
     }
 }

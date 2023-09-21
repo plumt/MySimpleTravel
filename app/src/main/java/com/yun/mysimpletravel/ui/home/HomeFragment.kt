@@ -15,12 +15,14 @@ import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.COMMUNITY
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.DIARY
+import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.MAP
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.SETTING
 import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.TRAVEL
 import com.yun.mysimpletravel.common.interfaces.ViewPagerInterface
 import com.yun.mysimpletravel.databinding.FragmentHomeBinding
 import com.yun.mysimpletravel.ui.home.community.CommunityFragment
 import com.yun.mysimpletravel.ui.home.diary.DiaryFragment
+import com.yun.mysimpletravel.ui.home.map.MapFragment
 import com.yun.mysimpletravel.ui.home.setting.SettingFragment
 import com.yun.mysimpletravel.ui.home.travel.TravelFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,6 +40,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     lateinit var diaryFragment: DiaryFragment
     lateinit var communityFragment: CommunityFragment
     lateinit var settingFragment: SettingFragment
+    lateinit var mapFragment: MapFragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,7 +57,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             isUserInputEnabled = false
 //            setPageTransformer(ZoomOutPageTransformer()) // 전환 애니메이션
             adapter = object : FragmentStateAdapter(this@HomeFragment) {
-                override fun getItemCount(): Int = 4
+                override fun getItemCount(): Int = 5
                 override fun createFragment(position: Int): Fragment =
                     screen(position) ?: Fragment()
             }
@@ -76,6 +79,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 TRAVEL -> "TRAVEL"
                 DIARY -> "DIARY"
                 COMMUNITY -> "COMMUNITY"
+                MAP -> "MAP"
                 SETTING -> "SETTING"
                 else -> "TAB $position"
             }
@@ -88,6 +92,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                     DIARY -> diaryFragment.onReselected(position)
                     COMMUNITY -> communityFragment.onReselected(position)
                     SETTING -> settingFragment.onReselected(position)
+                    MAP -> mapFragment.onReselected(position)
                 }
             }
 
@@ -116,6 +121,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         diaryFragment = DiaryFragment()
         communityFragment = CommunityFragment()
         settingFragment = SettingFragment()
+        mapFragment = MapFragment()
     }
 
     private fun screen(position: Int): Fragment? = when (position) {
@@ -123,6 +129,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         DIARY -> diaryFragment
         COMMUNITY -> communityFragment
         SETTING -> settingFragment
+        MAP -> mapFragment
         else -> null
     }
 }
