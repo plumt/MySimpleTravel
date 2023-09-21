@@ -1,4 +1,4 @@
-package com.yun.mysimpletravel.ui.home.setting
+package com.yun.mysimpletravel.ui.setting
 
 import android.app.Application
 import androidx.lifecycle.LiveData

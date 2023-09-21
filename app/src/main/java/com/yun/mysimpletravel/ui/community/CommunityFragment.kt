@@ -1,4 +1,4 @@
-package com.yun.mysimpletravel.ui.home.community
+package com.yun.mysimpletravel.ui.community
 
 import android.os.Bundle
 import android.view.View
@@ -14,20 +14,16 @@ import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
 import com.yun.mysimpletravel.common.constants.CommunityConstants
-import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.COMMUNITY
-import com.yun.mysimpletravel.common.interfaces.ViewPagerInterface
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.data.model.community.CommunityDataModel
 import com.yun.mysimpletravel.databinding.FragmentCommunityBinding
 import com.yun.mysimpletravel.databinding.ItemCommunityBinding
-import com.yun.mysimpletravel.ui.home.HomeViewModel
 import com.yun.mysimpletravel.ui.popup.community.CommunityCreatePopup
 import com.yun.mysimpletravel.util.Util
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewModel>(),
-    ViewPagerInterface {
+class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewModel>(){
     override val viewModel: CommunityViewModel by viewModels()
     override fun setVariable(): Int = BR.community
     override fun getResourceId(): Int = R.layout.fragment_community
@@ -35,16 +31,8 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
     override fun isOnBackEvent(): Boolean = true
     override fun onBackEvent() {}
 
-    private val homeViewModel: HomeViewModel by viewModels(
-        ownerProducer = { requireParentFragment() }
-    )
-
     private lateinit var navigationManager: NavigationManager
     private lateinit var communityCreatePopup: CommunityCreatePopup
-
-    private fun visibilityParentLayout(visibility: Int) {
-        if (isBindingInitialized) binding.layoutParent.visibility = visibility
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -142,18 +130,5 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
             binding.fab
         )
         binding.rvCommunity.smoothScrollToPosition(0)
-    }
-
-    override fun moveScreen(position: Int) {}
-    override fun onReselected(position: Int) {
-        if (position == COMMUNITY && isBindingInitialized) topScroll()
-    }
-
-    override fun onPageSelected(position: Int) {
-        if (position == COMMUNITY) {
-            visibilityParentLayout(View.VISIBLE)
-        } else {
-            visibilityParentLayout(View.INVISIBLE)
-        }
     }
 }

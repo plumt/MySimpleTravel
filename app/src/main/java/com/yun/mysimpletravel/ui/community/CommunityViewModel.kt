@@ -1,4 +1,4 @@
-package com.yun.mysimpletravel.ui.home.community
+package com.yun.mysimpletravel.ui.community
 
 import android.app.Application
 import android.util.Log

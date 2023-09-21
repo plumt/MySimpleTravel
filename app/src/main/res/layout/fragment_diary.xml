@@ -6,7 +6,7 @@
 
         <variable
             name="diary"
-            type="com.yun.mysimpletravel.ui.home.diary.DiaryViewModel" />
+            type="com.yun.mysimpletravel.ui.diary.DiaryViewModel" />
     </data>
 
 

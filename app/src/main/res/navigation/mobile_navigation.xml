@@ -34,5 +34,45 @@
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_travelFragment"
+            app:destination="@id/travelFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_diaryFragment"
+            app:destination="@id/diaryFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_communityFragment"
+            app:destination="@id/communityFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/travelFragment"
+        android:name="com.yun.mysimpletravel.ui.travel.TravelFragment"
+        android:label="TravelFragment"
+        tools:layout="@layout/fragment_travel" />
+    <fragment
+        android:id="@+id/diaryFragment"
+        android:name="com.yun.mysimpletravel.ui.diary.DiaryFragment"
+        android:label="DiaryFragment"
+        tools:layout="@layout/fragment_diary" />
+    <fragment
+        android:id="@+id/communityFragment"
+        android:name="com.yun.mysimpletravel.ui.community.CommunityFragment"
+        android:label="CommunityFragment"
+        tools:layout="@layout/fragment_community" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.yun.mysimpletravel.ui.map.MapFragment"
+        android:label="MapFragment"
+        tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.yun.mysimpletravel.ui.setting.SettingFragment"
+        android:label="SettingFragment"
+        tools:layout="@layout/fragment_setting" />
 </navigation>

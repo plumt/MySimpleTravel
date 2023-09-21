@@ -5,7 +5,7 @@
 
         <variable
             name="map"
-            type="com.yun.mysimpletravel.ui.home.map.MapViewModel" />
+            type="com.yun.mysimpletravel.ui.map.MapViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

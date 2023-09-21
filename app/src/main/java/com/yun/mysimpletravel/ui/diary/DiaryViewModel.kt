@@ -1,4 +1,4 @@
-package com.yun.mysimpletravel.ui.home.map
+package com.yun.mysimpletravel.ui.diary
 
 import android.app.Application
 import androidx.lifecycle.LiveData
@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MapViewModel @Inject constructor(application: Application) : BaseViewModel(application) {
+class DiaryViewModel @Inject constructor(application: Application) : BaseViewModel(application) {
 
     private val _isLoading = MutableLiveData<Boolean>()
     override val isLoading: LiveData<Boolean> get() = _isLoading

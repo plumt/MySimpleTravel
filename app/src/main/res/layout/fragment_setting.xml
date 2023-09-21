@@ -6,7 +6,7 @@
 
         <variable
             name="setting"
-            type="com.yun.mysimpletravel.ui.home.setting.SettingViewModel" />
+            type="com.yun.mysimpletravel.ui.setting.SettingViewModel" />
     </data>
 
 

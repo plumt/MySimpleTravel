@@ -1,4 +1,4 @@
-package com.yun.mysimpletravel.ui.home.map
+package com.yun.mysimpletravel.ui.map
 
 import android.os.Bundle
 import android.util.Log
@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.MapView
 
 @AndroidEntryPoint
-class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>(), ViewPagerInterface {
+class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>() {
     override val viewModel: MapViewModel by viewModels()
     override fun getResourceId(): Int = R.layout.fragment_map
     override fun isLoading(): LiveData<Boolean>? = viewModel.isLoading
@@ -25,10 +25,6 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>(), ViewPagerI
         Log.d("lys","back!")
     }
     override fun setVariable(): Int = BR.map
-
-    private val homeViewModel: HomeViewModel by viewModels(
-        ownerProducer = { requireParentFragment() }
-    )
 
     lateinit var mapView: MapView
 
@@ -41,18 +37,4 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>(), ViewPagerI
 
     }
 
-
-    private fun visibilityParentLayout(visibility: Int) {
-        if (isBindingInitialized) binding.layoutParent.visibility = visibility
-    }
-
-    override fun moveScreen(position: Int) {}
-    override fun onReselected(position: Int) {}
-    override fun onPageSelected(position: Int) {
-        if (position == HomeConstants.Screen.MAP) {
-            visibilityParentLayout(View.VISIBLE)
-        } else {
-            visibilityParentLayout(View.INVISIBLE)
-        }
-    }
 }

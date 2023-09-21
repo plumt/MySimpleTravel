@@ -1,4 +1,4 @@
-package com.yun.mysimpletravel.ui.home.setting
+package com.yun.mysimpletravel.ui.setting
 
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +10,6 @@ import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
-import com.yun.mysimpletravel.common.constants.HomeConstants.Screen.SETTING
 import com.yun.mysimpletravel.common.constants.LocationConstants.LocationCode.JEJU
 import com.yun.mysimpletravel.common.constants.LocationConstants.LocationCode.SEOGWIP
 import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_ALL
@@ -21,7 +20,6 @@ import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.APP_VER
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOCATION_CHANGED
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOG_OUT
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.SIGN_OUT
-import com.yun.mysimpletravel.common.interfaces.ViewPagerInterface
 import com.yun.mysimpletravel.common.manager.KakaoAuthManager
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.common.manager.SharedPreferenceManager
@@ -31,7 +29,6 @@ import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.databinding.FragmentSettingBinding
 import com.yun.mysimpletravel.databinding.ItemSettingBinding
 import com.yun.mysimpletravel.ui.bottomsheet.location.LocationBottomSheet
-import com.yun.mysimpletravel.ui.home.HomeViewModel
 import com.yun.mysimpletravel.ui.popup.ButtonPopup
 import com.yun.mysimpletravel.util.PreferenceUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +37,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>(),
-    KakaoAuthManager.KakaoInterface, ViewPagerInterface,
+    KakaoAuthManager.KakaoInterface,
     LocationBottomSheet.LocationBottomSheetInterface<LocationDataModel.Items> {
     override val viewModel: SettingViewModel by viewModels()
     override fun getResourceId(): Int = R.layout.fragment_setting
@@ -48,10 +45,6 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
     override fun isOnBackEvent(): Boolean = true
     override fun onBackEvent() {}
     override fun setVariable(): Int = BR.setting
-
-    private val homeViewModel: HomeViewModel by viewModels(
-        ownerProducer = { requireParentFragment() }
-    )
 
     private lateinit var kakaoAuthManager: KakaoAuthManager
     private lateinit var sharedPreferenceManager: SharedPreferenceManager
@@ -62,9 +55,6 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
 
     @Inject
     lateinit var sPrefs: PreferenceUtil
-    private fun visibilityParentLayout(visibility: Int) {
-        if (isBindingInitialized) binding.layoutParent.visibility = visibility
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -139,16 +129,6 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
 
     private fun init() {
 
-    }
-
-    override fun moveScreen(position: Int) {}
-    override fun onReselected(position: Int) {}
-    override fun onPageSelected(position: Int) {
-        if (position == SETTING) {
-            visibilityParentLayout(View.VISIBLE)
-        } else {
-            visibilityParentLayout(View.INVISIBLE)
-        }
     }
 
     /**

@@ -8,7 +8,7 @@
 
         <variable
             name="community"
-            type="com.yun.mysimpletravel.ui.home.community.CommunityViewModel" />
+            type="com.yun.mysimpletravel.ui.community.CommunityViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
