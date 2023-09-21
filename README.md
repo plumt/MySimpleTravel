@@ -56,6 +56,8 @@ Retrofit2 방식 사용
 
 http://www.jejuits.go.kr/ 제주특별자치도 교통정보센터
 
+BASE_URL : http://api.jejuits.go.kr/api/
+
 Retrofit2 방식 사용
 
 ---
