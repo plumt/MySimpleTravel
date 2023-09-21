@@ -53,6 +53,7 @@ class TravelViewModel @Inject constructor(
         val location = sPrefs.getString(mContext, LocationConstants.Key.FULL_NAME)
         if (location.isNullOrEmpty()) {
             setLoading(false)
+            setWeatherLoading(false)
             return false
         }
 
@@ -60,7 +61,7 @@ class TravelViewModel @Inject constructor(
             val doc = withContext(Dispatchers.IO) {
                 Jsoup.connect("${BuildConfig.WEATHER_URL}${location}날씨").get()
             }
-            Log.d("weather","doc > $doc")
+            Log.d("weather", "doc > $doc")
             setWeatherLoading(false)
             setNowWeather(
                 NowWeatherDataModel.WeatherInfo(

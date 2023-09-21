@@ -83,29 +83,4 @@ class TravelFragment(private val viewPagerInterface: ViewPagerInterface) :
             val weatherInfo = viewModel.nowWeather()
         }
     }
-
-    override fun onDestroy() {
-        Log.d("lys", "onDestroy")
-        super.onDestroy()
-    }
-
-    override fun onDestroyView() {
-        Log.d("lys", "onDestroyView")
-        super.onDestroyView()
-    }
-
-    override fun onPause() {
-        Log.d("lys", "onPause")
-        super.onPause()
-    }
-
-    override fun onStop() {
-        Log.d("lys", "onStop")
-        super.onStop()
-    }
-
-    override fun onResume() {
-        Log.d("lys", "onResume")
-        super.onResume()
-    }
 }

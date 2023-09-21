@@ -56,6 +56,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         binding.vpHome.run {
             isUserInputEnabled = false
 //            setPageTransformer(ZoomOutPageTransformer()) // 전환 애니메이션
+            offscreenPageLimit = 1
+
             adapter = object : FragmentStateAdapter(this@HomeFragment) {
                 override fun getItemCount(): Int = 5
                 override fun createFragment(position: Int): Fragment =
@@ -65,12 +67,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    travelFragment.onPageSelected(position)
-                    diaryFragment.onPageSelected(position)
-                    communityFragment.onPageSelected(position)
-                    settingFragment.onPageSelected(position)
+//                    travelFragment.onPageSelected(position)
+//                    diaryFragment.onPageSelected(position)
+//                    communityFragment.onPageSelected(position)
+//                    mapFragment.onPageSelected(position)
+//                    settingFragment.onPageSelected(position)
                 }
             })
+
         }
 
 
@@ -115,7 +119,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             override fun onPageSelected(position: Int) {}
             override fun onReselected(position: Int) {}
             override fun moveScreen(position: Int) {
-                binding.vpHome.setCurrentItem(position, true)
+                binding.vpHome.setCurrentItem(position, false)
             }
         })
         diaryFragment = DiaryFragment()

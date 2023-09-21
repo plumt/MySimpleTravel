@@ -125,7 +125,9 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     // 카카오맵
-    implementation 'com.kakao.maps.open:android:2.6.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/libDaumMapAndroid.jar')
+//    implementation 'com.kakao.maps.open:android:2.6.0'
 
 
 }
