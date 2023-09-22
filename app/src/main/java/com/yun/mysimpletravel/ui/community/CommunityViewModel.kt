@@ -28,6 +28,10 @@ class CommunityViewModel @Inject constructor(application: Application) :
 
     fun setData(clear: Boolean = false): Boolean {
         setLoading(true)
+        if(_communityList.sizes() > 20) {
+            setLoading(false)
+            return true
+        }
         if (clear) {
             // 초기화
             _communityList.clear(true)

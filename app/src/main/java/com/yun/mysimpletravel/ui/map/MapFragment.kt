@@ -8,10 +8,7 @@ import androidx.lifecycle.LiveData
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
-import com.yun.mysimpletravel.common.constants.HomeConstants
-import com.yun.mysimpletravel.common.interfaces.ViewPagerInterface
 import com.yun.mysimpletravel.databinding.FragmentMapBinding
-import com.yun.mysimpletravel.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.MapView
 
@@ -26,17 +23,19 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>() {
     }
     override fun setVariable(): Int = BR.map
 
-    lateinit var mapView: MapView
+    private lateinit var mapView: MapView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("lys","onViewCreated")
         super.onViewCreated(view, savedInstanceState)
 
-
+        init()
 
 
     }
 
+    private fun init(){
+    }
 
     override fun onResume() {
         Log.d("lys","onResume")

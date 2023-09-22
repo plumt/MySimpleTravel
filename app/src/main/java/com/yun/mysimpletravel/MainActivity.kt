@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.more -> {
+                R.id.setting -> {
                     // More Screen
                     moveMainScreen(
                         nowIndex,
@@ -86,6 +86,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        findViewById<View>(R.id.map).setOnLongClickListener { true }
+        findViewById<View>(R.id.diary).setOnLongClickListener { true }
+        findViewById<View>(R.id.community).setOnLongClickListener { true }
+        findViewById<View>(R.id.setting).setOnLongClickListener { true }
     }
 
     /**

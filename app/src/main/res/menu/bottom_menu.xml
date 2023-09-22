@@ -24,9 +24,9 @@
         android:checked="false"
         android:enabled="true"/>
 
-    <item android:id="@+id/more"
+    <item android:id="@+id/setting"
         android:icon="@drawable/baseline_more_horiz_24"
-        android:title="MORE"
+        android:title="SETTING"
         android:checked="false"
         android:enabled="true"/>
 </menu>

@@ -14,6 +14,7 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/layout_parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -30,8 +31,8 @@
             android:id="@+id/bottom_app_bar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:visibility="@{main.isBottomNav ? View.VISIBLE : View.INVISIBLE}"
             android:layout_gravity="bottom"
+            android:visibility="@{main.isBottomNav ? View.VISIBLE : View.GONE}"
             app:addElevationShadow="true"
             app:backgroundTint="@color/white"
             app:fabAlignmentMode="center"
@@ -41,10 +42,14 @@
                 android:id="@+id/bottom_navi"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginRight="16dp"
-                app:rippleColor="@android:color/transparent"
+                android:layout_marginEnd="16dp"
                 android:background="@android:color/transparent"
-                app:menu="@menu/bottom_menu" />
+                app:itemBackground="@android:color/transparent"
+                app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
+                app:itemTextAppearanceInactive="@style/BottomNavigationView"
+                app:labelVisibilityMode="labeled"
+                app:menu="@menu/bottom_menu"
+                app:rippleColor="@android:color/transparent" />
 
         </com.google.android.material.bottomappbar.BottomAppBar>
 
@@ -52,12 +57,17 @@
             android:id="@+id/fab_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{main.isBottomNav ? View.VISIBLE : View.INVISIBLE}"
-            android:src="@drawable/baseline_home_24"
-            app:borderWidth="0dp"
-            app:rippleColor="@android:color/transparent"
             android:backgroundTint="@color/color_FBA53B"
-            app:layout_anchor="@id/bottom_app_bar" />
+            android:fitsSystemWindows="true"
+            android:outlineAmbientShadowColor="@android:color/transparent"
+            android:outlineSpotShadowColor="@android:color/transparent"
+            android:src="@drawable/baseline_home_24"
+            android:stateListAnimator="@null"
+            android:visibility="@{main.isBottomNav ? View.VISIBLE : View.GONE}"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            app:layout_anchor="@id/bottom_app_bar"
+            app:rippleColor="@null" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
