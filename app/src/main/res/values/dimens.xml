@@ -7,7 +7,6 @@
     <dimen name="tv_home_round_button_margin">50dp</dimen>
     <dimen name="tv_home_round_button_size">100dp</dimen>
 
-
     <dimen name="design_bottom_navigation_text_size" tools:override="true">8sp</dimen>
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">8sp</dimen>
 

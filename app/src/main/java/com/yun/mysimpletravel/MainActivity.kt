@@ -174,6 +174,6 @@ class MainActivity : AppCompatActivity() {
 
         navigationManager.movingScreen(to, animation)
         nowIndex = to
-
+        mainViewModel.setHomeScreen(to == R.id.global_homeFragment)
     }
 }
