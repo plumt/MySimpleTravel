@@ -10,6 +10,7 @@ import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
+import com.yun.mysimpletravel.base.replace
 import com.yun.mysimpletravel.common.constants.LocationConstants.LocationCode.JEJU
 import com.yun.mysimpletravel.common.constants.LocationConstants.LocationCode.SEOGWIP
 import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_ALL
@@ -66,7 +67,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
         buttonPopup = ButtonPopup(requireActivity())
 
         binding.rvSetting.run {
-            setHasFixedSize(true)
+//            setHasFixedSize(true)
             adapter = object : BaseRecyclerAdapter.Create<SettingDataModel, ItemSettingBinding>(
                 layoutResId = R.layout.item_setting,
                 bindingVariableId = BR.itemSetting,
@@ -135,7 +136,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
      * 로그인 화면 이동
      */
     private fun moveLoginScreen() {
-        navigationManager.movingScreen(R.id.action_homeFragment_to_loginFragment, EXIT)
+        navigationManager.movingScreen(R.id.action_settingFragment_to_loginFragment, EXIT)
     }
 
     /**
