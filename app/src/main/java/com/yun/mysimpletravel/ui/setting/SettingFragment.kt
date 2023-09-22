@@ -11,6 +11,7 @@ import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
 import com.yun.mysimpletravel.base.replace
+import com.yun.mysimpletravel.common.constants.AuthConstants.Info.NAME
 import com.yun.mysimpletravel.common.constants.LocationConstants.LocationCode.JEJU
 import com.yun.mysimpletravel.common.constants.LocationConstants.LocationCode.SEOGWIP
 import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_ALL
@@ -65,6 +66,8 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
         navigationManager = NavigationManager(requireActivity(), view)
         locationBottomSheet = LocationBottomSheet(this)
         buttonPopup = ButtonPopup(requireActivity())
+
+        init()
 
         binding.rvSetting.run {
 //            setHasFixedSize(true)
@@ -129,7 +132,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
     }
 
     private fun init() {
-
+        binding.tvUserName.text = sPrefs.getString(requireActivity(), NAME) ?: ""
     }
 
     /**

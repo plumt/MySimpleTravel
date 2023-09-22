@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -174,6 +175,9 @@ class MainActivity : AppCompatActivity() {
 
         navigationManager.movingScreen(to, animation)
         nowIndex = to
-        mainViewModel.setHomeScreen(to == R.id.global_homeFragment)
+        val drawableRes =
+            if (to == R.id.global_homeFragment) R.drawable.baseline_home_24_white else R.drawable.baseline_home_24_black
+        val drawable = ContextCompat.getDrawable(this, drawableRes)
+        binding.fabHome.setImageDrawable(drawable)
     }
 }

@@ -22,9 +22,6 @@ class MainViewModel @Inject constructor(application: Application) : BaseViewMode
     private val _bottomNavDoubleTab = MutableLiveData<Boolean>(false)
     val bottomNavDoubleTab: LiveData<Boolean> get() = _bottomNavDoubleTab
 
-    private val _isHomeScreen = MutableLiveData<Boolean>(true)
-    val isHomeScreen: LiveData<Boolean> get() = _isHomeScreen
-
     /**
      * 로딩 프로그레스바 노출/숨김
      */
@@ -41,10 +38,6 @@ class MainViewModel @Inject constructor(application: Application) : BaseViewMode
 
     fun bottomNavDoubleTabEvent(clear: Boolean = false){
         _bottomNavDoubleTab.value = clear
-    }
-
-    fun setHomeScreen(index: Boolean){
-        _isHomeScreen.value = index
     }
 
 }

@@ -61,11 +61,11 @@
             android:fitsSystemWindows="true"
             android:outlineAmbientShadowColor="@android:color/transparent"
             android:outlineSpotShadowColor="@android:color/transparent"
-            android:src="@{main.isHomeScreen ? @drawable/baseline_home_24_white : @drawable/baseline_home_24_black}"
             android:stateListAnimator="@null"
             android:visibility="@{main.isBottomNav ? View.VISIBLE : View.GONE}"
             app:borderWidth="0dp"
             app:elevation="0dp"
+            android:src="@drawable/baseline_home_24_white"
             app:layout_anchor="@id/bottom_app_bar"
             app:rippleColor="@null"
             app:tint="@null" />
