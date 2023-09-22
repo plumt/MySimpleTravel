@@ -72,6 +72,19 @@ BASE_URL : http://api.jejuits.go.kr/api/
 
 Retrofit2 방식 사용
 
+
+
+
+## 제주 관광 정보 관련 API
+
+
+<https://www.visitjeju.net/kr/visitjejuapi> VISIT JEJU
+
+BASE_URL : https://api.visitjeju.net/vsjapi/contents/
+
+Retrofit2 방식 사용
+
+
 ---
 
 ## 2. 라이브러리

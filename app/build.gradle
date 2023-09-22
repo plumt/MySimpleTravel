@@ -24,6 +24,8 @@ android {
         buildConfigField "String", "LOCATION_URL", location_url
         buildConfigField "String", "PROJECT_KEY", projectKey
         buildConfigField "String", "JEJU_HUB_URL", jeju_hub_url
+        buildConfigField "String", "JEJU_VISIT_URL", jeju_visit_url
+        buildConfigField "String", "VISIT_JEJU_KEY", visitjejuApiKey
     }
 
     buildTypes {
