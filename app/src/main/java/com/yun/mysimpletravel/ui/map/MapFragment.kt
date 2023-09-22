@@ -29,11 +29,34 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>() {
     lateinit var mapView: MapView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("lys","onViewCreated")
         super.onViewCreated(view, savedInstanceState)
 
-        mapView = MapView(requireActivity())
-        binding.mapView.addView(mapView)
 
+
+
+    }
+
+
+    override fun onResume() {
+        Log.d("lys","onResume")
+        super.onResume()
+        if(!this::mapView.isInitialized){
+            mapView = MapView(requireActivity())
+            binding.mapView.addView(mapView)
+        }
+    }
+
+
+    override fun onDestroyView() {
+        Log.d("lys","onDestroyView")
+        binding.mapView.removeView(mapView)
+        super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        Log.d("lys","onDestroy")
+        super.onDestroy()
 
     }
 

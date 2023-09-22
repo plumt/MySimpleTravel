@@ -23,7 +23,7 @@ import com.yun.mysimpletravel.util.Util
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewModel>(){
+class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewModel>() {
     override val viewModel: CommunityViewModel by viewModels()
     override fun setVariable(): Int = BR.community
     override fun getResourceId(): Int = R.layout.fragment_community
@@ -37,10 +37,12 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
+        init(view)
 
-        navigationManager = NavigationManager(requireActivity(), view)
-        communityCreatePopup = CommunityCreatePopup(requireActivity(), communityCreateInterface)
+
+        clickListenerSetting()
+
+        observes()
 
         binding.rvCommunity.run {
             adapter =
@@ -85,7 +87,7 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
             }
         }
 
-        binding.fab.setOnClickListener(clickListener)
+
     }
 
     private val communityCreateInterface = object : CommunityCreatePopup.CommunityCreateInterface {
@@ -99,7 +101,12 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
         }
     }
 
-    private fun init() {
+    private fun init(view: View) {
+
+        navigationManager = NavigationManager(requireActivity(), view)
+        communityCreatePopup = CommunityCreatePopup(requireActivity(), communityCreateInterface)
+
+
         Util.delayedHandler(100) {
             viewModel.setData(clear = true)
         }
@@ -109,6 +116,20 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
         when (v) {
             binding.fab -> {
                 moveCreateScreen()
+            }
+        }
+    }
+
+    private fun clickListenerSetting() {
+        binding.fab.setOnClickListener(clickListener)
+    }
+
+    private fun observes() {
+
+        sharedVM.bottomNavDoubleTab.observe(viewLifecycleOwner) { doubleTab ->
+            if (doubleTab) {
+                topScroll()
+                sharedVM.bottomNavDoubleTabEvent()
             }
         }
     }

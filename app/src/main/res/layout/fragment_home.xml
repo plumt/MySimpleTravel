@@ -38,18 +38,22 @@
                 app:layout_constraintTop_toBottomOf="@id/ic_now_weather">
 
                 <Button
+                    android:backgroundTint="@color/color_cccccc"
                     android:layout_width="match_parent"
                     android:layout_height="300dp" />
 
                 <Button
+                    android:backgroundTint="@color/color_cccccc"
                     android:layout_width="match_parent"
                     android:layout_height="300dp" />
 
                 <Button
+                    android:backgroundTint="@color/color_cccccc"
                     android:layout_width="match_parent"
                     android:layout_height="300dp" />
 
                 <Button
+                    android:backgroundTint="@color/color_cccccc"
                     android:layout_width="match_parent"
                     android:layout_height="300dp" />
 

@@ -61,6 +61,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
         try {
             delayedHandler(calculateTimeDifferenceInSeconds(viewModel.startingAppTime)) {
                 navigationManager.movingScreen(R.id.action_splashFragment_to_homeFragment, ENTER)
+                sharedVM.setBottomNav(true)
             }
         } catch (e: Exception) {
             e.printStackTrace()

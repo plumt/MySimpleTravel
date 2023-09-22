@@ -6,25 +6,25 @@
     app:startDestination="@id/splashFragment">
 
     <action
-        android:id="@+id/action_global_homeFragment"
+        android:id="@+id/global_homeFragment"
         app:destination="@id/homeFragment"
         app:popUpTo="@id/mobile_navigation"
         app:popUpToInclusive="true" />
 
     <action
-        android:id="@+id/action_global_settingFragment"
+        android:id="@+id/global_settingFragment"
         app:destination="@id/settingFragment"
         app:popUpTo="@id/mobile_navigation"
         app:popUpToInclusive="true" />
 
     <action
-        android:id="@+id/action_global_diaryFragment"
+        android:id="@+id/global_diaryFragment"
         app:destination="@id/diaryFragment"
         app:popUpTo="@id/mobile_navigation"
         app:popUpToInclusive="true" />
 
     <action
-        android:id="@+id/action_global_mapFragment"
+        android:id="@+id/global_mapFragment"
         app:destination="@id/mapFragment"
         app:popUpTo="@id/mobile_navigation"
         app:popUpToInclusive="true" />

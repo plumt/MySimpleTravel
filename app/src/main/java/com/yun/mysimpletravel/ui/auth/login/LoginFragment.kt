@@ -57,6 +57,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(),
      * 홈 화면 이동
      */
     private fun moveHomeScreen() {
+        sharedVM.setBottomNav(true)
         navigationManager.movingScreen(
             R.id.action_loginFragment_to_homeFragment,
             NavigationConstants.Type.ENTER

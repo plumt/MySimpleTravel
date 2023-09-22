@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tv_home_time_text_size">320sp</dimen>
+    <dimen name="tv_home_date_text_size">60sp</dimen>
+    <dimen name="tv_home_date_unit_text_size">50sp</dimen>
+
+    <dimen name="tv_home_round_button_margin">50dp</dimen>
+    <dimen name="tv_home_round_button_size">100dp</dimen>
+
+
+</resources>

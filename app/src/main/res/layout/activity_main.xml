@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="main"
             type="com.yun.mysimpletravel.MainViewModel" />
@@ -28,6 +30,7 @@
             android:id="@+id/bottom_app_bar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:visibility="@{main.isBottomNav ? View.VISIBLE : View.INVISIBLE}"
             android:layout_gravity="bottom"
             app:addElevationShadow="true"
             app:backgroundTint="@color/white"
@@ -39,6 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginRight="16dp"
+                app:rippleColor="@android:color/transparent"
                 android:background="@android:color/transparent"
                 app:menu="@menu/bottom_menu" />
 
@@ -48,7 +52,11 @@
             android:id="@+id/fab_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_white"
+            android:visibility="@{main.isBottomNav ? View.VISIBLE : View.INVISIBLE}"
+            android:src="@drawable/baseline_home_24"
+            app:borderWidth="0dp"
+            app:rippleColor="@android:color/transparent"
+            android:backgroundTint="@color/color_FBA53B"
             app:layout_anchor="@id/bottom_app_bar" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

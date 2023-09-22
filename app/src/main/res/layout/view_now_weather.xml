@@ -59,7 +59,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="@{loading ? View.INVISIBLE : View.VISIBLE}">
+                android:visibility="@{loading || weather == null ? View.INVISIBLE : View.VISIBLE}">
 
                 <TextView
                     android:id="@+id/tv_location"
@@ -116,7 +116,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="@{`*어제보다 `+weather.weatherCompare}"
+                    android:text="@{weather.weatherCompare != null ? `@@@어제보다 `+weather.weatherCompare : ``}"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toTopOf="@id/tv_detail"
@@ -239,6 +239,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_no_select_location"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:translationZ="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="@{loading || weather != null ? View.INVISIBLE : View.VISIBLE}"
+            android:text="@string/tv_setting_no_select_location"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

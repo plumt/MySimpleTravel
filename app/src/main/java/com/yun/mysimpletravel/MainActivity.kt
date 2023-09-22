@@ -1,7 +1,6 @@
 package com.yun.mysimpletravel
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +11,7 @@ import com.yun.mysimpletravel.common.constants.NavigationConstants
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.databinding.ActivityMainBinding
 import com.yun.mysimpletravel.ui.loading.LoadingDialog
+import com.yun.mysimpletravel.util.Util.changeStatusBarAndScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,14 +25,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navigationManager: NavigationManager
 
     private val screenIndex = mapOf(
-        R.id.action_global_mapFragment to 1,
-        R.id.action_global_diaryFragment to 2,
-        R.id.action_global_homeFragment to 3,
+        R.id.global_mapFragment to 1,
+        R.id.global_diaryFragment to 2,
+        R.id.global_homeFragment to 3,
         R.id.action_global_communityFragment to 4,
-        R.id.action_global_settingFragment to 5
+        R.id.global_settingFragment to 5
     )
 
-    private var nowIndex = R.id.action_global_homeFragment
+    private var nowIndex = R.id.global_homeFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                     // Map Screen
                     moveMainScreen(
                         nowIndex,
-                        R.id.action_global_mapFragment
+                        R.id.global_mapFragment
                     )
                     true
                 }
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                     // Diary Screen
                     moveMainScreen(
                         nowIndex,
-                        R.id.action_global_diaryFragment
+                        R.id.global_diaryFragment
                     )
                     true
                 }
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                     // More Screen
                     moveMainScreen(
                         nowIndex,
-                        R.id.action_global_settingFragment
+                        R.id.global_settingFragment
                     )
                     true
                 }
@@ -92,6 +92,7 @@ class MainActivity : AppCompatActivity() {
      * 초기 설정
      */
     private fun init() {
+        changeStatusBarAndScreen(this, isIconColor = true, isFullScreen = false)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.run {
             lifecycleOwner = this@MainActivity
@@ -114,7 +115,7 @@ class MainActivity : AppCompatActivity() {
                 homeScreenClickEvent()
                 moveMainScreen(
                     nowIndex,
-                    R.id.action_global_homeFragment
+                    R.id.global_homeFragment
                 )
             }
         }
@@ -124,9 +125,20 @@ class MainActivity : AppCompatActivity() {
      * 라이브 데이터 구독 모음
      */
     private fun observes() {
-        // loading dialog show / hide
-        mainViewModel.isLoading.observe(this) { isShow ->
-            if (isShow) loadingDialog.show() else loadingDialog.dismiss()
+
+        mainViewModel.let {
+
+            it.isLoading.observe(this) { isShow ->
+                // loading dialog show / hide
+                if (isShow) loadingDialog.show() else loadingDialog.dismiss()
+            }
+
+//            it.bottomNavDoubleTab.observe(this) { doubleTab ->
+//                Log.d("lys","doubleTab > $doubleTab")
+//                // bottom nav double tab
+//                if (doubleTab) mainViewModel.bottomNavDoubleTab()
+//            }
+
         }
     }
 
@@ -148,8 +160,12 @@ class MainActivity : AppCompatActivity() {
     private fun moveMainScreen(from: Int?, to: Int) {
         val fromIndex = screenIndex[from]
         val toIndex = screenIndex[to]
-        var animation =
-            if (from == null || fromIndex == null || toIndex == null || fromIndex == toIndex) NavigationConstants.Type.NOT
+        if (fromIndex == toIndex) {
+            mainViewModel.bottomNavDoubleTabEvent(true)
+            return
+        }
+        val animation =
+            if (from == null || fromIndex == null || toIndex == null) NavigationConstants.Type.NOT
             else if (fromIndex < toIndex) NavigationConstants.Type.ENTER else NavigationConstants.Type.EXIT
 
         navigationManager.movingScreen(to, animation)

@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/map"
-        android:icon="@drawable/ic_add_white"
+        android:icon="@drawable/baseline_map_24"
         android:title="MAP"
         android:checked="false"
         android:enabled="true"/>
 
     <item android:id="@+id/diary"
-        android:icon="@drawable/ic_add_white"
+        android:icon="@drawable/baseline_note_alt_24"
         android:title="DIARY"
         android:checked="false"
         android:enabled="true"/>
@@ -19,13 +19,13 @@
         android:enabled="false"/>
 
     <item android:id="@+id/community"
-        android:icon="@drawable/ic_add_white"
+        android:icon="@drawable/baseline_people_alt_24"
         android:title="COMMUNITY"
         android:checked="false"
         android:enabled="true"/>
 
     <item android:id="@+id/more"
-        android:icon="@drawable/ic_add_white"
+        android:icon="@drawable/baseline_more_horiz_24"
         android:title="MORE"
         android:checked="false"
         android:enabled="true"/>
