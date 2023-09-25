@@ -8,7 +8,10 @@ import androidx.lifecycle.LiveData
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.base.BaseFragment
+import com.yun.mysimpletravel.common.constants.AuthConstants
+import com.yun.mysimpletravel.common.constants.AuthConstants.Info.PUSH_TOKEN
 import com.yun.mysimpletravel.common.constants.NavigationConstants
+import com.yun.mysimpletravel.common.manager.FirebaseManager
 import com.yun.mysimpletravel.common.manager.KakaoAuthManager
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.common.manager.SharedPreferenceManager
@@ -42,6 +45,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(),
         kakaoManager = KakaoAuthManager(requireActivity(), this)
         sharedPreferenceManager = SharedPreferenceManager(requireActivity(), sPrefs)
 
+        FirebaseManager().getToken { pushToken ->
+            Log.d("lys", "push token > $pushToken")
+            sPrefs.setString(requireActivity(), PUSH_TOKEN, pushToken ?: "")
+        }
+
         binding.ivKakaoLoginButton.setOnClickListener(onClickListener)
     }
 
@@ -69,16 +77,26 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(),
      */
     override fun kakaoError(t: Throwable) {
         t.printStackTrace()
-        Log.e("lys","login error > ${t.message}")
+        Log.e("lys", "login error > ${t.message}")
     }
 
     /**
      * 카카로 로그인 성공
      */
     override fun loginUserInfo(info: UserInfoDataModel) {
-        sharedPreferenceManager.setUserInfo(info)
-        moveHomeScreen()
-        Log.d("lys", "loginUserInfo > $info")
+
+        viewModel.memberCheck(
+            info.userId,
+            info.userName,
+            info.userProfileUrl ?: "",
+            sPrefs.getString(requireActivity(), PUSH_TOKEN) ?: ""
+        ) { isSuccess ->
+            if (isSuccess){
+                sharedPreferenceManager.setUserInfo(info)
+                moveHomeScreen()
+                Log.d("lys", "loginUserInfo > $info")
+            }
+        }
     }
 
     /**

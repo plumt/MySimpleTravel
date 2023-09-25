@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import com.yun.mysimpletravel.BR
+import com.yun.mysimpletravel.MainActivity
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
@@ -22,6 +23,7 @@ import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.APP_VER
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOCATION_CHANGED
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOG_OUT
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.SIGN_OUT
+import com.yun.mysimpletravel.common.manager.FirebaseManager
 import com.yun.mysimpletravel.common.manager.KakaoAuthManager
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.common.manager.SharedPreferenceManager
@@ -105,10 +107,14 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
                                 requireActivity().getString(R.string.btn_btn_popup_cancel_nm),
                                 object : ButtonPopup.ButtonDialogListener {
                                     override fun onButtonClick(result: Boolean) {
-                                        if (result) kakaoAuthManager.kakaoLogOut()
+                                        if (result) {
+                                            FirebaseManager().deleteToken { isSuccess ->
+                                                if (isSuccess) kakaoAuthManager.kakaoLogOut()
+                                            }
+
+                                        }
                                     }
                                 })
-
                         }
 
                         SIGN_OUT -> {
@@ -119,7 +125,11 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
                                 requireActivity().getString(R.string.btn_btn_popup_cancel_nm),
                                 object : ButtonPopup.ButtonDialogListener {
                                     override fun onButtonClick(result: Boolean) {
-                                        if (result) kakaoAuthManager.kakaoSignOut()
+                                        if (result) {
+                                            viewModel.signOutUser { isSuccess ->
+                                                if (isSuccess) kakaoAuthManager.kakaoSignOut()
+                                            }
+                                        }
                                     }
                                 })
                         }
@@ -140,6 +150,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
      */
     private fun moveLoginScreen() {
         sharedVM.setBottomNav(false)
+        (activity as MainActivity).bottomButtonSelectedClear()
         navigationManager.movingScreen(R.id.action_settingFragment_to_loginFragment, EXIT)
     }
 

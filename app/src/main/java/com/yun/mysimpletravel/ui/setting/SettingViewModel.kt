@@ -11,6 +11,7 @@ import com.yun.mysimpletravel.base.ListLiveData
 import com.yun.mysimpletravel.common.constants.ApiConstants.ApiType.LOCATION
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.NAME
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.PROFILE
+import com.yun.mysimpletravel.common.constants.AuthConstants.Info.PUSH_TOKEN
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.SNS_ID
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.TYPE
 import com.yun.mysimpletravel.common.constants.LocationConstants
@@ -25,6 +26,7 @@ import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOG_OUT
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.SIGN_OUT
 import com.yun.mysimpletravel.common.constants.SettingConstants.ViewType.CONTENT
 import com.yun.mysimpletravel.common.constants.SettingConstants.ViewType.TITLE
+import com.yun.mysimpletravel.common.manager.FirebaseManager
 import com.yun.mysimpletravel.data.model.location.LocationDataModel
 import com.yun.mysimpletravel.data.model.setting.SettingDataModel
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
@@ -63,7 +65,8 @@ class SettingViewModel @Inject constructor(
             userId = sPrefs.getString(mContext, SNS_ID)!!,
             userName = sPrefs.getString(mContext, NAME)!!,
             userProfileUrl = sPrefs.getString(mContext, PROFILE),
-            loginType = sPrefs.getString(mContext, TYPE)!!
+            loginType = sPrefs.getString(mContext, TYPE)!!,
+            sPrefs.getString(mContext, PUSH_TOKEN) ?: ""
         )
     }
 
@@ -134,6 +137,10 @@ class SettingViewModel @Inject constructor(
             JEJU_SEOGWIP -> result.replace(SEOGWIP, "")
             else -> result
         }.trim()
+    }
+
+    fun signOutUser(callBack: (Boolean) -> Unit) {
+        FirebaseManager().deleteUser(userInfo.value!!.userId, callBack)
     }
 
     private fun locNmFilter(name: String): String = name.replace(JEJU_PROVINCE, "")

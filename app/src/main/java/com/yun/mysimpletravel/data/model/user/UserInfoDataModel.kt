@@ -4,5 +4,6 @@ data class UserInfoDataModel(
     val userId: String,
     val userName: String,
     val userProfileUrl: String?,
-    val loginType: String
+    val loginType: String,
+    val pushToken: String
 )

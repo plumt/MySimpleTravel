@@ -7,6 +7,7 @@ class AuthConstants {
         const val NAME = "userName"
         const val PROFILE = "userProfileUrl"
         const val TYPE = "loginType"
+        const val PUSH_TOKEN = "pushToken"
     }
 
     object Type {

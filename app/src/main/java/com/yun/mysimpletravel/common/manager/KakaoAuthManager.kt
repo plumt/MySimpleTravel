@@ -124,7 +124,8 @@ class KakaoAuthManager(private val context: Context, private val kakaoInterface:
                     userId = it.id.toString(),
                     userName = it.properties?.get("nickname") ?: "여행자",
                     userProfileUrl = it.properties?.get("profile_image") ?: "",
-                    loginType = KAKAO
+                    loginType = KAKAO,
+                    ""
                 )
                 kakaoInterface.loginUserInfo(userInfo)
             }

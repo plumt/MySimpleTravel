@@ -162,6 +162,17 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavi.menu.getItem(2).isChecked = true
     }
 
+    /**
+     * 로그아웃 OR 회원탈퇴시 버튼 상태 초기화
+     */
+    fun bottomButtonSelectedClear(){
+        binding.bottomNavi.menu.getItem(2).isEnabled = false
+        binding.bottomNavi.menu.getItem(2).isChecked = true
+        nowIndex = R.id.global_homeFragment
+        val drawable = ContextCompat.getDrawable(this, R.drawable.baseline_home_24_white)
+        binding.fabHome.setImageDrawable(drawable)
+    }
+
     private fun moveMainScreen(from: Int?, to: Int) {
         val fromIndex = screenIndex[from]
         val toIndex = screenIndex[to]

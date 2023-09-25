@@ -9,19 +9,22 @@ import androidx.lifecycle.lifecycleScope
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
+import com.yun.mysimpletravel.common.constants.AuthConstants
+import com.yun.mysimpletravel.common.constants.AuthConstants.Info.PUSH_TOKEN
 import com.yun.mysimpletravel.common.constants.NavigationConstants.Type.ENTER
 import com.yun.mysimpletravel.common.manager.FirebaseManager
 import com.yun.mysimpletravel.common.manager.KakaoAuthManager
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.databinding.FragmentSplashBinding
+import com.yun.mysimpletravel.util.PreferenceUtil
 import com.yun.mysimpletravel.util.Util.calculateTimeDifferenceInSeconds
 import com.yun.mysimpletravel.util.Util.delayedHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Exception
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
@@ -39,24 +42,27 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
     private lateinit var navigationManager: NavigationManager
     private lateinit var kakaoManager: KakaoAuthManager
 
+    @Inject
+    lateinit var sPrefs: PreferenceUtil
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         navigationManager = NavigationManager(requireActivity(), view)
         kakaoManager = KakaoAuthManager(requireActivity(), this)
 
-        val firebaseManager = FirebaseManager(requireActivity())
-        firebaseManager.getToken {
-            Log.d("lys", "push token > $it")
+        FirebaseManager().getToken { pushToken ->
+            Log.d("lys", "push token > $pushToken")
+            sPrefs.setString(requireActivity(), PUSH_TOKEN, pushToken ?: "")
         }
 
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-
-                val accessToken = firebaseManager.getAccessToken(requireActivity())
-                Log.d("lys", "access token > $accessToken")
-            }
-        }
+//        lifecycleScope.launch {
+//            withContext(Dispatchers.IO) {
+//
+//                val accessToken = firebaseManager.getAccessToken(requireActivity())
+//                Log.d("lys", "access token > $accessToken")
+//            }
+//        }
 
     }
 
@@ -99,9 +105,18 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
      * 카카로 로그인 성공
      */
     override fun loginUserInfo(info: UserInfoDataModel) {
-        viewModel.saveUserInfo(info)
-        moveHomeScreen()
-        Log.d("lys", "loginUserInfo > $info")
+        viewModel.memberCheck(
+            info.userId, info.userName, info.userProfileUrl ?: "",
+            sPrefs.getString(requireActivity(), PUSH_TOKEN) ?: ""
+        ) { isSuccess ->
+            if (isSuccess) {
+                viewModel.saveUserInfo(info)
+                moveHomeScreen()
+                Log.d("lys", "loginUserInfo > $info")
+            } else {
+                moveLoginScreen()
+            }
+        }
     }
 
     /**
