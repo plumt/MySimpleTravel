@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-android'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -73,6 +74,13 @@ android {
             }
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES' // 중복된 파일 제외
+    }
+    aaptOptions {
+        noCompress "json"
+    }
 }
 
 dependencies {
@@ -130,6 +138,15 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/libDaumMapAndroid.jar')
 //    implementation 'com.kakao.maps.open:android:2.6.0'
+
+
+    // firebase
+    implementation platform('com.google.firebase:firebase-bom:31.2.3')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx'
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.19.0'
+//    implementation 'com.google.firebase:firebase-admin:9.2.0'
 
 
 }

@@ -5,10 +5,12 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.common.constants.NavigationConstants.Type.ENTER
+import com.yun.mysimpletravel.common.manager.FirebaseManager
 import com.yun.mysimpletravel.common.manager.KakaoAuthManager
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
@@ -16,6 +18,9 @@ import com.yun.mysimpletravel.databinding.FragmentSplashBinding
 import com.yun.mysimpletravel.util.Util.calculateTimeDifferenceInSeconds
 import com.yun.mysimpletravel.util.Util.delayedHandler
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.Exception
 
 @AndroidEntryPoint
@@ -39,6 +44,20 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
 
         navigationManager = NavigationManager(requireActivity(), view)
         kakaoManager = KakaoAuthManager(requireActivity(), this)
+
+        val firebaseManager = FirebaseManager(requireActivity())
+        firebaseManager.getToken {
+            Log.d("lys", "push token > $it")
+        }
+
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+
+                val accessToken = firebaseManager.getAccessToken(requireActivity())
+                Log.d("lys", "access token > $accessToken")
+            }
+        }
+
     }
 
     /**

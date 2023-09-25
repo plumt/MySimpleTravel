@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "511606438680",
+    "project_id": "mysimpletravel-2d219",
+    "storage_bucket": "mysimpletravel-2d219.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511606438680:android:e7c167a17c89e7928dbc6d",
+        "android_client_info": {
+          "package_name": "com.yun.mysimpletravel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7gHeETty-dcl6jZAdL1olV3LU8WjlwGI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
