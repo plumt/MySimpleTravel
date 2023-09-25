@@ -1,18 +1,13 @@
 package com.yun.mysimpletravel.ui.splash
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.lifecycleScope
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
-import com.yun.mysimpletravel.common.constants.AuthConstants
-import com.yun.mysimpletravel.common.constants.AuthConstants.Info.PUSH_TOKEN
 import com.yun.mysimpletravel.common.constants.NavigationConstants.Type.ENTER
-import com.yun.mysimpletravel.common.manager.FirebaseManager
 import com.yun.mysimpletravel.common.manager.KakaoAuthManager
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
@@ -21,9 +16,6 @@ import com.yun.mysimpletravel.util.PreferenceUtil
 import com.yun.mysimpletravel.util.Util.calculateTimeDifferenceInSeconds
 import com.yun.mysimpletravel.util.Util.delayedHandler
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -50,11 +42,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
 
         navigationManager = NavigationManager(requireActivity(), view)
         kakaoManager = KakaoAuthManager(requireActivity(), this)
-
-        FirebaseManager().getToken { pushToken ->
-            Log.d("lys", "push token > $pushToken")
-            sPrefs.setString(requireActivity(), PUSH_TOKEN, pushToken ?: "")
-        }
 
 //        lifecycleScope.launch {
 //            withContext(Dispatchers.IO) {
@@ -105,18 +92,8 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
      * 카카로 로그인 성공
      */
     override fun loginUserInfo(info: UserInfoDataModel) {
-        viewModel.memberCheck(
-            info.userId, info.userName, info.userProfileUrl ?: "",
-            sPrefs.getString(requireActivity(), PUSH_TOKEN) ?: ""
-        ) { isSuccess ->
-            if (isSuccess) {
-                viewModel.saveUserInfo(info)
-                moveHomeScreen()
-                Log.d("lys", "loginUserInfo > $info")
-            } else {
-                moveLoginScreen()
-            }
-        }
+        viewModel.saveUserInfo(info)
+        moveHomeScreen()
     }
 
     /**
