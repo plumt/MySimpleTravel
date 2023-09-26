@@ -2,6 +2,7 @@ package com.yun.mysimpletravel
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -171,6 +172,7 @@ class MainActivity : AppCompatActivity() {
         nowIndex = R.id.global_homeFragment
         val drawable = ContextCompat.getDrawable(this, R.drawable.baseline_home_24_white)
         binding.fabHome.setImageDrawable(drawable)
+
     }
 
     private fun moveMainScreen(from: Int?, to: Int) {

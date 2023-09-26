@@ -53,13 +53,14 @@
             app:url="@{``}"
             app:width="@{`30`}" />
 
+<!--        android:foreground="?attr/selectableItemBackground"-->
         <LinearLayout
             android:id="@+id/layout_community"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
+
             android:onClick="@{(v) -> communityListener.onItemClick(itemCommunity, v)}"
             android:tag="detail"
             app:layout_constraintTop_toBottomOf="@id/ic_profile">
@@ -76,9 +77,10 @@
 
         <include
             layout="@layout/view_community_react"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ic_community_react"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
             android:layout_marginTop="10dp"
             app:like="@{itemCommunity.like}"
             app:click="@{(v) -> communityListener.onItemClick(itemCommunity, v)}"

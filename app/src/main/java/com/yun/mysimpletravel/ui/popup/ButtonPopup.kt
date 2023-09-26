@@ -89,14 +89,14 @@ class ButtonPopup(private val context: Context) {
             binding.run {
 
                 if (leftBtnNm == null) {
-                    btnCancel.visibility = View.GONE
+                    icTwoButton.btnCancel.visibility = View.GONE
                 }
 
-                btnCancel.setOnClickListener {
+                icTwoButton.btnCancel.setOnClickListener {
                     buttonDialogListener.onButtonClick(false)
                     dialog.dismiss()
                 }
-                btnResult.setOnClickListener {
+                icTwoButton.btnResult.setOnClickListener {
                     buttonDialogListener.onButtonClick(true)
                     dialog.dismiss()
                 }

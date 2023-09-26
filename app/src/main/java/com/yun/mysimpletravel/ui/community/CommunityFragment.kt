@@ -60,14 +60,16 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
                     bindingListener = BR.communityListener
                 ) {
                     override fun onItemClick(item: CommunityDataModel.RS, view: View) {
+                        val index = viewModel.communityList.value!!.indexOf(item)
                         when (view.tag.toString()) {
                             CommunityConstants.ViewTag.DETAIL -> {
                                 item.fullSize = !item.fullSize
-                                notifyItemChanged(item.id)
+                                if (index > -1) binding.rvCommunity.adapter!!.notifyItemChanged(
+                                    index
+                                )
                             }
 
                             CommunityConstants.ViewTag.LIKE -> {
-                                val index = viewModel.communityList.value!!.indexOf(item)
                                 val userId = sPrefs.getString(requireActivity(), SNS_ID) ?: ""
 
                                 when {
@@ -90,7 +92,9 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
                                     }
                                 }
 
-                                if(index > -1) binding.rvCommunity.adapter!!.notifyItemChanged(index)
+                                if (index > -1) binding.rvCommunity.adapter!!.notifyItemChanged(
+                                    index
+                                )
 
                                 FirebaseUtil.communityLikeUpdate(
                                     item.writer,
@@ -118,6 +122,7 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
             })
 
             addItemDecoration(BottomMarginItemDecoration(dpToPx("10", this), dpToPx("60", this)))
+            setHasFixedSize(false)
             itemAnimator = null
         }
 
@@ -131,20 +136,17 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
     }
 
     private val communityCreateInterface = object : CommunityCreatePopup.CommunityCreateInterface {
-        override fun onButtonClick(result: Boolean) {
-            if (result) {
-                viewModel.setData(clear = true)
-                Toast.makeText(requireActivity(), "저장", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(requireActivity(), "취소", Toast.LENGTH_SHORT).show()
-            }
+        override fun onButtonClick(message: String, base64: String) {
+//            viewModel.setData(clear = true)
+            viewModel.writeCommunity(message, base64)
         }
     }
 
     private fun init(view: View) {
 
         navigationManager = NavigationManager(requireActivity(), view)
-        communityCreatePopup = CommunityCreatePopup(requireActivity(), communityCreateInterface)
+        communityCreatePopup =
+            CommunityCreatePopup(requireActivity(), this, communityCreateInterface)
 
 
         Util.delayedHandler(100) {

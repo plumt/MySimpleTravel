@@ -24,5 +24,8 @@
     <string name="tv_btn_popup_sign_out_message">회원 탈퇴 하시겠습니까?</string>
     <string name="tv_btn_popup_log_out_message">로그 아웃 하시겠습니까?</string>
 
+    <!--  Community  -->
+    <string name="btn_community_result_name">저장</string>
+    <string name="btn_community_cancel_name">취소</string>
 
 </resources>

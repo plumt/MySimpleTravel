@@ -15,7 +15,7 @@ import com.yun.mysimpletravel.common.constants.NavigationConstants.Type.NOT
 
 class NavigationManager(private val context: Context, private val view: View) {
 
-    fun backPressed(){
+    fun backPressed() {
         view.findNavController().popBackStack()
     }
 
@@ -25,7 +25,11 @@ class NavigationManager(private val context: Context, private val view: View) {
             EXIT -> exitScreen()
             NOT -> null
         }
-        view.findNavController().navigate(screenId, bundle, navOption)
+        try {
+            view.findNavController().navigate(screenId, bundle, navOption)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun enterScreen(): NavOptions {

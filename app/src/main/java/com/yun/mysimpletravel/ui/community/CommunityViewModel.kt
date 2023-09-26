@@ -120,6 +120,13 @@ class CommunityViewModel @Inject constructor(
         return true
     }
 
+    fun writeCommunity(message: String, base64: String) {
+        val userId = sPrefs.getString(mContext, SNS_ID) ?: return
+        FirebaseUtil.writeCommunity(userId, message, base64) { isSuccess ->
+            if (isSuccess) setData(true)
+        }
+    }
+
     fun setLoading(loading: Boolean) {
         _isLoading.value = loading
     }

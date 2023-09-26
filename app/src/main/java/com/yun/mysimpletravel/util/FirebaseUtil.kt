@@ -7,12 +7,15 @@ import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.messaging.FirebaseMessaging
 import com.yun.mysimpletravel.common.constants.FirebaseConstants
+import com.yun.mysimpletravel.common.constants.FirebaseConstants.Community.IMG
 import com.yun.mysimpletravel.common.constants.FirebaseConstants.Community.LIKES
+import com.yun.mysimpletravel.common.constants.FirebaseConstants.Community.MESSAGE
 import com.yun.mysimpletravel.common.constants.FirebaseConstants.Community.TIMESTAMP
 import com.yun.mysimpletravel.common.constants.FirebaseConstants.Community.WRITER
 import com.yun.mysimpletravel.common.constants.FirebaseConstants.Path.BOARDS
@@ -164,6 +167,23 @@ object FirebaseUtil {
                     }
                 }
             }
+    }
+
+    /**
+     * 게시글 작성
+     */
+    fun writeCommunity(userId: String, message: String, imgUrl: String,  callBack: (Boolean) -> Unit) {
+        val msg = mapOf(
+            IMG to imgUrl,
+            LIKES to arrayListOf<String>(),
+            MESSAGE to message,
+            TIMESTAMP to FieldValue.serverTimestamp(),
+            WRITER to userId
+        )
+        FirebaseFirestore.getInstance().collection(BOARDS)
+            .document()
+            .set(msg)
+            .addOnCompleteListener { callBack(it.isSuccessful) }
     }
 
     /**
