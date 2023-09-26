@@ -11,7 +11,6 @@ import com.yun.mysimpletravel.MainActivity
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
-import com.yun.mysimpletravel.base.replace
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.NAME
 import com.yun.mysimpletravel.common.constants.LocationConstants.LocationCode.JEJU
 import com.yun.mysimpletravel.common.constants.LocationConstants.LocationCode.SEOGWIP
@@ -23,7 +22,6 @@ import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.APP_VER
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOCATION_CHANGED
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOG_OUT
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.SIGN_OUT
-import com.yun.mysimpletravel.common.manager.FirebaseManager
 import com.yun.mysimpletravel.common.manager.KakaoAuthManager
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.common.manager.SharedPreferenceManager
@@ -34,15 +32,14 @@ import com.yun.mysimpletravel.databinding.FragmentSettingBinding
 import com.yun.mysimpletravel.databinding.ItemSettingBinding
 import com.yun.mysimpletravel.ui.bottomsheet.location.LocationBottomSheet
 import com.yun.mysimpletravel.ui.popup.ButtonPopup
+import com.yun.mysimpletravel.util.FirebaseUtil
 import com.yun.mysimpletravel.util.PreferenceUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>(),
-    KakaoAuthManager.KakaoInterface,
-    LocationBottomSheet.LocationBottomSheetInterface<LocationDataModel.Items> {
+class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>() {
     override val viewModel: SettingViewModel by viewModels()
     override fun getResourceId(): Int = R.layout.fragment_setting
     override fun isLoading(): LiveData<Boolean>? = viewModel.isLoading
@@ -63,10 +60,10 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        kakaoAuthManager = KakaoAuthManager(requireActivity(), this)
+        kakaoAuthManager = KakaoAuthManager(requireActivity(), kakaoInterface)
         sharedPreferenceManager = SharedPreferenceManager(requireActivity(), sPrefs)
         navigationManager = NavigationManager(requireActivity(), view)
-        locationBottomSheet = LocationBottomSheet(this)
+        locationBottomSheet = LocationBottomSheet(locationBottomSheetInterface)
         buttonPopup = ButtonPopup(requireActivity())
 
         init()
@@ -108,10 +105,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
                                 object : ButtonPopup.ButtonDialogListener {
                                     override fun onButtonClick(result: Boolean) {
                                         if (result) {
-                                            FirebaseManager().deleteToken { isSuccess ->
+                                            FirebaseUtil.logout { isSuccess ->
                                                 if (isSuccess) kakaoAuthManager.kakaoLogOut()
                                             }
-
                                         }
                                     }
                                 })
@@ -126,7 +122,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
                                 object : ButtonPopup.ButtonDialogListener {
                                     override fun onButtonClick(result: Boolean) {
                                         if (result) {
-                                            viewModel.signOutUser { isSuccess ->
+                                            FirebaseUtil.signOut { isSuccess ->
                                                 if (isSuccess) kakaoAuthManager.kakaoSignOut()
                                             }
                                         }
@@ -154,48 +150,46 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
         navigationManager.movingScreen(R.id.action_settingFragment_to_loginFragment, EXIT)
     }
 
-    /**
-     * 카카오 로그인 에러
-     */
-    override fun kakaoError(t: Throwable) {
-        t.printStackTrace()
-    }
+    private val kakaoInterface = object : KakaoAuthManager.KakaoInterface {
+        override fun kakaoError(t: Throwable) {
+            // 카카오 로그인 에러
+            t.printStackTrace()
+        }
 
-    /**
-     * 카카로 로그인 성공
-     */
-    override fun loginUserInfo(info: UserInfoDataModel) {}
+        override fun loginUserInfo(info: UserInfoDataModel) {
+            // 카카오 로그인 성공
+        }
 
-    /**
-     * 카카오 로그아웃 / 회원탈퇴
-     */
-    override fun removeUser() {
-        sharedPreferenceManager.removeUserInfo()
-        moveLoginScreen()
-    }
-
-    /**
-     * location bottom sheet item click
-     */
-    override fun onLocationItemClick(item: LocationDataModel.Items) {
-        lifecycleScope.launch {
-            locationBottomSheet.setLoading(true)
-            when (item.code) {
-                JEJU -> viewModel.searchLocCode(JEJU_JEJU)
-                SEOGWIP -> viewModel.searchLocCode(JEJU_SEOGWIP)
-                else -> {
-                    Log.d("lys", "select > ${item.code}")
-                    sharedPreferenceManager.updateLocation(
-                        name = item.name,
-                        fullName = item.fullName
-                    )
-                    viewModel.updateSelLocData(item.name)
-                    locationBottomSheet.dismiss()
-                    null
-                }
-            }?.regcodes?.let { changeLocation(it) }
+        override fun removeUser() {
+            // 카카오 로그아웃 / 회원탈퇴
+            sharedPreferenceManager.removeUserInfo()
+            moveLoginScreen()
         }
     }
+
+    private val locationBottomSheetInterface =
+        object : LocationBottomSheet.LocationBottomSheetInterface<LocationDataModel.Items> {
+            override fun onLocationItemClick(item: LocationDataModel.Items) {
+                // location bottom sheet item click
+                lifecycleScope.launch {
+                    locationBottomSheet.setLoading(true)
+                    when (item.code) {
+                        JEJU -> viewModel.searchLocCode(JEJU_JEJU)
+                        SEOGWIP -> viewModel.searchLocCode(JEJU_SEOGWIP)
+                        else -> {
+                            Log.d("lys", "select > ${item.code}")
+                            sharedPreferenceManager.updateLocationName(
+                                name = item.name,
+                                fullName = item.fullName
+                            )
+                            viewModel.updateSelLocData(item.name)
+                            locationBottomSheet.dismiss()
+                            null
+                        }
+                    }?.regcodes?.let { changeLocation(it) }
+                }
+            }
+        }
 
     private fun changeLocation(param: ArrayList<LocationDataModel.Items>) {
         locationBottomSheet.setLocationList(param)

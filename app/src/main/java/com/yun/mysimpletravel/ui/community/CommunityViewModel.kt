@@ -47,7 +47,7 @@ class CommunityViewModel @Inject constructor(application: Application) :
             list.add(
                 CommunityDataModel.RS(
                     _communityList.sizes() + list.size,
-                    UserInfoDataModel("test", "testNm", profile, "",""),
+                    UserInfoDataModel("test", "email","testNm", profile, "",""),
                     "testContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContentstestContents",
                     img,
                     false

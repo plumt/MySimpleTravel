@@ -5,25 +5,23 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.BR
+import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
-import com.yun.mysimpletravel.common.constants.AuthConstants
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.PUSH_TOKEN
 import com.yun.mysimpletravel.common.constants.NavigationConstants
-import com.yun.mysimpletravel.common.manager.FirebaseManager
 import com.yun.mysimpletravel.common.manager.KakaoAuthManager
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.common.manager.SharedPreferenceManager
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.databinding.FragmentLoginBinding
+import com.yun.mysimpletravel.util.FirebaseUtil
 import com.yun.mysimpletravel.util.PreferenceUtil
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(),
-    KakaoAuthManager.KakaoInterface {
+class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override val viewModel: LoginViewModel by viewModels()
     override fun getResourceId(): Int = R.layout.fragment_login
     override fun isLoading(): LiveData<Boolean>? = viewModel.isLoading
@@ -42,10 +40,23 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(),
         super.onViewCreated(view, savedInstanceState)
 
         navigationManager = NavigationManager(requireActivity(), view)
-        kakaoManager = KakaoAuthManager(requireActivity(), this)
+        kakaoManager = KakaoAuthManager(requireActivity(), kakaoInterface)
         sharedPreferenceManager = SharedPreferenceManager(requireActivity(), sPrefs)
 
-        FirebaseManager().getToken { pushToken ->
+//        FirebaseManager().getToken { pushToken ->
+//            Log.d("lys", "push token > $pushToken")
+//            sPrefs.setString(requireActivity(), PUSH_TOKEN, pushToken ?: "")
+//        }
+
+
+//        lifecycleScope.launch {
+//            withContext(Dispatchers.IO) {
+//                val accessToken = firebaseManager.getAccessToken(requireActivity())
+//                Log.d("lys", "access token > $accessToken")
+//            }
+//        }
+
+        FirebaseUtil.getToken { pushToken ->
             Log.d("lys", "push token > $pushToken")
             sPrefs.setString(requireActivity(), PUSH_TOKEN, pushToken ?: "")
         }
@@ -72,35 +83,32 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(),
         )
     }
 
-    /**
-     * 카카오 로그인 에러
-     */
-    override fun kakaoError(t: Throwable) {
-        t.printStackTrace()
-        Log.e("lys", "login error > ${t.message}")
-    }
+    private val kakaoInterface = object : KakaoAuthManager.KakaoInterface {
+        override fun kakaoError(t: Throwable) {
+            // 카카오 로그인 에러
+            t.printStackTrace()
+            Log.e("lys", "login error > ${t.message}")
+        }
 
-    /**
-     * 카카로 로그인 성공
-     */
-    override fun loginUserInfo(info: UserInfoDataModel) {
-
-        viewModel.memberCheck(
-            info.userId,
-            info.userName,
-            info.userProfileUrl ?: "",
-            sPrefs.getString(requireActivity(), PUSH_TOKEN) ?: ""
-        ) { isSuccess ->
-            if (isSuccess){
-                sharedPreferenceManager.setUserInfo(info)
-                moveHomeScreen()
-                Log.d("lys", "loginUserInfo > $info")
+        override fun loginUserInfo(info: UserInfoDataModel) {
+            // 카카오 로그인 성공
+            viewModel.login(info.userId, info.userEmail) { isSuccess ->
+                if (isSuccess) {
+                    // 로그인 or 회원가입 성공
+                    sharedPreferenceManager.setUserInfo(info)
+                    moveHomeScreen()
+                } else {
+                    // 로그인 or 회원가입 실패
+                    kakaoManager.kakaoLogOut()
+                    sharedPreferenceManager.removeUserInfo()
+                }
             }
+        }
+
+        override fun removeUser() {
+            // 카카오 로그아웃 / 회원탈퇴
         }
     }
 
-    /**
-     * 카카오 로그아웃 / 회원탈퇴
-     */
-    override fun removeUser() {}
+
 }

@@ -10,6 +10,7 @@ import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.common.constants.NavigationConstants.Type.ENTER
 import com.yun.mysimpletravel.common.manager.KakaoAuthManager
 import com.yun.mysimpletravel.common.manager.NavigationManager
+import com.yun.mysimpletravel.common.manager.SharedPreferenceManager
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.databinding.FragmentSplashBinding
 import com.yun.mysimpletravel.util.PreferenceUtil
@@ -19,8 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
-    KakaoAuthManager.KakaoInterface {
+class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
     override val viewModel: SplashViewModel by viewModels()
     override fun getResourceId(): Int = R.layout.fragment_splash
     override fun isLoading(): LiveData<Boolean>? = viewModel.isLoading
@@ -33,6 +33,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
 
     private lateinit var navigationManager: NavigationManager
     private lateinit var kakaoManager: KakaoAuthManager
+    private lateinit var sharedPreferenceManager: SharedPreferenceManager
 
     @Inject
     lateinit var sPrefs: PreferenceUtil
@@ -41,16 +42,8 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
         super.onViewCreated(view, savedInstanceState)
 
         navigationManager = NavigationManager(requireActivity(), view)
-        kakaoManager = KakaoAuthManager(requireActivity(), this)
-
-//        lifecycleScope.launch {
-//            withContext(Dispatchers.IO) {
-//
-//                val accessToken = firebaseManager.getAccessToken(requireActivity())
-//                Log.d("lys", "access token > $accessToken")
-//            }
-//        }
-
+        kakaoManager = KakaoAuthManager(requireActivity(), kakaoInterface)
+        sharedPreferenceManager = SharedPreferenceManager(requireActivity(), sPrefs)
     }
 
     /**
@@ -80,26 +73,25 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
         }
     }
 
-    /**
-     * 카카오 로그인 에러
-     */
-    override fun kakaoError(t: Throwable) {
-        moveLoginScreen()
-        t.printStackTrace()
+    private val kakaoInterface = object : KakaoAuthManager.KakaoInterface {
+
+        override fun kakaoError(t: Throwable) {
+            // 카카오 로그인 에러
+            moveLoginScreen()
+            t.printStackTrace()
+        }
+
+        override fun loginUserInfo(info: UserInfoDataModel) {
+            // 카카오 로그인 성공
+            sharedPreferenceManager.setUserInfo(info)
+            moveHomeScreen()
+        }
+
+        override fun removeUser() {
+            // 카카오 로그아웃 / 회원탈퇴
+        }
     }
 
-    /**
-     * 카카로 로그인 성공
-     */
-    override fun loginUserInfo(info: UserInfoDataModel) {
-        viewModel.saveUserInfo(info)
-        moveHomeScreen()
-    }
-
-    /**
-     * 카카오 로그아웃 / 회원탈퇴
-     */
-    override fun removeUser() {}
 
     override fun onResume() {
         super.onResume()
@@ -108,13 +100,14 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>(),
         //TODO 2순위 앱 버전 체크
 
         //TODO 가입 도중에 앱을 종료하거나 뒤로 할 경우, SNS 로그아웃 시켜야함
-
-        if (viewModel.automaticLoginStatus()) {
-            // 로그인 정보 있음 > 홈 화면
-            kakaoManager.snsTokenCheck()
-        } else {
-            // 로그인 정보 없음 > 로그인 화면
-            moveLoginScreen()
+        viewModel.automaticLoginStatus { isLogin ->
+            if (isLogin) {
+                // 로그인 정보 있음 > 홈 화면
+                kakaoManager.snsTokenCheck()
+            } else {
+                // 로그인 정보 없음 > 로그인 화면
+                moveLoginScreen()
+            }
         }
     }
 }

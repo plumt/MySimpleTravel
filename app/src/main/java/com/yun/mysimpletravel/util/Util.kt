@@ -10,9 +10,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.TypedValue
 import android.view.View
-import android.view.Window
-import android.view.WindowInsets
-import android.view.WindowManager
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.yun.mysimpletravel.BuildConfig

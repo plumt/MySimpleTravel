@@ -1,7 +1,6 @@
 package com.yun.mysimpletravel.common.manager
 
 import android.content.Context
-import android.util.Log
 import com.yun.mysimpletravel.common.constants.AuthConstants
 import com.yun.mysimpletravel.common.constants.LocationConstants
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
@@ -21,6 +20,7 @@ class SharedPreferenceManager @Inject constructor(
         sPrefs.setString(context, AuthConstants.Info.NAME, "")
         sPrefs.setString(context, AuthConstants.Info.PROFILE, "")
         sPrefs.setString(context, AuthConstants.Info.TYPE, "")
+        sPrefs.setString(context, AuthConstants.Info.EMAIL, "")
     }
 
     /**
@@ -32,9 +32,19 @@ class SharedPreferenceManager @Inject constructor(
         sPrefs.setString(context, AuthConstants.Info.NAME, info.userName)
         sPrefs.setString(context, AuthConstants.Info.PROFILE, info.userProfileUrl)
         sPrefs.setString(context, AuthConstants.Info.TYPE, info.loginType)
+        sPrefs.setString(context, AuthConstants.Info.EMAIL, info.userEmail)
     }
 
-    fun updateLocation(name: String?, fullName: String?) {
+    fun userInfo() = UserInfoDataModel(
+        userId = sPrefs.getString(context, AuthConstants.Info.SNS_ID)!!,
+        userEmail = sPrefs.getString(context, AuthConstants.Info.EMAIL)!!,
+        userName = sPrefs.getString(context, AuthConstants.Info.NAME)!!,
+        userProfileUrl = sPrefs.getString(context, AuthConstants.Info.PROFILE),
+        loginType = sPrefs.getString(context, AuthConstants.Info.TYPE)!!,
+        sPrefs.getString(context, AuthConstants.Info.PUSH_TOKEN) ?: ""
+    )
+
+    fun updateLocationName(name: String?, fullName: String?) {
         if (name == null || fullName == null) return
         sPrefs.setString(context, LocationConstants.Key.NAME, name)
         sPrefs.setString(context, LocationConstants.Key.FULL_NAME, fullName)

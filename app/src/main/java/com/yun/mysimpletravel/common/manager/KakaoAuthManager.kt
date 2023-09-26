@@ -122,6 +122,7 @@ class KakaoAuthManager(private val context: Context, private val kakaoInterface:
                 Log.d("lys", "kakao login success > $it")
                 val userInfo = UserInfoDataModel(
                     userId = it.id.toString(),
+                    userEmail = it.kakaoAccount!!.email!!,
                     userName = it.properties?.get("nickname") ?: "여행자",
                     userProfileUrl = it.properties?.get("profile_image") ?: "",
                     loginType = KAKAO,
