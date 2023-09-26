@@ -49,8 +49,8 @@
             app:height="@{`30`}"
             app:layout_constraintStart_toStartOf="@id/gl_start"
             app:layout_constraintTop_toBottomOf="@id/gl_top"
-            app:name="@{itemCommunity.userInfo.userName}"
-            app:url="@{itemCommunity.userInfo.userProfileUrl}"
+            app:name="@{itemCommunity.writer}"
+            app:url="@{``}"
             app:width="@{`30`}" />
 
         <LinearLayout
@@ -69,9 +69,9 @@
                 layout="@layout/view_community"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:contents="@{itemCommunity.contents}"
+                app:contents="@{itemCommunity.message}"
                 app:fullSize="@{itemCommunity.fullSize}"
-                app:fileUrl="@{itemCommunity.fileUrl}" />
+                app:fileUrl="@{itemCommunity.imageUrl}" />
         </LinearLayout>
 
         <include
@@ -80,6 +80,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/ic_community_react"
             android:layout_marginTop="10dp"
+            app:like="@{itemCommunity.like}"
             app:click="@{(v) -> communityListener.onItemClick(itemCommunity, v)}"
             app:layout_constraintTop_toBottomOf="@id/layout_community" />
 

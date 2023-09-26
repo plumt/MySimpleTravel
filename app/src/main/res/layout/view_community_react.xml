@@ -6,6 +6,10 @@
         <variable
             name="click"
             type="android.view.View.OnClickListener" />
+
+        <variable
+            name="like"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,28 +20,27 @@
             android:id="@+id/iv_like"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/ic_launcher_background"
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
             android:onClick="@{click}"
-            android:src="@drawable/ic_launcher_foreground"
+            android:src="@{like ? @drawable/baseline_favorite_24 : @drawable/baseline_favorite_border_24}"
             android:tag="like"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_comment"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/ic_launcher_background"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:onClick="@{click}"
-            android:src="@drawable/ic_launcher_foreground"
-            android:tag="comment"
-            app:layout_constraintStart_toEndOf="@id/iv_like"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <ImageView-->
+<!--            android:id="@+id/iv_comment"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:background="@drawable/ic_launcher_background"-->
+<!--            android:clickable="true"-->
+<!--            android:foreground="?attr/selectableItemBackground"-->
+<!--            android:onClick="@{click}"-->
+<!--            android:src="@drawable/ic_launcher_foreground"-->
+<!--            android:tag="comment"-->
+<!--            app:layout_constraintStart_toEndOf="@id/iv_like"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

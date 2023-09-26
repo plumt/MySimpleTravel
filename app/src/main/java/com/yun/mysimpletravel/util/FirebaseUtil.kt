@@ -2,12 +2,20 @@ package com.yun.mysimpletravel.util
 
 import android.content.Context
 import android.util.Log
+import com.google.android.gms.tasks.Task
 import com.google.auth.oauth2.GoogleCredentials
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.messaging.FirebaseMessaging
 import com.yun.mysimpletravel.common.constants.FirebaseConstants
+import com.yun.mysimpletravel.common.constants.FirebaseConstants.Community.LIKES
+import com.yun.mysimpletravel.common.constants.FirebaseConstants.Community.TIMESTAMP
+import com.yun.mysimpletravel.common.constants.FirebaseConstants.Community.WRITER
+import com.yun.mysimpletravel.common.constants.FirebaseConstants.Path.BOARDS
 import java.util.Arrays
 
 object FirebaseUtil {
@@ -48,9 +56,9 @@ object FirebaseUtil {
             .document(userId)
             .update(
                 mapOf(
-                    FirebaseConstants.Key.PUSH_TOKEN to token,
-                    FirebaseConstants.Key.NAME to name,
-                    FirebaseConstants.Key.PROFILE to profile
+                    FirebaseConstants.Auth.PUSH_TOKEN to token,
+                    FirebaseConstants.Auth.NAME to name,
+                    FirebaseConstants.Auth.PROFILE to profile
                 )
             )
             .addOnCompleteListener { callBack(it.isSuccessful) }
@@ -117,10 +125,46 @@ object FirebaseUtil {
      *  firestore 회원가입 파라미터
      */
     fun signupParams(nickName: String, token: String, profile: String) = mapOf(
-        FirebaseConstants.Key.NAME to nickName,
-        FirebaseConstants.Key.PUSH_TOKEN to token,
-        FirebaseConstants.Key.PROFILE to profile
+        FirebaseConstants.Auth.NAME to nickName,
+        FirebaseConstants.Auth.PUSH_TOKEN to token,
+        FirebaseConstants.Auth.PROFILE to profile
     )
+
+    /**
+     * firestore 게시글 가져오기
+     */
+    fun selectCommunity(lastItem: DocumentSnapshot?, callBack: (Task<QuerySnapshot>) -> Unit) {
+        FirebaseFirestore.getInstance().collection(BOARDS)
+            .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
+            .let { if (lastItem != null) it.startAfter(lastItem) else it }
+            .limit(10)
+            .get()
+            .addOnCompleteListener { task ->
+                callBack(task)
+            }
+    }
+
+    fun communityLikeUpdate(
+        writer: String,
+        timestamp: Timestamp,
+        likes: ArrayList<String>
+    ) {
+        FirebaseFirestore.getInstance().collection(BOARDS)
+            .whereEqualTo(WRITER, writer)
+            .whereEqualTo(TIMESTAMP, timestamp)
+            .limit(1)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    task.result.forEach { snap ->
+                        FirebaseFirestore.getInstance().collection(BOARDS)
+                            .document(snap.id)
+                            .update(mapOf(LIKES to likes))
+                            .addOnCompleteListener {}
+                    }
+                }
+            }
+    }
 
     /**
      * firebase auth 로그인 여부 체크

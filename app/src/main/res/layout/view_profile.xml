@@ -35,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             app:cardCornerRadius="200dp"
+            android:backgroundTint="@color/black"
             app:cardElevation="0dp">
 
             <ImageView
