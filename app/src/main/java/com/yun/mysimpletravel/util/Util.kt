@@ -104,6 +104,20 @@ object Util {
 
     fun serviceKey() = URLDecoder.decode(BuildConfig.SERVICE_KEY, "UTF-8")
 
+    /**
+     * 현재 api url이 open api url인지 체크
+     * @return true : is open api
+     * @return false : is not open api
+     */
+    fun openApiCheck(url: String?) = when {
+        url.isNullOrEmpty() -> false
+        url.contains(BuildConfig.JEJU_HUB_URL) -> true
+        url.contains(BuildConfig.JEJU_VISIT_URL) -> true
+        url.contains(BuildConfig.JEJU_ITS_URL) -> true
+        else -> false
+    }
+
+
     fun dustCheck(str: String?): Int {
         return if (str == null) 0
         else when {

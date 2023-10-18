@@ -40,7 +40,7 @@ import javax.inject.Named
 class SettingViewModel @Inject constructor(
     application: Application,
     private val sPrefs: PreferenceUtil,
-    @Named(LOCATION) private val locationApi: ApiRepository
+    private val locationApi: ApiRepository
 ) : BaseViewModel(application) {
 
     private val _isLoading = MutableLiveData<Boolean>()

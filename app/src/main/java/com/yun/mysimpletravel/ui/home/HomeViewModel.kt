@@ -5,7 +5,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yun.mysimpletravel.BuildConfig
+import com.yun.mysimpletravel.api.ApiRepository
+import com.yun.mysimpletravel.api.JejuHubApiRepository
 import com.yun.mysimpletravel.base.BaseViewModel
+import com.yun.mysimpletravel.common.constants.ApiConstants.ApiType.JEJU_DATA_HUB
 import com.yun.mysimpletravel.common.constants.LocationConstants
 import com.yun.mysimpletravel.data.model.weather.NowWeatherDataModel
 import com.yun.mysimpletravel.util.PreferenceUtil
@@ -22,11 +25,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import javax.inject.Inject
+import javax.inject.Named
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     application: Application,
-    private val sPrefs: PreferenceUtil
+    private val sPrefs: PreferenceUtil,
+    private val jejuHubApi: JejuHubApiRepository
 ) : BaseViewModel(application) {
 
     private val _isLoading = MutableLiveData<Boolean>(true)
@@ -92,6 +97,12 @@ class HomeViewModel @Inject constructor(
 
     private fun setWeatherLoading(loading: Boolean) {
         _isWeatherLoading.value = loading
+    }
+
+
+    suspend fun searchAccommodation(){
+        val response = callApi({jejuHubApi.searchAccommodation("1","")},1)
+        Log.d("lys","searchAccommodation > $response")
     }
 
 }

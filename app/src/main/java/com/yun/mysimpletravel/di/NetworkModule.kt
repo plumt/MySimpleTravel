@@ -1,29 +1,24 @@
 package com.yun.mysimpletravel.di
 
 import android.content.Context
-import com.google.gson.GsonBuilder
-import com.yun.mysimpletravel.BuildConfig
-import com.yun.mysimpletravel.common.constants.ApiConstants.ApiType.LOCATION
-import com.yun.mysimpletravel.common.constants.ApiConstants.ApiType.WEATHER
+import com.yun.mysimpletravel.api.ApiInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val connectTimeout: Long = 60
-    private const val readTimeout: Long = 60
+    private const val connectTimeout: Long = 15
+    private const val readTimeout: Long = 15
+    private const val cacheSize = 10 * 1024 * 1024 // 10 MB (캐시 크기)
 
     @Singleton
     @Provides
@@ -31,8 +26,11 @@ object NetworkModule {
 //        sharedPreferences: PreferenceUtil,
         @ApplicationContext context: Context
     ): OkHttpClient {
+        val cache = Cache(context.cacheDir, cacheSize.toLong()) // 캐시 디렉토리와 크기 설정
         val okHttpClientBuilder = OkHttpClient.Builder()
-//            .addInterceptor(AccessTokenInterceptor(sharedPreferences,context))
+            .addInterceptor(ApiInterceptor(context))
+//            .addNetworkInterceptor(ApiInterceptor(context))
+            .cache(cache)
             .connectTimeout(connectTimeout, TimeUnit.SECONDS)
             .readTimeout(readTimeout, TimeUnit.SECONDS)
 
@@ -44,29 +42,5 @@ object NetworkModule {
         okHttpClientBuilder.build()
         return okHttpClientBuilder.build()
     }
-
-    private fun provideRetrofit(client: OkHttpClient, baseUrl: String) =
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-//            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .client(client)
-            .build()
-    @Named(LOCATION)
-    @Provides
-    @Singleton
-    fun provideLocationRetrofit(
-        client: OkHttpClient,
-        @ApplicationContext context: Context
-    ): Retrofit = provideRetrofit(client, BuildConfig.LOCATION_URL)
-
-    @Named("test")
-    @Provides
-    @Singleton
-    fun provideTestRetrofit(
-        client: OkHttpClient,
-        @ApplicationContext context: Context
-    ): Retrofit = provideRetrofit(client, "")
 
 }

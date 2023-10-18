@@ -37,6 +37,9 @@
                 app:layout_constraintTop_toBottomOf="@id/ic_now_weather">
 
                 <Button
+                    android:id="@+id/btn_api_test"
+                    android:text="btn api test"
+                    android:textColor="@color/black"
                     android:backgroundTint="@color/color_cccccc"
                     android:layout_width="match_parent"
                     android:layout_height="300dp" />

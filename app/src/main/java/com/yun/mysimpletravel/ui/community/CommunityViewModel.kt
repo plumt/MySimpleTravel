@@ -45,7 +45,9 @@ class CommunityViewModel @Inject constructor(
 
     }
 
+    //TODO 지금 파이어베이스로 하고 있지만, 그냥 일반 서버 형태로 전부 전환하는게 맞을 듯
     fun setData(clear: Boolean = false): Boolean {
+        return false
         setLoading(true)
         if (clear) {
             // 초기화

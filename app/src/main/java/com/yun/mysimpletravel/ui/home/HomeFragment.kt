@@ -65,11 +65,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                     callNowWeather()
                 }
             }
+
+            binding.btnApiTest -> {
+                lifecycleScope.launch {
+                    viewModel.searchAccommodation()
+                }
+            }
         }
     }
 
     private fun clickListenerSetting() {
         binding.icNowWeather.cvNowWeather.setOnClickListener(clickListener)
+        binding.btnApiTest.setOnClickListener(clickListener)
     }
 
     private fun observes() {

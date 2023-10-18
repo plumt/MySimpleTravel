@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.yun.mysimpletravel.util.Util.isNetworkConnected
 import retrofit2.Response
 
 open class BaseViewModel constructor(application: Application) : AndroidViewModel(application) {
@@ -19,15 +20,17 @@ open class BaseViewModel constructor(application: Application) : AndroidViewMode
         var retries = 0
         var response: R? = null
 
-        while (retries < maxRetries) {
-            val apiResponse = api()
-            if (apiResponse.isSuccessful) {
+        if (isNetworkConnected(mContext)) {
+            while (retries < maxRetries) {
+                val apiResponse = api()
+                if (apiResponse.isSuccessful) {
 //            Log.d("lys","callApi success > ${api.body()}")
-                response = apiResponse.body()
-                break
-            } else {
-                Log.e("lys","error $retries")
-                retries++
+                    response = apiResponse.body()
+                    break
+                } else {
+                    Log.e("lys", "error $retries")
+                    retries++
+                }
             }
         }
         return response
