@@ -4,7 +4,7 @@ import android.content.Context
 import com.google.gson.GsonBuilder
 import com.yun.mysimpletravel.BuildConfig
 import com.yun.mysimpletravel.api.Api
-import com.yun.mysimpletravel.api.ApiRepository
+import com.yun.mysimpletravel.api.LocationApiRepository
 import com.yun.mysimpletravel.api.JejuHubApiRepository
 import dagger.Module
 import dagger.Provides
@@ -45,8 +45,8 @@ object ApiModule {
     fun provideLocationApiRepository(
         @ApplicationContext context: Context,
         client: OkHttpClient
-    ): ApiRepository {
+    ): LocationApiRepository {
         val retrofit = provideRetrofit(client, BuildConfig.LOCATION_URL)
-        return ApiRepository(retrofit.create(Api::class.java))
+        return LocationApiRepository(retrofit.create(Api::class.java))
     }
 }

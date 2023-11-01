@@ -5,16 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yun.mysimpletravel.BuildConfig
 import com.yun.mysimpletravel.R
-import com.yun.mysimpletravel.api.ApiRepository
+import com.yun.mysimpletravel.api.LocationApiRepository
 import com.yun.mysimpletravel.base.BaseViewModel
 import com.yun.mysimpletravel.base.ListLiveData
-import com.yun.mysimpletravel.common.constants.ApiConstants.ApiType.LOCATION
-import com.yun.mysimpletravel.common.constants.AuthConstants.Info.EMAIL
-import com.yun.mysimpletravel.common.constants.AuthConstants.Info.NAME
-import com.yun.mysimpletravel.common.constants.AuthConstants.Info.PROFILE
-import com.yun.mysimpletravel.common.constants.AuthConstants.Info.PUSH_TOKEN
-import com.yun.mysimpletravel.common.constants.AuthConstants.Info.SNS_ID
-import com.yun.mysimpletravel.common.constants.AuthConstants.Info.TYPE
 import com.yun.mysimpletravel.common.constants.LocationConstants
 import com.yun.mysimpletravel.common.constants.LocationConstants.FilterName.JEJU
 import com.yun.mysimpletravel.common.constants.LocationConstants.FilterName.JEJU_PROVINCE
@@ -34,13 +27,12 @@ import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.util.PreferenceUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     application: Application,
     private val sPrefs: PreferenceUtil,
-    private val locationApi: ApiRepository
+    private val locationApi: LocationApiRepository
 ) : BaseViewModel(application) {
 
     private val _isLoading = MutableLiveData<Boolean>()

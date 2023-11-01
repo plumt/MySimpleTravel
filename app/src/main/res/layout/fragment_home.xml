@@ -47,11 +47,15 @@
                 <Button
                     android:backgroundTint="@color/color_cccccc"
                     android:layout_width="match_parent"
+                    android:id="@+id/btn_click_test"
+                    android:text="일반 클릭"
                     android:layout_height="300dp" />
 
                 <Button
                     android:backgroundTint="@color/color_cccccc"
                     android:layout_width="match_parent"
+                    android:id="@+id/btn_single_click_test"
+                    android:text="커스텀 싱글 클릭"
                     android:layout_height="300dp" />
 
                 <Button

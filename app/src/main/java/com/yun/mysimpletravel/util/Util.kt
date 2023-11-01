@@ -117,26 +117,4 @@ object Util {
         else -> false
     }
 
-
-    fun dustCheck(str: String?): Int {
-        return if (str == null) 0
-        else when {
-            str.contains("좋음") -> GOOD
-            str.contains("보통") -> NOMAL
-            str.contains("매우") -> WORST
-            str.contains("나쁨") -> BAD
-            else -> 0
-        }
-    }
-
-    fun uvCheck(str: String?): Int {
-        return if (str == null) 0
-        else when {
-            str.contains("좋음") -> GOOD
-            str.contains("보통") -> NOMAL
-            str.contains("매우") -> WORST
-            str.contains("높음") -> BAD
-            else -> 0
-        }
-    }
 }

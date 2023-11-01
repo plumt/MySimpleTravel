@@ -105,11 +105,10 @@ class KakaoAuthManager(private val context: Context, private val kakaoInterface:
      * kakao sns login sdk setting
      */
     private fun kakaoSdkSetting() {
+        KakaoSdk.init(context, context.getString(R.string.social_login_info_kakao_native_key))
         if (!isNetworkConnected(context)) {
             kakaoInterface.kakaoError(customException(NETWORK_NOT_CONNECT))
-            return
         }
-        KakaoSdk.init(context, context.getString(R.string.social_login_info_kakao_native_key))
     }
 
     /**

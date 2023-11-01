@@ -5,10 +5,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yun.mysimpletravel.BuildConfig
-import com.yun.mysimpletravel.api.ApiRepository
 import com.yun.mysimpletravel.api.JejuHubApiRepository
 import com.yun.mysimpletravel.base.BaseViewModel
-import com.yun.mysimpletravel.common.constants.ApiConstants.ApiType.JEJU_DATA_HUB
 import com.yun.mysimpletravel.common.constants.LocationConstants
 import com.yun.mysimpletravel.data.model.weather.NowWeatherDataModel
 import com.yun.mysimpletravel.util.PreferenceUtil
@@ -25,7 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(

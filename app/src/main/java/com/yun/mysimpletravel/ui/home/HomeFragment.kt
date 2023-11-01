@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
+import com.yun.mysimpletravel.base.OnSingleClickListener
 import com.yun.mysimpletravel.common.constants.LocationConstants.Key.FULL_NAME
 import com.yun.mysimpletravel.common.constants.NavigationConstants
 import com.yun.mysimpletravel.common.manager.NavigationManager
@@ -53,30 +54,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
-    private val clickListener = View.OnClickListener { v ->
-        when (v) {
-            binding.icNowWeather.cvNowWeather -> {
-                if (sPrefs.getString(requireActivity(), FULL_NAME).isNullOrEmpty()) {
-                    //셋팅 화면 이동
-                    navigationManager.movingScreen(
-                        R.id.global_settingFragment, NavigationConstants.Type.ENTER
-                    )
-                } else if (!viewModel.isWeatherLoading.value!!) {
-                    callNowWeather()
-                }
-            }
+    private fun clickListenerSetting() {
+        binding.icNowWeather.cvNowWeather.setOnClickListener(onSingleClickListener)
+        binding.btnApiTest.setOnClickListener(onSingleClickListener)
+    }
 
-            binding.btnApiTest -> {
-                lifecycleScope.launch {
-                    viewModel.searchAccommodation()
+    private val onSingleClickListener = object : OnSingleClickListener() {
+        override fun onSingleClick(v: View) {
+            when (v) {
+                binding.icNowWeather.cvNowWeather -> {
+                    if (sPrefs.getString(requireActivity(), FULL_NAME).isNullOrEmpty()) {
+                        //셋팅 화면 이동
+                        navigationManager.movingScreen(
+                            R.id.global_settingFragment, NavigationConstants.Type.ENTER
+                        )
+                    } else if (!viewModel.isWeatherLoading.value!!) {
+                        callNowWeather()
+                    }
+                }
+
+                binding.btnApiTest -> {
+                    lifecycleScope.launch {
+                        viewModel.searchAccommodation()
+                    }
                 }
             }
         }
-    }
-
-    private fun clickListenerSetting() {
-        binding.icNowWeather.cvNowWeather.setOnClickListener(clickListener)
-        binding.btnApiTest.setOnClickListener(clickListener)
     }
 
     private fun observes() {
