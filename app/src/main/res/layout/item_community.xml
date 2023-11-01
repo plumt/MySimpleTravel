@@ -60,8 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:clickable="true"
-
-            android:onClick="@{(v) -> communityListener.onItemClick(itemCommunity, v)}"
+            app:onSingleClick="@{(v) -> communityListener.onItemClick(itemCommunity, v)}"
             android:tag="detail"
             app:layout_constraintTop_toBottomOf="@id/ic_profile">
 

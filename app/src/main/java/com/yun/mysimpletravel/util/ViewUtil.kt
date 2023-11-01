@@ -3,6 +3,7 @@ package com.yun.mysimpletravel.util
 import android.net.Uri
 import android.util.Base64
 import android.util.TypedValue
+import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -11,6 +12,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import com.yun.mysimpletravel.R
+import com.yun.mysimpletravel.base.OnSingleClickListener
 import com.yun.mysimpletravel.util.Util.dpToPx
 
 
@@ -92,6 +94,16 @@ object ViewUtil {
         val heightPx = dpToPx(height, this)
         layoutParams.height = heightPx
         this.layoutParams = layoutParams
+    }
+
+    @BindingAdapter("onSingleClick")
+    @JvmStatic
+    fun setOnSingleClickListener(view: View, clickListener: View.OnClickListener) {
+        view.setOnClickListener(object : OnSingleClickListener() {
+            override fun onSingleClick(v: View) {
+                clickListener.onClick(v)
+            }
+        })
     }
 
 

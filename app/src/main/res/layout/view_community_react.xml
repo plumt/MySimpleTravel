@@ -22,7 +22,7 @@
             android:layout_height="30dp"
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:onClick="@{click}"
+            app:onSingleClick="@{click}"
             android:src="@{like ? @drawable/baseline_favorite_24 : @drawable/baseline_favorite_border_24}"
             android:tag="like"
             app:layout_constraintStart_toStartOf="parent"

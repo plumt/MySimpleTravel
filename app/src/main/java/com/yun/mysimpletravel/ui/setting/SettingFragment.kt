@@ -95,6 +95,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
                             if (!item.contents.isNullOrEmpty()) {
                                 // TODO 스토어 이동
                             }
+                            Log.d("lys","click!")
                         }
 
                         LOG_OUT -> {

@@ -39,7 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:clickable="true"
-            android:onClick="@{(v) -> settingListener.onItemClick(itemSetting, v)}"
+            app:onSingleClick="@{(v) -> settingListener.onItemClick(itemSetting, v)}"
             android:visibility="@{itemSetting.viewType == 0 ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="@id/gl_end"
             app:layout_constraintStart_toStartOf="@id/gl_start">

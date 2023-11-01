@@ -20,7 +20,7 @@
         android:clickable="true"
         android:focusable="true"
         android:minHeight="50dp"
-        android:onClick="@{(v) -> bottomLocationListener.onItemClick(itemBottomLocation, v)}">
+        app:onSingleClick="@{(v) -> bottomLocationListener.onItemClick(itemBottomLocation, v)}">
 
         <TextView
             android:id="@+id/tv_title"

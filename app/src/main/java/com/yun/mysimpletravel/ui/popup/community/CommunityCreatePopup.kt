@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.yun.mysimpletravel.R
+import com.yun.mysimpletravel.base.OnSingleClickListener
 import com.yun.mysimpletravel.databinding.DialogCommunityCreateBinding
 import java.io.ByteArrayOutputStream
 
@@ -57,74 +58,82 @@ class CommunityCreatePopup(
 
 
 
-        binding.icTwoButton.btnCancel.setOnClickListener(onClickListener)
-        binding.icTwoButton.btnResult.setOnClickListener(onClickListener)
-        binding.icCamera.cvCamera.setOnClickListener(onClickListener)
+        binding.icTwoButton.btnCancel.setOnClickListener(onSingleClickListener)
+        binding.icTwoButton.btnResult.setOnClickListener(onSingleClickListener)
+        binding.icCamera.cvCamera.setOnClickListener(onSingleClickListener)
 
         dialog.show()
     }
 
-    private val onClickListener = View.OnClickListener {
-        when (it) {
-            binding.icTwoButton.btnCancel -> {
-                dialog.dismiss()
-            }
+    private val onSingleClickListener = object : OnSingleClickListener() {
+        override fun onSingleClick(v: View) {
 
-            binding.icTwoButton.btnResult -> {
-                val message = binding.etMessage.text.toString().trim()
-                if(!message.isNullOrEmpty()){
-                    communityCreateInterface.onButtonClick(message, base64)
+            when (v) {
+                binding.icTwoButton.btnCancel -> {
                     dialog.dismiss()
                 }
-            }
 
-            binding.icCamera.cvCamera -> {
-                Log.d("lys","binding.icCamera.cvCamera")
-                checkPermissionsAndOpenGallery()
+                binding.icTwoButton.btnResult -> {
+                    val message = binding.etMessage.text.toString().trim()
+                    if (!message.isNullOrEmpty()) {
+                        communityCreateInterface.onButtonClick(message, base64)
+                        dialog.dismiss()
+                    }
+                }
+
+                binding.icCamera.cvCamera -> {
+                    Log.d("lys", "binding.icCamera.cvCamera")
+                    checkPermissionsAndOpenGallery()
+                }
             }
         }
     }
 
-    private val requestPermissionLauncher = fragment.registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-        if (isGranted) {
-            // 권한이 허용되면 갤러리 열기
-            openGallery()
-        } else {
-            // 권한이 거부되면 사용자에게 알림을 표시하거나 다른 처리를 수행할 수 있음
-            // (예: 권한 설정 화면으로 이동)
+    private val requestPermissionLauncher =
+        fragment.registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                // 권한이 허용되면 갤러리 열기
+                openGallery()
+            } else {
+                // 권한이 거부되면 사용자에게 알림을 표시하거나 다른 처리를 수행할 수 있음
+                // (예: 권한 설정 화면으로 이동)
+            }
         }
-    }
 
-    private val galleryLauncher = fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data = result.data
-            if (data != null) {
-                val currentImageUri = data.data
+    private val galleryLauncher =
+        fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data = result.data
+                if (data != null) {
+                    val currentImageUri = data.data
 
-                try {
-                    currentImageUri?.let {
-                        val file = context.contentResolver.openInputStream(it)?.readBytes()
-                        if (file != null) {
-                            val option = BitmapFactory.Options()
-                            option.inSampleSize = 4
-                            val bitmap = BitmapFactory.decodeByteArray(file, 0, file.size, option)
-                            val stream = ByteArrayOutputStream()
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                            val byteArray = stream.toByteArray()
-                            base64 = Base64.encodeToString(byteArray, Base64.DEFAULT)
+                    try {
+                        currentImageUri?.let {
+                            val file = context.contentResolver.openInputStream(it)?.readBytes()
+                            if (file != null) {
+                                val option = BitmapFactory.Options()
+                                option.inSampleSize = 4
+                                val bitmap =
+                                    BitmapFactory.decodeByteArray(file, 0, file.size, option)
+                                val stream = ByteArrayOutputStream()
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                                val byteArray = stream.toByteArray()
+                                base64 = Base64.encodeToString(byteArray, Base64.DEFAULT)
 //                            viewModel.sendTalk(base64)
 
 
-                            Glide.with(context).load(Base64.decode(base64, Base64.DEFAULT)).thumbnail(0.3f).diskCacheStrategy(
-                                DiskCacheStrategy.RESOURCE).into(binding.icCamera.ivImg)
+                                Glide.with(context).load(Base64.decode(base64, Base64.DEFAULT))
+                                    .thumbnail(0.3f).diskCacheStrategy(
+                                    DiskCacheStrategy.RESOURCE
+                                ).into(binding.icCamera.ivImg)
+                            }
                         }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
-                } catch (e: Exception) {
-                    e.printStackTrace()
                 }
             }
         }
-    }
 
     private fun checkPermissionsAndOpenGallery() {
         val permission = Manifest.permission.READ_EXTERNAL_STORAGE
@@ -144,8 +153,8 @@ class CommunityCreatePopup(
         openGallery()
     }
 
-    private fun openGallery(){
-        Log.d("lys","openGallery")
+    private fun openGallery() {
+        Log.d("lys", "openGallery")
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         galleryLauncher.launch(intent)
     }

@@ -2,10 +2,10 @@ package com.yun.mysimpletravel.base
 
 import android.os.SystemClock
 import android.view.View
+import com.yun.mysimpletravel.common.constants.ViewConstants.Duration.MIN_CLICK_INTERVAL
 
 abstract class OnSingleClickListener : View.OnClickListener {
 
-    private val MIN_CLICK_INTERVAL = 600
 
     abstract fun onSingleClick(v: View)
 
@@ -15,7 +15,7 @@ abstract class OnSingleClickListener : View.OnClickListener {
         val currentClickTime = SystemClock.uptimeMillis()
         val elapsedTime = currentClickTime - lastClickTime
         lastClickTime = currentClickTime
-        if(elapsedTime > MIN_CLICK_INTERVAL){
+        if (elapsedTime > MIN_CLICK_INTERVAL) {
             onSingleClick(v)
         }
     }

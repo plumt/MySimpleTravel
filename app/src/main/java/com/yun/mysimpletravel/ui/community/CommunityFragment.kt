@@ -14,6 +14,7 @@ import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
+import com.yun.mysimpletravel.base.OnSingleClickListener
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.SNS_ID
 import com.yun.mysimpletravel.common.constants.CommunityConstants
 import com.yun.mysimpletravel.common.manager.NavigationManager
@@ -154,16 +155,18 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
         }
     }
 
-    private val clickListener = View.OnClickListener { v ->
-        when (v) {
-            binding.ivCommunityWrite -> {
-                moveCreateScreen()
+    private val onSingleClickListener = object : OnSingleClickListener() {
+        override fun onSingleClick(v: View) {
+            when (v) {
+                binding.ivCommunityWrite -> {
+                    moveCreateScreen()
+                }
             }
         }
     }
 
     private fun clickListenerSetting() {
-        binding.ivCommunityWrite.setOnClickListener(clickListener)
+        binding.ivCommunityWrite.setOnClickListener(onSingleClickListener)
     }
 
     private fun observes() {

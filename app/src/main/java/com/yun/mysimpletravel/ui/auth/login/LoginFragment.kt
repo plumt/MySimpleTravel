@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
+import com.yun.mysimpletravel.base.OnSingleClickListener
 import com.yun.mysimpletravel.common.constants.AuthConstants.Info.PUSH_TOKEN
 import com.yun.mysimpletravel.common.constants.NavigationConstants
 import com.yun.mysimpletravel.common.manager.KakaoAuthManager
@@ -61,13 +62,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             sPrefs.setString(requireActivity(), PUSH_TOKEN, pushToken ?: "")
         }
 
-        binding.ivKakaoLoginButton.setOnClickListener(onClickListener)
+        binding.ivKakaoLoginButton.setOnClickListener(onSingleClickListener)
     }
 
-    private val onClickListener = View.OnClickListener { view ->
-        when (view) {
-            binding.ivKakaoLoginButton -> {
-                kakaoManager.kakaoLogin()
+    private val onSingleClickListener = object : OnSingleClickListener() {
+        override fun onSingleClick(v: View) {
+            when (view) {
+                binding.ivKakaoLoginButton -> {
+                    kakaoManager.kakaoLogin()
+                }
             }
         }
     }

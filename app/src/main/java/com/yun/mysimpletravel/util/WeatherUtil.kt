@@ -48,7 +48,7 @@ object WeatherUtil {
     /**
      * 미세먼지 상태
      */
-    fun dustCheck(str: String?): Int {
+    fun dustCheck(str: String?): Any {
         return if (str == null) 0
         else when {
             str.contains("좋음") -> WeatherConstants.State.GOOD
@@ -62,7 +62,7 @@ object WeatherUtil {
     /**
      * 자외선 상태
      */
-    fun uvCheck(str: String?): Int {
+    fun uvCheck(str: String?): Any {
         return if (str == null) 0
         else when {
             str.contains("좋음") -> WeatherConstants.State.GOOD

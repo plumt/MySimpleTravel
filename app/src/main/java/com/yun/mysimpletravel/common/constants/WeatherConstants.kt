@@ -5,10 +5,7 @@ class WeatherConstants {
 
     }
 
-    object State {
-        const val GOOD = 1
-        const val NOMAL = 2
-        const val BAD = 3
-        const val WORST = 4
+    enum class State {
+        GOOD, NOMAL, BAD, WORST
     }
 }

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.Window
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
+import com.yun.mysimpletravel.base.OnSingleClickListener
 import com.yun.mysimpletravel.databinding.DialogButtonBinding
 
 class ButtonPopup(private val context: Context) {
@@ -92,14 +93,19 @@ class ButtonPopup(private val context: Context) {
                     icTwoButton.btnCancel.visibility = View.GONE
                 }
 
-                icTwoButton.btnCancel.setOnClickListener {
-                    buttonDialogListener.onButtonClick(false)
-                    dialog.dismiss()
-                }
-                icTwoButton.btnResult.setOnClickListener {
-                    buttonDialogListener.onButtonClick(true)
-                    dialog.dismiss()
-                }
+                icTwoButton.btnCancel.setOnClickListener(object : OnSingleClickListener() {
+                    override fun onSingleClick(v: View) {
+                        buttonDialogListener.onButtonClick(false)
+                        dialog.dismiss()
+                    }
+                })
+
+                icTwoButton.btnResult.setOnClickListener(object : OnSingleClickListener() {
+                    override fun onSingleClick(v: View) {
+                        buttonDialogListener.onButtonClick(true)
+                        dialog.dismiss()
+                    }
+                })
             }
             dialog
         }.show()
