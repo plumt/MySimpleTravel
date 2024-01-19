@@ -1,4 +1,4 @@
-package com.yun.mysimpletravel.api
+package com.yun.mysimpletravel.data.remote
 
 import android.content.Context
 import android.util.Log

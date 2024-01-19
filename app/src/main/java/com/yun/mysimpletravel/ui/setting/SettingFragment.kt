@@ -25,11 +25,13 @@ import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.SIGN_OU
 import com.yun.mysimpletravel.common.manager.KakaoAuthManager
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.common.manager.SharedPreferenceManager
-import com.yun.mysimpletravel.data.model.location.LocationDataModel
 import com.yun.mysimpletravel.data.model.setting.SettingDataModel
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.databinding.FragmentSettingBinding
 import com.yun.mysimpletravel.databinding.ItemSettingBinding
+import com.yun.mysimpletravel.data.model.location.LocationModel
+import com.yun.mysimpletravel.data.repository.location.LocationRepository
+import com.yun.mysimpletravel.data.repository.location.LocationRepositoryImpl
 import com.yun.mysimpletravel.ui.bottomsheet.location.LocationBottomSheet
 import com.yun.mysimpletravel.ui.popup.ButtonPopup
 import com.yun.mysimpletravel.util.FirebaseUtil
@@ -52,7 +54,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
     private lateinit var navigationManager: NavigationManager
     private lateinit var buttonPopup: ButtonPopup
 
-    private lateinit var locationBottomSheet: LocationBottomSheet<LocationDataModel.Items>
+    private lateinit var locationBottomSheet: LocationBottomSheet<LocationModel>
 
     @Inject
     lateinit var sPrefs: PreferenceUtil
@@ -77,25 +79,22 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
             ) {
                 override fun onItemClick(item: SettingDataModel, view: View) {
                     when (item.id) {
-
                         LOCATION_CHANGED -> {
-                            lifecycleScope.launch {
-                                locationBottomSheet.setLoading(true)
-                                locationBottomSheet.show(
-                                    requireActivity().supportFragmentManager,
-                                    locationBottomSheet.tag
-                                )
-                                viewModel.searchLocCode(JEJU_ALL)?.regcodes?.let {
-                                    changeLocation(it)
-                                }
-                            }
+//                            lifecycleScope.launch {
+                            locationBottomSheet.setLoading(true)
+                            locationBottomSheet.show(
+                                requireActivity().supportFragmentManager,
+                                locationBottomSheet.tag
+                            )
+                            searchLocationCode(JEJU_ALL)
+//                            }
                         }
 
                         APP_VERSION -> {
                             if (!item.contents.isNullOrEmpty()) {
                                 // TODO 스토어 이동
                             }
-                            Log.d("lys","click!")
+                            Log.d("lys", "click!")
                         }
 
                         LOG_OUT -> {
@@ -169,30 +168,43 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
     }
 
     private val locationBottomSheetInterface =
-        object : LocationBottomSheet.LocationBottomSheetInterface<LocationDataModel.Items> {
-            override fun onLocationItemClick(item: LocationDataModel.Items) {
+        object : LocationBottomSheet.LocationBottomSheetInterface<LocationModel> {
+            override fun onLocationItemClick(item: LocationModel) {
                 // location bottom sheet item click
-                lifecycleScope.launch {
-                    locationBottomSheet.setLoading(true)
-                    when (item.code) {
-                        JEJU -> viewModel.searchLocCode(JEJU_JEJU)
-                        SEOGWIP -> viewModel.searchLocCode(JEJU_SEOGWIP)
-                        else -> {
-                            Log.d("lys", "select > ${item.code}")
-                            sharedPreferenceManager.updateLocationName(
-                                name = item.name,
-                                fullName = item.fullName
-                            )
-                            viewModel.updateSelLocData(item.name)
-                            locationBottomSheet.dismiss()
-                            null
-                        }
-                    }?.regcodes?.let { changeLocation(it) }
+                locationBottomSheet.setLoading(true)
+                when (item.code) {
+                    JEJU -> searchLocationCode(JEJU_JEJU)
+                    SEOGWIP -> searchLocationCode(JEJU_SEOGWIP)
+                    else -> {
+                        sharedPreferenceManager.updateLocationName(
+                            name = item.name,
+                            fullName = item.fullName
+                        )
+                        viewModel.updateSelLocData(item.name)
+                        locationBottomSheet.dismiss()
+
+                    }
                 }
             }
         }
 
-    private fun changeLocation(param: ArrayList<LocationDataModel.Items>) {
+    private fun searchLocationCode(code: String) {
+        lifecycleScope.launch {
+            viewModel.searchLocCode(code,
+                object : LocationRepositoryImpl.GetDataCallBack<List<LocationModel>> {
+                    override fun onSuccess(data: List<LocationModel>) {
+                        changeLocation(data)
+                    }
+
+                    override fun onFailure(throwable: Throwable) {
+                        throwable.printStackTrace()
+                    }
+                }
+            )
+        }
+    }
+
+    private fun changeLocation(param: List<LocationModel>) {
         locationBottomSheet.setLocationList(param)
         locationBottomSheet.setLoading(false)
     }

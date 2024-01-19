@@ -49,6 +49,7 @@ class KakaoAuthManager(private val context: Context, private val kakaoInterface:
      * 카카오 로그인
      */
     fun kakaoLogin() {
+        Log.d("lys","kakaoLogin")
         if (!isNetworkConnected(context)) {
             kakaoInterface.kakaoError(customException(NETWORK_NOT_CONNECT))
             return
@@ -56,6 +57,7 @@ class KakaoAuthManager(private val context: Context, private val kakaoInterface:
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
             UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
                 error?.let {
+                    it.printStackTrace()
                     kakaoInterface.kakaoError(it)
                     if (it is ClientError && it.reason == ClientErrorCause.Cancelled) {
                         // 카카오톡에서 취소한 경우, 의도적 취소로 판단하여 로그인 취소 처리

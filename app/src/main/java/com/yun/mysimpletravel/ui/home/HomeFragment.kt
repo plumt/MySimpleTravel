@@ -11,7 +11,9 @@ import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.OnSingleClickListener
 import com.yun.mysimpletravel.common.constants.LocationConstants.Key.FULL_NAME
+import com.yun.mysimpletravel.common.constants.LocationConstants.Key.NAME
 import com.yun.mysimpletravel.common.constants.NavigationConstants
+import com.yun.mysimpletravel.common.constants.WeatherConstants
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.databinding.FragmentHomeBinding
 import com.yun.mysimpletravel.util.PreferenceUtil
@@ -53,7 +55,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             val weatherInfo = viewModel.nowWeather()
         }
     }
-
     private fun clickListenerSetting() {
         binding.icNowWeather.cvNowWeather.setOnClickListener(onSingleClickListener)
         binding.btnApiTest.setOnClickListener(onSingleClickListener)
@@ -63,7 +64,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         override fun onSingleClick(v: View) {
             when (v) {
                 binding.icNowWeather.cvNowWeather -> {
-                    if (sPrefs.getString(requireActivity(), FULL_NAME).isNullOrEmpty()) {
+                    if (sPrefs.getString(requireActivity(), NAME).isNullOrEmpty()) {
                         //셋팅 화면 이동
                         navigationManager.movingScreen(
                             R.id.global_settingFragment, NavigationConstants.Type.ENTER

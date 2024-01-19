@@ -67,7 +67,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     private val onSingleClickListener = object : OnSingleClickListener() {
         override fun onSingleClick(v: View) {
-            when (view) {
+            when (v) {
                 binding.ivKakaoLoginButton -> {
                     kakaoManager.kakaoLogin()
                 }

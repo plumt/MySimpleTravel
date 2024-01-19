@@ -1,6 +1,7 @@
 package com.yun.mysimpletravel.common.manager
 
 import android.content.Context
+import android.util.Log
 import com.yun.mysimpletravel.common.constants.AuthConstants
 import com.yun.mysimpletravel.common.constants.LocationConstants
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
@@ -45,9 +46,10 @@ class SharedPreferenceManager @Inject constructor(
     )
 
     fun updateLocationName(name: String?, fullName: String?) {
-        if (name == null || fullName == null) return
+//        if (name == null || fullName == null) return
         sPrefs.setString(context, LocationConstants.Key.NAME, name)
         sPrefs.setString(context, LocationConstants.Key.FULL_NAME, fullName)
+        Log.d("lys","name > $name   fullName > $fullName")
     }
 
 }

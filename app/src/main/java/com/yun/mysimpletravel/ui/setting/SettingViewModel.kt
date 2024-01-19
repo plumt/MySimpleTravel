@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yun.mysimpletravel.BuildConfig
 import com.yun.mysimpletravel.R
-import com.yun.mysimpletravel.api.LocationApiRepository
 import com.yun.mysimpletravel.base.BaseViewModel
 import com.yun.mysimpletravel.base.ListLiveData
 import com.yun.mysimpletravel.common.constants.LocationConstants
@@ -21,9 +20,11 @@ import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.SIGN_OU
 import com.yun.mysimpletravel.common.constants.SettingConstants.ViewType.CONTENT
 import com.yun.mysimpletravel.common.constants.SettingConstants.ViewType.TITLE
 import com.yun.mysimpletravel.common.manager.SharedPreferenceManager
-import com.yun.mysimpletravel.data.model.location.LocationDataModel
+import com.yun.mysimpletravel.data.model.location.LocationModel
 import com.yun.mysimpletravel.data.model.setting.SettingDataModel
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
+import com.yun.mysimpletravel.data.repository.location.LocationRepository
+import com.yun.mysimpletravel.data.repository.location.LocationRepositoryImpl
 import com.yun.mysimpletravel.util.PreferenceUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -32,7 +33,7 @@ import javax.inject.Inject
 class SettingViewModel @Inject constructor(
     application: Application,
     private val sPrefs: PreferenceUtil,
-    private val locationApi: LocationApiRepository
+    private val locationRepositoryImpl: LocationRepositoryImpl
 ) : BaseViewModel(application) {
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -92,16 +93,9 @@ class SettingViewModel @Inject constructor(
         _settingList.add(SettingDataModel(id, viewType, title, content))
     }
 
-    suspend fun searchLocCode(code: String): LocationDataModel.RS? {
-        val response = callApi({ locationApi.searchLocationCode(code) })
-        response?.regcodes?.forEachIndexed { index, items ->
-            items.id = index
-            items.fullName = locNmFilter(items.name).trim()
-            items.name = locNmFilter(items.name, code).trim()
-        }
-        return response
+    suspend fun searchLocCode(code: String, callBack: LocationRepositoryImpl.GetDataCallBack<List<LocationModel>>){
+        locationRepositoryImpl(code,callBack)
     }
-
 
     private fun setLoading(loading: Boolean) {
         _isLoading.value = loading

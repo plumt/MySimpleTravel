@@ -1,7 +1,7 @@
 package com.yun.mysimpletravel.di
 
 import android.content.Context
-import com.yun.mysimpletravel.api.ApiInterceptor
+import com.yun.mysimpletravel.data.remote.ApiInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

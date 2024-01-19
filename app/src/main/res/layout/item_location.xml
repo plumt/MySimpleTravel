@@ -6,7 +6,7 @@
 
         <variable
             name="itemBottomLocation"
-            type="com.yun.mysimpletravel.data.model.location.LocationDataModel.Items" />
+            type="com.yun.mysimpletravel.data.model.location.LocationModel" />
 
         <variable
             name="bottomLocationListener"

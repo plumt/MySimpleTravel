@@ -17,22 +17,18 @@ open class BaseViewModel constructor(application: Application) : AndroidViewMode
 
 
     suspend fun <T : Response<R>, R> callApi(api: suspend () -> T, maxRetries: Int = 3): R? {
+        if (!isNetworkConnected(mContext)) return null
         var retries = 0
-        var response: R? = null
-
-        if (isNetworkConnected(mContext)) {
-            while (retries < maxRetries) {
+        while (retries < maxRetries) {
+            try {
                 val apiResponse = api()
-                if (apiResponse.isSuccessful) {
-//            Log.d("lys","callApi success > ${api.body()}")
-                    response = apiResponse.body()
-                    break
-                } else {
-                    Log.e("lys", "error $retries")
-                    retries++
-                }
+                if (apiResponse.isSuccessful) return apiResponse.body()
+                else Log.e("lys", "ApiResponse Error $retries")
+            } catch (e: Exception) {
+                Log.e("lys", "Coroutine Exception: $e")
             }
+            retries++
         }
-        return response
+        return null
     }
 }

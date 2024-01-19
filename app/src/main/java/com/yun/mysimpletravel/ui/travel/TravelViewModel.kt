@@ -31,5 +31,4 @@ class TravelViewModel @Inject constructor(
     private val sPrefs: PreferenceUtil
 ) : BaseViewModel(application) {
 
-
 }

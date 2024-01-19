@@ -3,9 +3,10 @@ package com.yun.mysimpletravel.di
 import android.content.Context
 import com.google.gson.GsonBuilder
 import com.yun.mysimpletravel.BuildConfig
-import com.yun.mysimpletravel.api.Api
-import com.yun.mysimpletravel.api.LocationApiRepository
-import com.yun.mysimpletravel.api.JejuHubApiRepository
+import com.yun.mysimpletravel.data.remote.api.jejuhub.JejuHubService
+import com.yun.mysimpletravel.data.remote.api.location.LocationService
+import com.yun.mysimpletravel.data.repository.jejuhub.JejuHubRepository
+import com.yun.mysimpletravel.data.repository.location.LocationRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,9 +36,9 @@ object ApiModule {
     fun provideJejuHubApiRepository(
         @ApplicationContext context: Context,
         client: OkHttpClient
-    ): JejuHubApiRepository {
+    ): JejuHubRepository {
         val retrofit = provideRetrofit(client, BuildConfig.JEJU_HUB_URL)
-        return JejuHubApiRepository(retrofit.create(Api::class.java))
+        return JejuHubRepository(retrofit.create(JejuHubService::class.java))
     }
 
     @Provides
@@ -45,8 +46,8 @@ object ApiModule {
     fun provideLocationApiRepository(
         @ApplicationContext context: Context,
         client: OkHttpClient
-    ): LocationApiRepository {
+    ): LocationRepository {
         val retrofit = provideRetrofit(client, BuildConfig.LOCATION_URL)
-        return LocationApiRepository(retrofit.create(Api::class.java))
+        return LocationRepository(retrofit.create(LocationService::class.java))
     }
 }

@@ -143,7 +143,11 @@ object FirebaseUtil {
             .limit(10)
             .get()
             .addOnCompleteListener { task ->
+                Log.d("lys","task >>> " + task.result)
                 callBack(task)
+            }
+            .addOnFailureListener {
+                it.printStackTrace()
             }
     }
 

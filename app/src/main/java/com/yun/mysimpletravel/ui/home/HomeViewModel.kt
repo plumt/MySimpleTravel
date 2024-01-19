@@ -4,11 +4,13 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.yun.mysimpletravel.BuildConfig
-import com.yun.mysimpletravel.api.JejuHubApiRepository
 import com.yun.mysimpletravel.base.BaseViewModel
 import com.yun.mysimpletravel.common.constants.LocationConstants
+import com.yun.mysimpletravel.data.model.travel.accommodation.AccommodationModel
 import com.yun.mysimpletravel.data.model.weather.NowWeatherDataModel
+import com.yun.mysimpletravel.data.repository.jejuhub.JejuHubRepositoryImpl
 import com.yun.mysimpletravel.util.PreferenceUtil
 import com.yun.mysimpletravel.util.WeatherUtil.weatherCompare
 import com.yun.mysimpletravel.util.WeatherUtil.weatherDetail
@@ -20,6 +22,7 @@ import com.yun.mysimpletravel.util.WeatherUtil.weatherUDust
 import com.yun.mysimpletravel.util.WeatherUtil.weatherUV
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import javax.inject.Inject
@@ -28,7 +31,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     application: Application,
     private val sPrefs: PreferenceUtil,
-    private val jejuHubApi: JejuHubApiRepository
+    private val jejuHubRepositoryImpl: JejuHubRepositoryImpl
 ) : BaseViewModel(application) {
 
     private val _isLoading = MutableLiveData<Boolean>(true)
@@ -50,7 +53,7 @@ class HomeViewModel @Inject constructor(
      */
     suspend fun nowWeather(): Boolean {
         setWeatherLoading(true)
-        val location = sPrefs.getString(mContext, LocationConstants.Key.FULL_NAME)
+        val location = sPrefs.getString(mContext, LocationConstants.Key.NAME)
         if (location.isNullOrEmpty()) {
             setLoading(false)
             setWeatherLoading(false)
@@ -65,7 +68,7 @@ class HomeViewModel @Inject constructor(
             setWeatherLoading(false)
             setNowWeather(
                 NowWeatherDataModel.WeatherInfo(
-                    location = sPrefs.getString(mContext, LocationConstants.Key.FULL_NAME) ?: "-",
+                    location = sPrefs.getString(mContext, LocationConstants.Key.NAME) ?: "-",
                     weatherState = doc.weatherState(),
                     weatherTemperature = doc.weatherTemperature(),
                     weatherImagePath = doc.weatherIcon(),
@@ -85,21 +88,39 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun setNowWeather(weather: NowWeatherDataModel.WeatherInfo) {
-        _nowWeather.value = weather
+        _nowWeather.postValue(weather)
     }
 
     private fun setLoading(loading: Boolean) {
-        _isLoading.value = loading
+        _isLoading.postValue(loading)
     }
 
     private fun setWeatherLoading(loading: Boolean) {
-        _isWeatherLoading.value = loading
+        _isWeatherLoading.postValue(loading)
     }
 
 
-    suspend fun searchAccommodation(){
-        val response = callApi({jejuHubApi.searchAccommodation("1","")},1)
-        Log.d("lys","searchAccommodation > $response")
-    }
+    suspend fun searchAccommodation() {
+        viewModelScope.launch {
+            try {
+                setLoading(true)
+                jejuHubRepositoryImpl.invoke(
+                    "1",
+                    "",
+                    object : JejuHubRepositoryImpl.GetDataCallBack<AccommodationModel> {
+                        override fun onSuccess(data: AccommodationModel) {
+                            Log.d("lys", "searchAccommodation > ${data}")
+                        }
 
+                        override fun onFailure(throwable: Throwable) {
+                            throwable.printStackTrace()
+                        }
+                    })
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                setLoading(false)
+            }
+        }
+    }
 }
