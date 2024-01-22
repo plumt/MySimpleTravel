@@ -8,7 +8,6 @@ data class AccommodationResponse(
     val data: List<AccommodationData>?
 )
 
-
 data class AccommodationData(
     val companyName: String,        // 사업장명
     val bizLargeType: String,       // 업종 구분 대분류

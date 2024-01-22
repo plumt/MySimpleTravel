@@ -5,6 +5,13 @@ import com.yun.mysimpletravel.data.model.location.LocationModel
 
 object LocationServiceImpl {
     fun LocationCodeResponse.toLocationModelList(): List<LocationModel>? {
-        return this.response
+        return this.response?.map {
+            LocationModel(
+                id = 0,
+                code = it.code,
+                name = it.name,
+                fullName = it.fullName
+            )
+        }
     }
 }

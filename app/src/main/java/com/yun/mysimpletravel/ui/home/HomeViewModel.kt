@@ -9,29 +9,22 @@ import com.yun.mysimpletravel.BuildConfig
 import com.yun.mysimpletravel.base.BaseViewModel
 import com.yun.mysimpletravel.common.constants.LocationConstants
 import com.yun.mysimpletravel.data.model.travel.accommodation.AccommodationModel
-import com.yun.mysimpletravel.data.model.weather.NowWeatherDataModel
+import com.yun.mysimpletravel.data.model.weather.NowWeatherModel
 import com.yun.mysimpletravel.data.repository.jejuhub.JejuHubRepositoryImpl
+import com.yun.mysimpletravel.data.repository.weather.WeatherRepositoryImpl
 import com.yun.mysimpletravel.util.PreferenceUtil
-import com.yun.mysimpletravel.util.WeatherUtil.weatherCompare
-import com.yun.mysimpletravel.util.WeatherUtil.weatherDetail
-import com.yun.mysimpletravel.util.WeatherUtil.weatherDust
-import com.yun.mysimpletravel.util.WeatherUtil.weatherIcon
-import com.yun.mysimpletravel.util.WeatherUtil.weatherState
-import com.yun.mysimpletravel.util.WeatherUtil.weatherTemperature
-import com.yun.mysimpletravel.util.WeatherUtil.weatherUDust
-import com.yun.mysimpletravel.util.WeatherUtil.weatherUV
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jsoup.Jsoup
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     application: Application,
     private val sPrefs: PreferenceUtil,
-    private val jejuHubRepositoryImpl: JejuHubRepositoryImpl
+    private val jejuHubRepositoryImpl: JejuHubRepositoryImpl,
+    private val weatherRepositoryImpl: WeatherRepositoryImpl
 ) : BaseViewModel(application) {
 
     private val _isLoading = MutableLiveData<Boolean>(true)
@@ -40,8 +33,8 @@ class HomeViewModel @Inject constructor(
     private val _isWeatherLoading = MutableLiveData<Boolean>(false)
     val isWeatherLoading: LiveData<Boolean> get() = _isWeatherLoading
 
-    private val _nowWeather = MutableLiveData<NowWeatherDataModel.WeatherInfo>()
-    val nowWeather: LiveData<NowWeatherDataModel.WeatherInfo> get() = _nowWeather
+    private val _nowWeather = MutableLiveData<NowWeatherModel>()
+    val nowWeather: LiveData<NowWeatherModel> get() = _nowWeather
 
     init {
         setLoading(false)
@@ -51,43 +44,42 @@ class HomeViewModel @Inject constructor(
      * 현재 날씨
      * 네이버 크롤링 사용
      */
-    suspend fun nowWeather(): Boolean {
+    suspend fun nowWeather() {
         setWeatherLoading(true)
         val location = sPrefs.getString(mContext, LocationConstants.Key.NAME)
+
         if (location.isNullOrEmpty()) {
             setLoading(false)
             setWeatherLoading(false)
-            return false
+            return
         }
 
-        return try {
-            val doc = withContext(Dispatchers.IO) {
-                Jsoup.connect("${BuildConfig.WEATHER_URL}${location}날씨").get()
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    setWeatherLoading(true)
+                    weatherRepositoryImpl.nowWeather(
+                        BuildConfig.WEATHER_URL,
+                        location,
+                        object : WeatherRepositoryImpl.GetDataCallBack<NowWeatherModel> {
+                            override fun onSuccess(data: NowWeatherModel) {
+                                setNowWeather(data)
+                            }
+
+                            override fun onFailure(throwable: Throwable) {
+                                throw Exception(throwable)
+                            }
+                        })
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    setWeatherLoading(false)
+                }
             }
-            Log.d("weather", "doc > $doc")
-            setWeatherLoading(false)
-            setNowWeather(
-                NowWeatherDataModel.WeatherInfo(
-                    location = sPrefs.getString(mContext, LocationConstants.Key.NAME) ?: "-",
-                    weatherState = doc.weatherState(),
-                    weatherTemperature = doc.weatherTemperature(),
-                    weatherImagePath = doc.weatherIcon(),
-                    weatherDetail = doc.weatherDetail(),
-                    weatherDust = doc.weatherDust(),
-                    weatherUDust = doc.weatherUDust(),
-                    weatherUV = doc.weatherUV(),
-                    weatherCompare = doc.weatherCompare()
-                )
-            ).also { setLoading(false) }
-            true
-        } catch (e: Exception) {
-            setWeatherLoading(false)
-            e.printStackTrace()
-            false
         }
     }
 
-    private fun setNowWeather(weather: NowWeatherDataModel.WeatherInfo) {
+    private fun setNowWeather(weather: NowWeatherModel) {
         _nowWeather.postValue(weather)
     }
 
@@ -98,7 +90,6 @@ class HomeViewModel @Inject constructor(
     private fun setWeatherLoading(loading: Boolean) {
         _isWeatherLoading.postValue(loading)
     }
-
 
     suspend fun searchAccommodation() {
         viewModelScope.launch {

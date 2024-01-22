@@ -12,7 +12,7 @@
 
         <variable
             name="weather"
-            type="com.yun.mysimpletravel.data.model.weather.NowWeatherDataModel.WeatherInfo" />
+            type="com.yun.mysimpletravel.data.model.weather.NowWeatherModel" />
 
         <variable
             name="loading"

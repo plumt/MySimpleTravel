@@ -52,7 +52,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun callNowWeather() {
         lifecycleScope.launch {
-            val weatherInfo = viewModel.nowWeather()
+            viewModel.nowWeather()
         }
     }
     private fun clickListenerSetting() {
