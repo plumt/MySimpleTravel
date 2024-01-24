@@ -13,13 +13,13 @@ import com.yun.mysimpletravel.common.constants.NavigationConstants.Type.ENTER
 import com.yun.mysimpletravel.common.constants.NavigationConstants.Type.EXIT
 import com.yun.mysimpletravel.common.constants.NavigationConstants.Type.NOT
 
-class NavigationManager(private val context: Context, private val view: View) {
+class NavigationManager(private val view: View) {
 
     fun backPressed() {
         view.findNavController().popBackStack()
     }
 
-    fun movingScreen(screenId: Int, type: NavigationConstants.Type, bundle: Bundle? = null) {
+    fun movingScreen(screenId: Int, type: NavigationConstants.Type = NavigationConstants.Type.NOT, bundle: Bundle? = null) {
         val navOption = when (type) {
             ENTER -> enterScreen()
             EXIT -> exitScreen()

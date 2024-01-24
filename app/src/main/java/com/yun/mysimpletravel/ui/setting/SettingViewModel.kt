@@ -36,7 +36,7 @@ class SettingViewModel @Inject constructor(
     private val locationRepositoryImpl: LocationRepositoryImpl
 ) : BaseViewModel(application) {
 
-    private val _isLoading = MutableLiveData<Boolean>()
+    private val _isLoading = MutableLiveData<Boolean>(false)
     override val isLoading: LiveData<Boolean> get() = _isLoading
 
     private val _userInfo = MutableLiveData<UserInfoDataModel>()

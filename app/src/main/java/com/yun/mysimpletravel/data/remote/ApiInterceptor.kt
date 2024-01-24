@@ -17,7 +17,7 @@ class ApiInterceptor(
         if (openApiCheck(originalRequest.url.toString())) {
             // open api라면, 캐시를 1일로 한다
 //            60 * 60 * 24 * 1
-            newRequest.header("Cache-Control", "public, max-stale=" + 60 * 60 * 24 * 1).removeHeader("Pragma")
+//            newRequest.header("Cache-Control", "public, max-stale=" + 60 * 60 * 24 * 1).removeHeader("Pragma")
         }
         val response = chain.proceed(newRequest.build())
         return response

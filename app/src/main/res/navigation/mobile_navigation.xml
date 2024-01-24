@@ -8,8 +8,7 @@
     <action
         android:id="@+id/global_homeFragment"
         app:destination="@id/homeFragment"
-        app:popUpTo="@id/mobile_navigation"
-        app:popUpToInclusive="true" />
+        />
 
     <action
         android:id="@+id/global_settingFragment"

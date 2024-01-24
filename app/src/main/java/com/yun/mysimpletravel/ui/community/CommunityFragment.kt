@@ -145,7 +145,7 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
 
     private fun init(view: View) {
 
-        navigationManager = NavigationManager(requireActivity(), view)
+        navigationManager = NavigationManager(view)
         communityCreatePopup =
             CommunityCreatePopup(requireActivity(), this, communityCreateInterface)
 

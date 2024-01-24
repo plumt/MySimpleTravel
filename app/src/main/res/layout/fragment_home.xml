@@ -20,7 +20,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="#e5e5e5">
+<!--            android:background="@color/white">-->
 
             <include
                 android:id="@+id/ic_now_weather"
@@ -37,11 +38,11 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@id/ic_now_weather">
 
-                <Button
-                    android:id="@+id/btn_api_test"
-                    android:text="btn api test"
-                    android:textColor="@color/black"
-                    android:backgroundTint="@color/color_cccccc"
+                <include
+                    android:id="@+id/btn_search_accommodation"
+                    layout="@layout/view_card_button"
+                    app:click="@{(v) -> home.searchAccommodation(v)}"
+                    app:title="@{`숙박 시설 검색하기`}"
                     android:layout_width="match_parent"
                     android:layout_height="300dp" />
 

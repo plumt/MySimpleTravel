@@ -40,7 +40,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        navigationManager = NavigationManager(requireActivity(), view)
+        navigationManager = NavigationManager(view)
         kakaoManager = KakaoAuthManager(requireActivity(), kakaoInterface)
         sharedPreferenceManager = SharedPreferenceManager(requireActivity(), sPrefs)
 

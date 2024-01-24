@@ -108,8 +108,7 @@ class MainActivity : AppCompatActivity() {
 
         loadingDialog = LoadingDialog(this)
         binding.bottomNavi.background = null
-
-        navigationManager = NavigationManager(this, findViewById(R.id.nav_host_fragment))
+        navigationManager = NavigationManager(findViewById(R.id.nav_host_fragment))
     }
 
     /**
@@ -119,10 +118,11 @@ class MainActivity : AppCompatActivity() {
         when (it) {
             binding.fabHome -> {
                 homeScreenClickEvent()
-                moveMainScreen(
-                    nowIndex,
-                    R.id.global_homeFragment
-                )
+                navigationManager.movingScreen(R.id.global_homeFragment)
+//                moveMainScreen(
+//                    nowIndex,
+//                    R.id.global_homeFragment
+//                )
             }
         }
     }

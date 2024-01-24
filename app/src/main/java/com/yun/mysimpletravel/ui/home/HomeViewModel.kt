@@ -2,12 +2,18 @@ package com.yun.mysimpletravel.ui.home
 
 import android.app.Application
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.findNavController
 import com.yun.mysimpletravel.BuildConfig
+import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseViewModel
 import com.yun.mysimpletravel.common.constants.LocationConstants
+import com.yun.mysimpletravel.common.constants.NavigationConstants
+import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.data.model.travel.accommodation.AccommodationModel
 import com.yun.mysimpletravel.data.model.weather.NowWeatherModel
 import com.yun.mysimpletravel.data.repository.jejuhub.JejuHubRepositoryImpl
@@ -84,6 +90,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun setLoading(loading: Boolean) {
+        Log.d("lys","setLoading > $loading")
         _isLoading.postValue(loading)
     }
 
@@ -91,7 +98,7 @@ class HomeViewModel @Inject constructor(
         _isWeatherLoading.postValue(loading)
     }
 
-    suspend fun searchAccommodation() {
+    fun searchAccommodation(v: View) {
         viewModelScope.launch {
             try {
                 setLoading(true)
@@ -101,16 +108,24 @@ class HomeViewModel @Inject constructor(
                     object : JejuHubRepositoryImpl.GetDataCallBack<AccommodationModel> {
                         override fun onSuccess(data: AccommodationModel) {
                             Log.d("lys", "searchAccommodation > ${data}")
+                            NavigationManager(v).let {
+                                it.movingScreen(
+                                    R.id.global_settingFragment, NavigationConstants.Type.ENTER
+                                )
+                            }
                         }
 
                         override fun onFailure(throwable: Throwable) {
                             throwable.printStackTrace()
+                            Toast.makeText(mContext, "_서버와의 통신이 원활하지 않습니다",Toast.LENGTH_SHORT).show()
                         }
                     })
             } catch (e: Exception) {
+                Log.e("lys","error >>> ${e.message}")
                 e.printStackTrace()
             } finally {
                 setLoading(false)
+                Log.d("lys", "Finally block executed.")
             }
         }
     }

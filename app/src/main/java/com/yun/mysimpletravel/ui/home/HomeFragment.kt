@@ -18,6 +18,8 @@ import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.databinding.FragmentHomeBinding
 import com.yun.mysimpletravel.util.PreferenceUtil
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -43,10 +45,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         clickListenerSetting()
 
         observes()
+
+
+
+    }
+
+    suspend fun aa(){
+        coroutineScope {
+            this.launch(Dispatchers.Main){
+
+            }
+        }
     }
 
     private fun init(view: View) {
-        navigationManager = NavigationManager(requireActivity(), view)
+        navigationManager = NavigationManager(view)
         callNowWeather()
     }
 
@@ -57,7 +70,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     }
     private fun clickListenerSetting() {
         binding.icNowWeather.cvNowWeather.setOnClickListener(onSingleClickListener)
-        binding.btnApiTest.setOnClickListener(onSingleClickListener)
     }
 
     private val onSingleClickListener = object : OnSingleClickListener() {
@@ -74,11 +86,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                     }
                 }
 
-                binding.btnApiTest -> {
-                    lifecycleScope.launch {
-                        viewModel.searchAccommodation()
-                    }
-                }
             }
         }
     }

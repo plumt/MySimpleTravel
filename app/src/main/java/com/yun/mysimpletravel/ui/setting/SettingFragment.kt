@@ -37,7 +37,10 @@ import com.yun.mysimpletravel.ui.popup.ButtonPopup
 import com.yun.mysimpletravel.util.FirebaseUtil
 import com.yun.mysimpletravel.util.PreferenceUtil
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -64,7 +67,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
 
         kakaoAuthManager = KakaoAuthManager(requireActivity(), kakaoInterface)
         sharedPreferenceManager = SharedPreferenceManager(requireActivity(), sPrefs)
-        navigationManager = NavigationManager(requireActivity(), view)
+        navigationManager = NavigationManager(view)
         locationBottomSheet = LocationBottomSheet(locationBottomSheetInterface)
         buttonPopup = ButtonPopup(requireActivity())
 
@@ -203,7 +206,6 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
             )
         }
     }
-
     private fun changeLocation(param: List<LocationModel>) {
         locationBottomSheet.setLocationList(param)
         locationBottomSheet.setLoading(false)

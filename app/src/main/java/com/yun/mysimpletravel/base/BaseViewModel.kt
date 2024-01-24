@@ -16,19 +16,19 @@ open class BaseViewModel constructor(application: Application) : AndroidViewMode
     open val isLoading: LiveData<Boolean> get() = _isLoading
 
 
-    suspend fun <T : Response<R>, R> callApi(api: suspend () -> T, maxRetries: Int = 3): R? {
-        if (!isNetworkConnected(mContext)) return null
-        var retries = 0
-        while (retries < maxRetries) {
-            try {
-                val apiResponse = api()
-                if (apiResponse.isSuccessful) return apiResponse.body()
-                else Log.e("lys", "ApiResponse Error $retries")
-            } catch (e: Exception) {
-                Log.e("lys", "Coroutine Exception: $e")
-            }
-            retries++
-        }
-        return null
-    }
+//    suspend fun <T : Response<R>, R> callApi(api: suspend () -> T, maxRetries: Int = 3): R? {
+//        if (!isNetworkConnected(mContext)) return null
+//        var retries = 0
+//        while (retries < maxRetries) {
+//            try {
+//                val apiResponse = api()
+//                if (apiResponse.isSuccessful) return apiResponse.body()
+//                else Log.e("lys", "ApiResponse Error $retries")
+//            } catch (e: Exception) {
+//                Log.e("lys", "Coroutine Exception: $e")
+//            }
+//            retries++
+//        }
+//        return null
+//    }
 }

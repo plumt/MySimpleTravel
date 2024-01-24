@@ -22,6 +22,11 @@ class MainViewModel @Inject constructor(application: Application) : BaseViewMode
     private val _bottomNavDoubleTab = MutableLiveData<Boolean>(false)
     val bottomNavDoubleTab: LiveData<Boolean> get() = _bottomNavDoubleTab
 
+
+    private val _bottomIndex = MutableLiveData<Int>(2)
+    val bottomIndex: LiveData<Int> get() = _bottomIndex
+
+
     /**
      * 로딩 프로그레스바 노출/숨김
      */
@@ -36,8 +41,20 @@ class MainViewModel @Inject constructor(application: Application) : BaseViewMode
         _isBottomNav.value = isVisible
     }
 
+    fun bottomNavTabEvent(index: Int) {
+        _bottomIndex.postValue(index)
+    }
+
     fun bottomNavDoubleTabEvent(clear: Boolean = false){
         _bottomNavDoubleTab.value = clear
+    }
+
+    fun getIconResource(): Int {
+        return if(bottomIndex.value == 2){
+            R.drawable.baseline_home_24_white
+        } else {
+            R.drawable.baseline_home_24_black
+        }
     }
 
 }
