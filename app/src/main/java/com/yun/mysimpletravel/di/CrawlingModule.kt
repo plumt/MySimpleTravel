@@ -18,17 +18,4 @@ object CrawlingModule {
     fun provideWeatherService(): WeatherService {
         return WeatherService
     }
-
-//
-//    @Provides
-//    @Singleton
-//    fun provideWeatherService(): WeatherService {
-//        return WeatherServiceImpl()
-//    }
-//
-//    @Provides
-//    @Singleton
-//    fun provideWeatherRepository(weatherService: WeatherService): WeatherRepository {
-//        return WeatherRepository(weatherService)
-//    }
 }

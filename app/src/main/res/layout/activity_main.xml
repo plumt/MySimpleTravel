@@ -48,10 +48,9 @@
                 app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
                 app:itemTextAppearanceInactive="@style/BottomNavigationView"
                 app:labelVisibilityMode="labeled"
-                app:onNavigationItemSelected="@{(item) -> main.bottomNavTabEvent(item.getOrder())}"
-            app:menu="@menu/bottom_menu"
+                app:menu="@menu/bottom_menu"
+                app:onNavigationItemSelected="@{(view, item) -> main.bottomNavTabEvent(item)}"
                 app:rippleColor="@android:color/transparent" />
-
         </com.google.android.material.bottomappbar.BottomAppBar>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -66,9 +65,10 @@
             android:visibility="@{main.isBottomNav ? View.VISIBLE : View.GONE}"
             app:borderWidth="0dp"
             app:elevation="0dp"
-            android:src="@{main.getIconResource()}"
+            android:src="@{main.fabHomeId() == main.moveScreen ? @drawable/baseline_home_24_white : @drawable/baseline_home_24_black}"
             app:layout_anchor="@id/bottom_app_bar"
             app:rippleColor="@null"
+            app:onSingleClick="@{() -> main.bottomNavTabEvent(main.fabHomeId())}"
             app:tint="@null" />
 
 <!--        android:src="@drawable/baseline_home_24_white"-->

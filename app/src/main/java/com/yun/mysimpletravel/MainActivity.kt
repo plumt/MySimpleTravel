@@ -45,48 +45,48 @@ class MainActivity : AppCompatActivity() {
 
         observes()
 
-        binding.bottomNavi.setOnItemSelectedListener {
-
-            when (it.itemId) {
-                R.id.map -> {
-                    // Map Screen
-                    moveMainScreen(
-                        nowIndex,
-                        R.id.global_mapFragment
-                    )
-                    true
-                }
-
-                R.id.diary -> {
-                    // Diary Screen
-                    moveMainScreen(
-                        nowIndex,
-                        R.id.global_diaryFragment
-                    )
-                    true
-                }
-
-                R.id.community -> {
-                    // Community Screen
-                    moveMainScreen(
-                        nowIndex,
-                        R.id.action_global_communityFragment
-                    )
-                    true
-                }
-
-                R.id.setting -> {
-                    // More Screen
-                    moveMainScreen(
-                        nowIndex,
-                        R.id.global_settingFragment
-                    )
-                    true
-                }
-
-                else -> false
-            }
-        }
+//        binding.bottomNavi.setOnItemSelectedListener {
+//
+//            when (it.itemId) {
+//                R.id.map -> {
+//                    // Map Screen
+//                    moveMainScreen(
+//                        nowIndex,
+//                        R.id.global_mapFragment
+//                    )
+//                    true
+//                }
+//
+//                R.id.diary -> {
+//                    // Diary Screen
+//                    moveMainScreen(
+//                        nowIndex,
+//                        R.id.global_diaryFragment
+//                    )
+//                    true
+//                }
+//
+//                R.id.community -> {
+//                    // Community Screen
+//                    moveMainScreen(
+//                        nowIndex,
+//                        R.id.action_global_communityFragment
+//                    )
+//                    true
+//                }
+//
+//                R.id.setting -> {
+//                    // More Screen
+//                    moveMainScreen(
+//                        nowIndex,
+//                        R.id.global_settingFragment
+//                    )
+//                    true
+//                }
+//
+//                else -> false
+//            }
+//        }
 
         findViewById<View>(R.id.map).setOnLongClickListener { true }
         findViewById<View>(R.id.diary).setOnLongClickListener { true }
@@ -132,11 +132,19 @@ class MainActivity : AppCompatActivity() {
      */
     private fun observes() {
 
+
+
         mainViewModel.let {
 
             it.isLoading.observe(this) { isShow ->
                 // loading dialog show / hide
                 if (isShow) loadingDialog.show() else loadingDialog.dismiss()
+            }
+
+            it.moveScreen.observe(this){
+                if(it != null){
+                    navigationManager.movingScreen(it)
+                }
             }
 
 //            it.bottomNavDoubleTab.observe(this) { doubleTab ->

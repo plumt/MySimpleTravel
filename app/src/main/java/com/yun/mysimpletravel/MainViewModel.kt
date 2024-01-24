@@ -1,10 +1,18 @@
 package com.yun.mysimpletravel
 
 import android.app.Application
+import android.util.Log
+import android.view.MenuItem
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import com.yun.mysimpletravel.base.BaseViewModel
+import com.yun.mysimpletravel.common.constants.NavigationConstants
+import com.yun.mysimpletravel.common.manager.NavigationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.Objects
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +35,9 @@ class MainViewModel @Inject constructor(application: Application) : BaseViewMode
     val bottomIndex: LiveData<Int> get() = _bottomIndex
 
 
+    private val _moveScreen = MutableLiveData<Int>(R.id.fab_home)
+    val moveScreen: LiveData<Int> get() = _moveScreen
+
     /**
      * 로딩 프로그레스바 노출/숨김
      */
@@ -41,20 +52,35 @@ class MainViewModel @Inject constructor(application: Application) : BaseViewMode
         _isBottomNav.value = isVisible
     }
 
-    fun bottomNavTabEvent(index: Int) {
-        _bottomIndex.postValue(index)
+    fun test(): Boolean {
+        return true
     }
 
-    fun bottomNavDoubleTabEvent(clear: Boolean = false){
+    fun bottomNavTabEvent(index: Any): Boolean {
+        val destinationId = when (index) {
+            R.id.map -> R.id.global_settingFragment
+            R.id.diary -> R.id.global_diaryFragment
+            R.id.community -> R.id.action_global_communityFragment
+            R.id.setting -> R.id.global_settingFragment
+            R.id.fab_home -> R.id.global_homeFragment
+            else -> return false
+        }
+        _moveScreen.postValue(destinationId)
+        return true
+    }
+
+    fun bottomNavDoubleTabEvent(clear: Boolean = false) {
         _bottomNavDoubleTab.value = clear
     }
 
     fun getIconResource(): Int {
-        return if(bottomIndex.value == 2){
+        return if (moveScreen.value == R.id.fab_home) {
             R.drawable.baseline_home_24_white
         } else {
             R.drawable.baseline_home_24_black
         }
     }
+
+    fun fabHomeId() = R.id.fab_home
 
 }
