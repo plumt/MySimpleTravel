@@ -148,9 +148,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
      * 로그인 화면 이동
      */
     private fun moveLoginScreen() {
-        sharedVM.setBottomNav(false)
-        (activity as MainActivity).bottomButtonSelectedClear()
-        navigationManager.movingScreen(R.id.action_settingFragment_to_loginFragment, EXIT)
+//        sharedVM.setBottomNav(false)
+//        (activity as MainActivity).bottomButtonSelectedClear()
+//        navigationManager.movingScreen(R.id.action_settingFragment_to_loginFragment, EXIT)
     }
 
     private val kakaoInterface = object : KakaoAuthManager.KakaoInterface {

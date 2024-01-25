@@ -29,7 +29,7 @@
         app:popUpToInclusive="true" />
 
     <action
-        android:id="@+id/action_global_communityFragment"
+        android:id="@+id/global_communityFragment"
         app:destination="@id/communityFragment"
         app:popUpTo="@id/mobile_navigation"
         app:popUpToInclusive="true" />

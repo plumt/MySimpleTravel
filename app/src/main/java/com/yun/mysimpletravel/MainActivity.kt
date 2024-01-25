@@ -1,11 +1,12 @@
 package com.yun.mysimpletravel
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -26,72 +27,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var loadingDialog: LoadingDialog
     private lateinit var navigationManager: NavigationManager
 
-    private val screenIndex = mapOf(
-        R.id.global_mapFragment to 1,
-        R.id.global_diaryFragment to 2,
-        R.id.global_homeFragment to 3,
-        R.id.action_global_communityFragment to 4,
-        R.id.global_settingFragment to 5
-    )
-
-    private var nowIndex = R.id.global_homeFragment
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
-
-        clickListenerSetting()
-        homeScreenClickEvent()
-
         observes()
-
-//        binding.bottomNavi.setOnItemSelectedListener {
-//
-//            when (it.itemId) {
-//                R.id.map -> {
-//                    // Map Screen
-//                    moveMainScreen(
-//                        nowIndex,
-//                        R.id.global_mapFragment
-//                    )
-//                    true
-//                }
-//
-//                R.id.diary -> {
-//                    // Diary Screen
-//                    moveMainScreen(
-//                        nowIndex,
-//                        R.id.global_diaryFragment
-//                    )
-//                    true
-//                }
-//
-//                R.id.community -> {
-//                    // Community Screen
-//                    moveMainScreen(
-//                        nowIndex,
-//                        R.id.action_global_communityFragment
-//                    )
-//                    true
-//                }
-//
-//                R.id.setting -> {
-//                    // More Screen
-//                    moveMainScreen(
-//                        nowIndex,
-//                        R.id.global_settingFragment
-//                    )
-//                    true
-//                }
-//
-//                else -> false
-//            }
-//        }
-
-        findViewById<View>(R.id.map).setOnLongClickListener { true }
-        findViewById<View>(R.id.diary).setOnLongClickListener { true }
-        findViewById<View>(R.id.community).setOnLongClickListener { true }
-        findViewById<View>(R.id.setting).setOnLongClickListener { true }
     }
 
     /**
@@ -105,25 +44,12 @@ class MainActivity : AppCompatActivity() {
             main = mainViewModel
         }
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-
         loadingDialog = LoadingDialog(this)
         binding.bottomNavi.background = null
         navigationManager = NavigationManager(findViewById(R.id.nav_host_fragment))
-    }
-
-    /**
-     * 클릭 이벤트 리스너
-     */
-    private val onClickListener = View.OnClickListener {
-        when (it) {
-            binding.fabHome -> {
-                homeScreenClickEvent()
-                navigationManager.movingScreen(R.id.global_homeFragment)
-//                moveMainScreen(
-//                    nowIndex,
-//                    R.id.global_homeFragment
-//                )
-            }
+        homeScreenClickedEffect()
+        binding.bottomNavi.menu.forEach {
+            findViewById<View>(it.itemId).setOnLongClickListener { true }
         }
     }
 
@@ -132,73 +58,24 @@ class MainActivity : AppCompatActivity() {
      */
     private fun observes() {
 
+        mainViewModel.let { vm ->
 
-
-        mainViewModel.let {
-
-            it.isLoading.observe(this) { isShow ->
+            vm.isLoading.observe(this) { isShow ->
                 // loading dialog show / hide
                 if (isShow) loadingDialog.show() else loadingDialog.dismiss()
             }
 
-            it.moveScreen.observe(this){
-                if(it != null){
+            vm.moveScreen.observe(this) { screen ->
+                screen?.let {
                     navigationManager.movingScreen(it)
+                    if (it == R.id.global_homeFragment) homeScreenClickedEffect()
                 }
             }
-
-//            it.bottomNavDoubleTab.observe(this) { doubleTab ->
-//                Log.d("lys","doubleTab > $doubleTab")
-//                // bottom nav double tab
-//                if (doubleTab) mainViewModel.bottomNavDoubleTab()
-//            }
-
         }
     }
 
-    /**
-     * 클릭 이벤트 리스너 셋팅
-     */
-    private fun clickListenerSetting() {
-        binding.fabHome.setOnClickListener(onClickListener)
-    }
-
-    /**
-     * 메인 홈 화면 버튼 클릭 이벤트
-     */
-    private fun homeScreenClickEvent() {
+    private fun homeScreenClickedEffect() {
         binding.bottomNavi.menu.getItem(2).isEnabled = false
         binding.bottomNavi.menu.getItem(2).isChecked = true
-    }
-
-    /**
-     * 로그아웃 OR 회원탈퇴시 버튼 상태 초기화
-     */
-    fun bottomButtonSelectedClear(){
-        binding.bottomNavi.menu.getItem(2).isEnabled = false
-        binding.bottomNavi.menu.getItem(2).isChecked = true
-        nowIndex = R.id.global_homeFragment
-        val drawable = ContextCompat.getDrawable(this, R.drawable.baseline_home_24_white)
-        binding.fabHome.setImageDrawable(drawable)
-
-    }
-
-    private fun moveMainScreen(from: Int?, to: Int) {
-        val fromIndex = screenIndex[from]
-        val toIndex = screenIndex[to]
-        if (fromIndex == toIndex) {
-            mainViewModel.bottomNavDoubleTabEvent(true)
-            return
-        }
-        val animation =
-            if (from == null || fromIndex == null || toIndex == null) NavigationConstants.Type.NOT
-            else if (fromIndex < toIndex) NavigationConstants.Type.ENTER else NavigationConstants.Type.EXIT
-
-        navigationManager.movingScreen(to, animation)
-        nowIndex = to
-        val drawableRes =
-            if (to == R.id.global_homeFragment) R.drawable.baseline_home_24_white else R.drawable.baseline_home_24_black
-        val drawable = ContextCompat.getDrawable(this, drawableRes)
-        binding.fabHome.setImageDrawable(drawable)
     }
 }

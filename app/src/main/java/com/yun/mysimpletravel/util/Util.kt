@@ -8,6 +8,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.core.view.WindowCompat
@@ -66,7 +67,7 @@ object Util {
         return (if (differenceInSeconds <= 2) {
             2.0 - differenceInSeconds
         } else {
-            0.0
+            differenceInSeconds
         } * 1000).toLong()
     }
 
@@ -116,5 +117,4 @@ object Util {
         url.contains(BuildConfig.JEJU_ITS_URL) -> true
         else -> false
     }
-
 }
