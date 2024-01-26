@@ -29,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:loading="@{home.isWeatherLoading &amp;&amp; !home.isLoading}"
+                app:click="@{(v) -> home.onWeatherClick(v)}"
                 app:weather="@{home.nowWeather}" />
 
             <LinearLayout

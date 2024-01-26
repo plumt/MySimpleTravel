@@ -18,6 +18,11 @@
             name="loading"
             type="Boolean" />
 
+        <variable
+            name="click"
+            type="android.view.View.OnClickListener" />
+
+
     </data>
 
 
@@ -47,6 +52,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:clickable="true"
+            app:onSingleClick="@{(v) -> click.onClick(v)}"
             app:rippleColor="@android:color/transparent"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="10dp"

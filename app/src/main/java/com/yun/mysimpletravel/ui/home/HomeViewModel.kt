@@ -50,7 +50,7 @@ class HomeViewModel @Inject constructor(
      * 현재 날씨
      * 네이버 크롤링 사용
      */
-    suspend fun nowWeather() {
+    fun nowWeather() {
         setWeatherLoading(true)
         val location = sPrefs.getString(mContext, LocationConstants.Key.NAME)
 
@@ -96,6 +96,11 @@ class HomeViewModel @Inject constructor(
 
     private fun setWeatherLoading(loading: Boolean) {
         _isWeatherLoading.postValue(loading)
+    }
+
+    fun onWeatherClick(v: View){
+        Log.d("lys","onWeatherClick")
+        nowWeather()
     }
 
     fun searchAccommodation(v: View) {

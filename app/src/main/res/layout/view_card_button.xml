@@ -39,7 +39,8 @@
             android:layout_height="wrap_content"
             android:minHeight="70dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:onSingleClick="@{click}">
+            android:clickable="true"
+            app:onSingleClick="@{(v) -> click.onClick(v)}">
 
             <TextView
                 android:layout_width="wrap_content"

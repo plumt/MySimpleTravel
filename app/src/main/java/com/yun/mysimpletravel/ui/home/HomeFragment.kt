@@ -47,12 +47,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         observes()
 
 
-
     }
 
-    suspend fun aa(){
+    suspend fun aa() {
         coroutineScope {
-            this.launch(Dispatchers.Main){
+            this.launch(Dispatchers.Main) {
 
             }
         }
@@ -64,39 +63,44 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     private fun callNowWeather() {
-        lifecycleScope.launch {
-            viewModel.nowWeather()
-        }
+        viewModel.nowWeather()
     }
+
     private fun clickListenerSetting() {
-        binding.icNowWeather.cvNowWeather.setOnClickListener(onSingleClickListener)
+//        binding.icNowWeather.cvNowWeather.setOnClickListener(onSingleClickListener)
     }
 
     private val onSingleClickListener = object : OnSingleClickListener() {
         override fun onSingleClick(v: View) {
             when (v) {
-                binding.icNowWeather.cvNowWeather -> {
-                    if (sPrefs.getString(requireActivity(), NAME).isNullOrEmpty()) {
-                        //셋팅 화면 이동
-                        navigationManager.movingScreen(
-                            R.id.global_settingFragment, NavigationConstants.Type.ENTER
-                        )
-                    } else if (!viewModel.isWeatherLoading.value!!) {
-                        callNowWeather()
-                    }
-                }
+//                binding.icNowWeather.cvNowWeather -> {
+//                    if (sPrefs.getString(requireActivity(), NAME).isNullOrEmpty()) {
+//                        //셋팅 화면 이동
+//                        navigationManager.movingScreen(
+//                            R.id.global_settingFragment, NavigationConstants.Type.ENTER
+//                        )
+//                    } else if (!viewModel.isWeatherLoading.value!!) {
+//                        callNowWeather()
+//                    }
+//                }
 
             }
         }
     }
 
     private fun observes() {
-        sharedVM.bottomNavDoubleTab.observe(viewLifecycleOwner) { doubleTab ->
 
-            if (doubleTab) {
-                binding.layoutParent.smoothScrollTo(0, 0)
-                sharedVM.bottomNavDoubleTabEvent()
+        sharedVM.let { sv ->
+            sv.bottomNavDoubleTab.observe(viewLifecycleOwner) { doubleTab ->
+                if (doubleTab) {
+                    binding.layoutParent.smoothScrollTo(0, 0)
+                    sharedVM.bottomNavDoubleTabEvent()
+                }
             }
+        }
+
+        viewModel.let { vm ->
+
         }
     }
 
