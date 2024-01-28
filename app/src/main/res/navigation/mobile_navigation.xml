@@ -58,7 +58,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.yun.mysimpletravel.ui.home.HomeFragment"
-        android:label="HomeFragment"
+        android:label="Home"
         tools:layout="@layout/fragment_home">
     </fragment>
     <fragment
@@ -69,22 +69,22 @@
     <fragment
         android:id="@+id/diaryFragment"
         android:name="com.yun.mysimpletravel.ui.diary.DiaryFragment"
-        android:label="DiaryFragment"
+        android:label="Diary"
         tools:layout="@layout/fragment_diary" />
     <fragment
         android:id="@+id/communityFragment"
         android:name="com.yun.mysimpletravel.ui.community.CommunityFragment"
-        android:label="CommunityFragment"
+        android:label="Community"
         tools:layout="@layout/fragment_community" />
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.yun.mysimpletravel.ui.map.MapFragment"
-        android:label="MapFragment"
+        android:label="Map"
         tools:layout="@layout/fragment_map" />
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.yun.mysimpletravel.ui.setting.SettingFragment"
-        android:label="SettingFragment"
+        android:label="Setting"
         tools:layout="@layout/fragment_setting" >
         <action
             android:id="@+id/action_settingFragment_to_loginFragment"

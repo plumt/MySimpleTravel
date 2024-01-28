@@ -27,7 +27,7 @@ class CommunityViewModel @Inject constructor(
 ) :
     BaseViewModel(application) {
 
-    private val _isLoading = MutableLiveData<Boolean>(true)
+    private val _isLoading = MutableLiveData<Boolean>(false)
     override val isLoading: LiveData<Boolean> get() = _isLoading
 
     private val _communityList = ListLiveData<CommunityDataModel.RS>()

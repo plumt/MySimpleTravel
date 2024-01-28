@@ -33,24 +33,27 @@ class HomeViewModel @Inject constructor(
     private val weatherRepositoryImpl: WeatherRepositoryImpl
 ) : BaseViewModel(application) {
 
-    private val _isLoading = MutableLiveData<Boolean>(true)
+    private val _isLoading = MutableLiveData<Boolean>(false)
     override val isLoading: LiveData<Boolean> get() = _isLoading
 
     private val _isWeatherLoading = MutableLiveData<Boolean>(false)
     val isWeatherLoading: LiveData<Boolean> get() = _isWeatherLoading
 
+    private val _moveScreen = MutableLiveData<String>()
+    val moveScreen: LiveData<String> get() = _moveScreen
+
     private val _nowWeather = MutableLiveData<NowWeatherModel>()
     val nowWeather: LiveData<NowWeatherModel> get() = _nowWeather
 
     init {
-        setLoading(false)
+        nowWeather()
     }
 
     /**
      * 현재 날씨
      * 네이버 크롤링 사용
      */
-    fun nowWeather() {
+    private fun nowWeather() {
         setWeatherLoading(true)
         val location = sPrefs.getString(mContext, LocationConstants.Key.NAME)
 
@@ -90,7 +93,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun setLoading(loading: Boolean) {
-        Log.d("lys","setLoading > $loading")
+        Log.d("lys", "setLoading > $loading")
         _isLoading.postValue(loading)
     }
 
@@ -98,9 +101,12 @@ class HomeViewModel @Inject constructor(
         _isWeatherLoading.postValue(loading)
     }
 
-    fun onWeatherClick(v: View){
-        Log.d("lys","onWeatherClick")
-        nowWeather()
+    fun onWeatherClick(v: View) {
+        if (sPrefs.getString(mContext, LocationConstants.Key.NAME).isNullOrEmpty()) {
+            moveScreens(NavigationConstants.MainScreen.SETTING)
+        } else {
+            nowWeather()
+        }
     }
 
     fun searchAccommodation(v: View) {
@@ -113,25 +119,26 @@ class HomeViewModel @Inject constructor(
                     object : JejuHubRepositoryImpl.GetDataCallBack<AccommodationModel> {
                         override fun onSuccess(data: AccommodationModel) {
                             Log.d("lys", "searchAccommodation > ${data}")
-                            NavigationManager(v).let {
-                                it.movingScreen(
-                                    R.id.global_settingFragment, NavigationConstants.Type.ENTER
-                                )
-                            }
+                            moveScreens(NavigationConstants.MainScreen.SETTING)
                         }
 
                         override fun onFailure(throwable: Throwable) {
                             throwable.printStackTrace()
-                            Toast.makeText(mContext, "_서버와의 통신이 원활하지 않습니다",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(mContext, "_서버와의 통신이 원활하지 않습니다", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     })
             } catch (e: Exception) {
-                Log.e("lys","error >>> ${e.message}")
+                Log.e("lys", "error >>> ${e.message}")
                 e.printStackTrace()
             } finally {
                 setLoading(false)
                 Log.d("lys", "Finally block executed.")
             }
         }
+    }
+
+    fun moveScreens(screen: String) {
+        _moveScreen.postValue(screen)
     }
 }

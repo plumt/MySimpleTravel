@@ -9,8 +9,7 @@ object LocationServiceImpl {
             LocationModel(
                 id = 0,
                 code = it.code,
-                name = it.name,
-                fullName = it.fullName
+                name = it.name
             )
         }
     }

@@ -9,6 +9,5 @@ data class LocationCodeResponse(
 
 data class LocationCodeList(
     val code: String,
-    var name: String,
-    var fullName: String
+    var name: String
 )

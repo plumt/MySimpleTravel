@@ -35,57 +35,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     @Inject
     lateinit var sPrefs: PreferenceUtil
 
-    private lateinit var navigationManager: NavigationManager
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        init(view)
-
-        clickListenerSetting()
-
         observes()
-
-
-    }
-
-    suspend fun aa() {
-        coroutineScope {
-            this.launch(Dispatchers.Main) {
-
-            }
-        }
-    }
-
-    private fun init(view: View) {
-        navigationManager = NavigationManager(view)
-        callNowWeather()
-    }
-
-    private fun callNowWeather() {
-        viewModel.nowWeather()
-    }
-
-    private fun clickListenerSetting() {
-//        binding.icNowWeather.cvNowWeather.setOnClickListener(onSingleClickListener)
-    }
-
-    private val onSingleClickListener = object : OnSingleClickListener() {
-        override fun onSingleClick(v: View) {
-            when (v) {
-//                binding.icNowWeather.cvNowWeather -> {
-//                    if (sPrefs.getString(requireActivity(), NAME).isNullOrEmpty()) {
-//                        //셋팅 화면 이동
-//                        navigationManager.movingScreen(
-//                            R.id.global_settingFragment, NavigationConstants.Type.ENTER
-//                        )
-//                    } else if (!viewModel.isWeatherLoading.value!!) {
-//                        callNowWeather()
-//                    }
-//                }
-
-            }
-        }
     }
 
     private fun observes() {
@@ -100,7 +52,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
 
         viewModel.let { vm ->
-
+            vm.moveScreen.observe(viewLifecycleOwner){
+                sharedVM.moveScreens(it)
+            }
         }
     }
 

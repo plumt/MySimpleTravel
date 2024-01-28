@@ -65,7 +65,7 @@
             android:visibility="@{main.isBottomNav ? View.VISIBLE : View.GONE}"
             app:borderWidth="0dp"
             app:elevation="0dp"
-            android:src="@{main.fabHomeId() == main.moveScreen || main.moveScreen == null ? @drawable/baseline_home_24_white : @drawable/baseline_home_24_black}"
+            android:src="@{`Home` == main.moveScreen || main.moveScreen == null ? @drawable/baseline_home_24_white : @drawable/baseline_home_24_black}"
             app:layout_anchor="@id/bottom_app_bar"
             app:rippleColor="@null"
             app:onSingleClick="@{(v) -> main.bottomNavTabEvent(`HOME`)}"

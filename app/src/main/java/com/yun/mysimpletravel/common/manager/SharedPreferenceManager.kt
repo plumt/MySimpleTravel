@@ -45,11 +45,8 @@ class SharedPreferenceManager @Inject constructor(
         sPrefs.getString(context, AuthConstants.Info.PUSH_TOKEN) ?: ""
     )
 
-    fun updateLocationName(name: String?, fullName: String?) {
-//        if (name == null || fullName == null) return
+    fun updateLocationName(name: String?) {
         sPrefs.setString(context, LocationConstants.Key.NAME, name)
-        sPrefs.setString(context, LocationConstants.Key.FULL_NAME, fullName)
-        Log.d("lys","name > $name   fullName > $fullName")
     }
 
 }

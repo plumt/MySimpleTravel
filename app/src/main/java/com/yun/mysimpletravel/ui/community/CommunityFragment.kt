@@ -151,7 +151,7 @@ class CommunityFragment : BaseFragment<FragmentCommunityBinding, CommunityViewMo
 
 
         Util.delayedHandler(100) {
-            viewModel.setData(clear = true)
+//            viewModel.setData(clear = true)
         }
     }
 

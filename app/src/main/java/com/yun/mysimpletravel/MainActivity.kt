@@ -14,6 +14,7 @@ import com.yun.mysimpletravel.common.constants.NavigationConstants
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.databinding.ActivityMainBinding
 import com.yun.mysimpletravel.ui.loading.LoadingDialog
+import com.yun.mysimpletravel.util.NavigationUtil.mainScreenAnimation
 import com.yun.mysimpletravel.util.Util.changeStatusBarAndScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -67,8 +68,21 @@ class MainActivity : AppCompatActivity() {
 
             vm.moveScreen.observe(this) { screen ->
                 screen?.let {
-                    navigationManager.movingScreen(it)
-                    if (it == R.id.global_homeFragment) homeScreenClickedEffect()
+                    val screenId = when (it) {
+                        NavigationConstants.MainScreen.HOME -> R.id.global_homeFragment
+                        NavigationConstants.MainScreen.MAP -> R.id.global_mapFragment
+                        NavigationConstants.MainScreen.DIARY -> R.id.global_diaryFragment
+                        NavigationConstants.MainScreen.COMMUNITY -> R.id.global_communityFragment
+                        NavigationConstants.MainScreen.SETTING -> R.id.global_settingFragment
+                        else -> return@observe
+                    }
+                    navigationManager.movingScreen(
+                        screenId,
+                        mainScreenAnimation(
+                            navController.currentDestination?.label?.toString() ?: "", screen
+                        )
+                    )
+                    if (it == NavigationConstants.MainScreen.HOME) homeScreenClickedEffect()
                 }
             }
         }

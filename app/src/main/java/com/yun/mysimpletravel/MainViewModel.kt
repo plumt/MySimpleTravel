@@ -1,9 +1,11 @@
 package com.yun.mysimpletravel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yun.mysimpletravel.base.BaseViewModel
+import com.yun.mysimpletravel.common.constants.NavigationConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -22,8 +24,8 @@ class MainViewModel @Inject constructor(application: Application) : BaseViewMode
     private val _bottomNavDoubleTab = MutableLiveData<Boolean>(false)
     val bottomNavDoubleTab: LiveData<Boolean> get() = _bottomNavDoubleTab
 
-    private val _moveScreen = MutableLiveData<Int>()
-    val moveScreen: LiveData<Int> get() = _moveScreen
+    private val _moveScreen = MutableLiveData<String>()
+    val moveScreen: LiveData<String> get() = _moveScreen
 
 
     /**
@@ -41,15 +43,15 @@ class MainViewModel @Inject constructor(application: Application) : BaseViewMode
     }
     fun bottomNavTabEvent(index: Any): Boolean {
         val destinationId = when (index) {
-            "MAP" -> R.id.global_mapFragment
-            "DIARY" -> R.id.global_diaryFragment
-            "COMMUNITY" -> R.id.global_communityFragment
-            "SETTING" -> R.id.global_settingFragment
-            "HOME" -> R.id.global_homeFragment
+            "MAP" -> NavigationConstants.MainScreen.MAP
+            "DIARY" -> NavigationConstants.MainScreen.DIARY
+            "COMMUNITY" -> NavigationConstants.MainScreen.COMMUNITY
+            "SETTING" -> NavigationConstants.MainScreen.SETTING
+            "HOME" -> NavigationConstants.MainScreen.HOME
             else -> return false
         }
-        if(destinationId == moveScreen.value || moveScreen.value == null) bottomNavDoubleTabEvent(true)
-        else _moveScreen.postValue(destinationId)
+        if(destinationId == moveScreen.value || (moveScreen.value == null && destinationId == NavigationConstants.MainScreen.HOME)) bottomNavDoubleTabEvent(true)
+        else moveScreens(destinationId)
         return true
     }
 
@@ -57,5 +59,9 @@ class MainViewModel @Inject constructor(application: Application) : BaseViewMode
         _bottomNavDoubleTab.value = clear
     }
 
-    fun fabHomeId() = R.id.global_homeFragment
+//    fun fabHomeId() = R.id.global_homeFragment
+
+    fun moveScreens(screen: String){
+        _moveScreen.postValue(screen)
+    }
 }

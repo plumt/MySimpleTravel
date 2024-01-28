@@ -179,10 +179,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
                     JEJU -> searchLocationCode(JEJU_JEJU)
                     SEOGWIP -> searchLocationCode(JEJU_SEOGWIP)
                     else -> {
-                        sharedPreferenceManager.updateLocationName(
-                            name = item.name,
-                            fullName = item.fullName
-                        )
+                        sharedPreferenceManager.updateLocationName(item.name)
                         viewModel.updateSelLocData(item.name)
                         locationBottomSheet.dismiss()
 
