@@ -7,14 +7,12 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.findNavController
 import com.yun.mysimpletravel.BuildConfig
-import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseViewModel
 import com.yun.mysimpletravel.common.constants.LocationConstants
 import com.yun.mysimpletravel.common.constants.NavigationConstants
-import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.data.model.travel.accommodation.AccommodationModel
+import com.yun.mysimpletravel.data.model.travel.carsharing.CarsharingModel
 import com.yun.mysimpletravel.data.model.weather.NowWeatherModel
 import com.yun.mysimpletravel.data.repository.jejuhub.JejuHubRepositoryImpl
 import com.yun.mysimpletravel.data.repository.weather.WeatherRepositoryImpl
@@ -135,6 +133,20 @@ class HomeViewModel @Inject constructor(
                 setLoading(false)
                 Log.d("lys", "Finally block executed.")
             }
+        }
+    }
+
+    fun carsharingWithSocar(){
+        viewModelScope.launch {
+            jejuHubRepositoryImpl.carsharingWithSocar(object : JejuHubRepositoryImpl.GetDataCallBack<CarsharingModel>{
+                override fun onSuccess(data: CarsharingModel) {
+                    Log.d("lys","carsharingWithSocar > $data")
+                }
+
+                override fun onFailure(throwable: Throwable) {
+                    throwable.printStackTrace()
+                }
+            })
         }
     }
 

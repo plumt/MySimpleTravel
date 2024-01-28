@@ -50,4 +50,8 @@ object ApiModule {
         val retrofit = provideRetrofit(client, BuildConfig.LOCATION_URL)
         return LocationRepository(retrofit.create(LocationService::class.java))
     }
+
+//    @Provides
+//    @Singleton
+//    fun providerJeju
 }

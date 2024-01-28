@@ -18,9 +18,9 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.Base64
 
-class KakaoAuthManager(private val context: Context, private val kakaoInterface: KakaoInterface) {
+class KakaoAuthManager(private val context: Context, private val kakaoAuthInterface: KakaoAuthInterface) {
 
-    interface KakaoInterface {
+    interface KakaoAuthInterface {
         fun kakaoError(t: Throwable)
         fun loginUserInfo(info: UserInfoDataModel)
         fun removeUser()
@@ -36,11 +36,11 @@ class KakaoAuthManager(private val context: Context, private val kakaoInterface:
      */
     fun snsTokenCheck() {
         if (!isNetworkConnected(context)) {
-            kakaoInterface.kakaoError(customException(NETWORK_NOT_CONNECT))
+            kakaoAuthInterface.kakaoError(customException(NETWORK_NOT_CONNECT))
             return
         }
         UserApiClient.instance.me { _, error ->
-            if (error != null) kakaoInterface.kakaoError(error)
+            if (error != null) kakaoAuthInterface.kakaoError(error)
             else kakaoUserInfo()
         }
     }
@@ -51,14 +51,14 @@ class KakaoAuthManager(private val context: Context, private val kakaoInterface:
     fun kakaoLogin() {
         Log.d("lys","kakaoLogin")
         if (!isNetworkConnected(context)) {
-            kakaoInterface.kakaoError(customException(NETWORK_NOT_CONNECT))
+            kakaoAuthInterface.kakaoError(customException(NETWORK_NOT_CONNECT))
             return
         }
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
             UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
                 error?.let {
                     it.printStackTrace()
-                    kakaoInterface.kakaoError(it)
+                    kakaoAuthInterface.kakaoError(it)
                     if (it is ClientError && it.reason == ClientErrorCause.Cancelled) {
                         // 카카오톡에서 취소한 경우, 의도적 취소로 판단하여 로그인 취소 처리
                         return@loginWithKakaoTalk
@@ -83,8 +83,8 @@ class KakaoAuthManager(private val context: Context, private val kakaoInterface:
      */
     fun kakaoLogOut() {
         UserApiClient.instance.logout { error ->
-            if (error != null) kakaoInterface.kakaoError(error)
-            else kakaoInterface.removeUser()
+            if (error != null) kakaoAuthInterface.kakaoError(error)
+            else kakaoAuthInterface.removeUser()
         }
     }
 
@@ -93,8 +93,8 @@ class KakaoAuthManager(private val context: Context, private val kakaoInterface:
      */
     fun kakaoSignOut() {
         UserApiClient.instance.unlink { error ->
-            if (error != null) kakaoInterface.kakaoError(error)
-            else kakaoInterface.removeUser()
+            if (error != null) kakaoAuthInterface.kakaoError(error)
+            else kakaoAuthInterface.removeUser()
         }
     }
 
@@ -109,7 +109,7 @@ class KakaoAuthManager(private val context: Context, private val kakaoInterface:
     private fun kakaoSdkSetting() {
         KakaoSdk.init(context, context.getString(R.string.social_login_info_kakao_native_key))
         if (!isNetworkConnected(context)) {
-            kakaoInterface.kakaoError(customException(NETWORK_NOT_CONNECT))
+            kakaoAuthInterface.kakaoError(customException(NETWORK_NOT_CONNECT))
         }
     }
 
@@ -118,7 +118,7 @@ class KakaoAuthManager(private val context: Context, private val kakaoInterface:
      */
     private fun kakaoUserInfo() {
         UserApiClient.instance.me { user, error ->
-            error?.let { kakaoInterface.kakaoError(it) }
+            error?.let { kakaoAuthInterface.kakaoError(it) }
             user?.let {
                 Log.d("lys", "kakao login success > $it")
                 val userInfo = UserInfoDataModel(
@@ -129,7 +129,7 @@ class KakaoAuthManager(private val context: Context, private val kakaoInterface:
                     loginType = KAKAO,
                     ""
                 )
-                kakaoInterface.loginUserInfo(userInfo)
+                kakaoAuthInterface.loginUserInfo(userInfo)
             }
         }
     }
@@ -138,7 +138,7 @@ class KakaoAuthManager(private val context: Context, private val kakaoInterface:
      * 카카오 로그인 이벤트
      */
     private val kakaoLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, throwable ->
-        throwable?.let { kakaoInterface.kakaoError(it) }
+        throwable?.let { kakaoAuthInterface.kakaoError(it) }
         token?.let { kakaoUserInfo() }
     }
 

@@ -1,10 +1,9 @@
 package com.yun.mysimpletravel.data.repository.jejuhub
 
 import com.yun.mysimpletravel.data.dto.AccommodationResponse
-import com.yun.mysimpletravel.data.dto.LocationCodeResponse
+import com.yun.mysimpletravel.data.dto.CarsharingResponse
 import com.yun.mysimpletravel.data.remote.RemoteDataSourceImpl
 import com.yun.mysimpletravel.data.remote.api.jejuhub.JejuHubService
-import com.yun.mysimpletravel.data.remote.api.location.LocationService
 import javax.inject.Inject
 
 class JejuHubRepository @Inject constructor(
@@ -18,5 +17,19 @@ class JejuHubRepository @Inject constructor(
         onFailure: (Throwable) -> Unit
     ) {
         remoteDataSourceImpl.callApi(jejuHubService.searchAccommodation(page,"100",companyName), onResponse, onFailure)
+    }
+
+    suspend fun searchCarsharingWithSocar(
+        onResponse: (CarsharingResponse) -> Unit,
+        onFailure: (Throwable) -> Unit
+    ) {
+        remoteDataSourceImpl.callApi(jejuHubService.searchCarsharingWithSocar(), onResponse, onFailure)
+    }
+
+    suspend fun searchsearchCarsharing(
+        onResponse: (CarsharingResponse) -> Unit,
+        onFailure: (Throwable) -> Unit
+    ) {
+        remoteDataSourceImpl.callApi(jejuHubService.searchCarsharing(),onResponse, onFailure)
     }
 }

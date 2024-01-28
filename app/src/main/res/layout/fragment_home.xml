@@ -47,6 +47,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="300dp" />
 
+                <include
+                    android:id="@+id/btn_search_carsharing"
+                    layout="@layout/view_card_button"
+                    app:click="@{(v) -> home.carsharingWithSocar()}"
+                    app:title="@{`카 셰어링 소카 검색하기`}"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+
                 <Button
                     android:backgroundTint="@color/color_cccccc"
                     android:layout_width="match_parent"

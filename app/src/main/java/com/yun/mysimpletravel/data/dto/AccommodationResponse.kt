@@ -1,7 +1,5 @@
 package com.yun.mysimpletravel.data.dto
 
-import com.yun.mysimpletravel.data.model.travel.accommodation.AccommodationModel
-
 data class AccommodationResponse(
     val totCnt: Int,
     val hasMore: Boolean,

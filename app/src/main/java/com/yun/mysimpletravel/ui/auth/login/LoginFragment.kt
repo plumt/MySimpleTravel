@@ -86,7 +86,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         )
     }
 
-    private val kakaoInterface = object : KakaoAuthManager.KakaoInterface {
+    private val kakaoInterface = object : KakaoAuthManager.KakaoAuthInterface {
         override fun kakaoError(t: Throwable) {
             // 카카오 로그인 에러
             t.printStackTrace()

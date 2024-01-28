@@ -1,12 +1,9 @@
 package com.yun.mysimpletravel.common.manager
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import com.yun.mysimpletravel.MainActivity
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.common.constants.NavigationConstants
 import com.yun.mysimpletravel.common.constants.NavigationConstants.Type.ENTER

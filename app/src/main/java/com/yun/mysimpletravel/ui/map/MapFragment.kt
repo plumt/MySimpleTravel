@@ -8,55 +8,80 @@ import androidx.lifecycle.LiveData
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
+import com.yun.mysimpletravel.common.constants.KakaoMapConstants
+import com.yun.mysimpletravel.common.manager.KakaoMapManager
 import com.yun.mysimpletravel.databinding.FragmentMapBinding
 import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.MapView
 
 @AndroidEntryPoint
-class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>() {
+class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>(), KakaoMapManager.KakaoMapInterface {
     override val viewModel: MapViewModel by viewModels()
     override fun getResourceId(): Int = R.layout.fragment_map
     override fun isLoading(): LiveData<Boolean>? = viewModel.isLoading
     override fun isOnBackEvent(): Boolean = true
     override fun onBackEvent() {
-        Log.d("lys","back!")
+        Log.d("lys", "back!")
     }
+
     override fun setVariable(): Int = BR.map
 
     private lateinit var mapView: MapView
 
+    private lateinit var kakaoMapManager: KakaoMapManager
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("lys","onViewCreated")
         super.onViewCreated(view, savedInstanceState)
-
-        init()
-
-
+        observe()
     }
 
-    private fun init(){
+    private fun observe(){
+        viewModel.let { vm ->
+            vm.carsharingWithSocar.observe(viewLifecycleOwner) {
+                it?.list?.let { data ->
+                    if (!this::mapView.isInitialized || !this::kakaoMapManager.isInitialized) return@observe
+                    data.forEachIndexed { index, item ->
+                        kakaoMapManager.addMarker(
+                            item.latitude.toDouble(),
+                            item.longitude.toDouble(),
+                            item.placeName,
+                            KakaoMapConstants.MarkerType.Sorca
+                        )
+                    }
+                    kakaoMapManager.mapBounds()
+                }
+            }
+
+            vm.carsharing.observe(viewLifecycleOwner){
+                it?.list?.let { data ->
+                    if (!this::mapView.isInitialized || !this::kakaoMapManager.isInitialized) return@observe
+                    data.forEachIndexed { index, item ->
+                        kakaoMapManager.addMarker(
+                            item.latitude.toDouble(),
+                            item.longitude.toDouble(),
+                            item.placeName,
+                            KakaoMapConstants.MarkerType.CarShare
+                        )
+                    }
+                    kakaoMapManager.mapBounds()
+                }
+            }
+
+        }
     }
 
     override fun onResume() {
-        Log.d("lys","onResume")
         super.onResume()
-        if(!this::mapView.isInitialized){
+        if (!this::mapView.isInitialized) {
             mapView = MapView(requireActivity())
             binding.mapView.addView(mapView)
+            kakaoMapManager = KakaoMapManager(mapView,this)
         }
     }
 
 
     override fun onDestroyView() {
-        Log.d("lys","onDestroyView")
         binding.mapView.removeView(mapView)
         super.onDestroyView()
     }
-
-    override fun onDestroy() {
-        Log.d("lys","onDestroy")
-        super.onDestroy()
-
-    }
-
 }

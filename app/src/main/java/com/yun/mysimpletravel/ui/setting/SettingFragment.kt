@@ -7,7 +7,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import com.yun.mysimpletravel.BR
-import com.yun.mysimpletravel.MainActivity
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.base.BaseRecyclerAdapter
@@ -17,7 +16,6 @@ import com.yun.mysimpletravel.common.constants.LocationConstants.LocationCode.SE
 import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_ALL
 import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_JEJU
 import com.yun.mysimpletravel.common.constants.LocationConstants.SearchCode.JEJU_SEOGWIP
-import com.yun.mysimpletravel.common.constants.NavigationConstants.Type.EXIT
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.APP_VERSION
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOCATION_CHANGED
 import com.yun.mysimpletravel.common.constants.SettingConstants.Settings.LOG_OUT
@@ -30,17 +28,13 @@ import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.databinding.FragmentSettingBinding
 import com.yun.mysimpletravel.databinding.ItemSettingBinding
 import com.yun.mysimpletravel.data.model.location.LocationModel
-import com.yun.mysimpletravel.data.repository.location.LocationRepository
 import com.yun.mysimpletravel.data.repository.location.LocationRepositoryImpl
 import com.yun.mysimpletravel.ui.bottomsheet.location.LocationBottomSheet
 import com.yun.mysimpletravel.ui.popup.ButtonPopup
 import com.yun.mysimpletravel.util.FirebaseUtil
 import com.yun.mysimpletravel.util.PreferenceUtil
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -153,7 +147,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
 //        navigationManager.movingScreen(R.id.action_settingFragment_to_loginFragment, EXIT)
     }
 
-    private val kakaoInterface = object : KakaoAuthManager.KakaoInterface {
+    private val kakaoInterface = object : KakaoAuthManager.KakaoAuthInterface {
         override fun kakaoError(t: Throwable) {
             // 카카오 로그인 에러
             t.printStackTrace()
