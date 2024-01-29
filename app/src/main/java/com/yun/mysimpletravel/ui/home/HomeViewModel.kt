@@ -67,16 +67,13 @@ class HomeViewModel @Inject constructor(
                     setWeatherLoading(true)
                     weatherRepositoryImpl.nowWeather(
                         BuildConfig.WEATHER_URL,
-                        location,
-                        object : WeatherRepositoryImpl.GetDataCallBack<NowWeatherModel> {
-                            override fun onSuccess(data: NowWeatherModel) {
-                                setNowWeather(data)
-                            }
-
-                            override fun onFailure(throwable: Throwable) {
-                                throw Exception(throwable)
-                            }
-                        })
+                        location
+                    ) { data, throwable ->
+                        if (throwable != null) throw Exception(throwable)
+                        data?.let {
+                            setNowWeather(it)
+                        }
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 } finally {
@@ -107,25 +104,50 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+//    fun searchAccommodation(v: View) {
+//        viewModelScope.launch {
+//            try {
+//                setLoading(true)
+//                jejuHubRepositoryImpl.invoke(
+//                    "1",
+//                    "",
+//                    object : JejuHubRepositoryImpl.GetDataCallBack<AccommodationModel> {
+//                        override fun onSuccess(data: AccommodationModel) {
+//                            Log.d("lys", "searchAccommodation > ${data}")
+//                            moveScreens(NavigationConstants.MainScreen.SETTING)
+//                        }
+//
+//                        override fun onFailure(throwable: Throwable) {
+//                            throwable.printStackTrace()
+//                            Toast.makeText(mContext, "_서버와의 통신이 원활하지 않습니다", Toast.LENGTH_SHORT)
+//                                .show()
+//                        }
+//                    })
+//            } catch (e: Exception) {
+//                Log.e("lys", "error >>> ${e.message}")
+//                e.printStackTrace()
+//            } finally {
+//                setLoading(false)
+//                Log.d("lys", "Finally block executed.")
+//            }
+//        }
+//    }
+
     fun searchAccommodation(v: View) {
         viewModelScope.launch {
             try {
                 setLoading(true)
                 jejuHubRepositoryImpl.invoke(
                     "1",
-                    "",
-                    object : JejuHubRepositoryImpl.GetDataCallBack<AccommodationModel> {
-                        override fun onSuccess(data: AccommodationModel) {
-                            Log.d("lys", "searchAccommodation > ${data}")
-                            moveScreens(NavigationConstants.MainScreen.SETTING)
-                        }
-
-                        override fun onFailure(throwable: Throwable) {
-                            throwable.printStackTrace()
-                            Toast.makeText(mContext, "_서버와의 통신이 원활하지 않습니다", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    })
+                    ""
+                ) { data, throwable ->
+                    if (throwable != null) {
+                        throwable.printStackTrace()
+                        return@invoke
+                    }
+                    Log.d("lys", "searchAccommodation > ${data}")
+                    moveScreens(NavigationConstants.MainScreen.SETTING)
+                }
             } catch (e: Exception) {
                 Log.e("lys", "error >>> ${e.message}")
                 e.printStackTrace()
@@ -133,20 +155,6 @@ class HomeViewModel @Inject constructor(
                 setLoading(false)
                 Log.d("lys", "Finally block executed.")
             }
-        }
-    }
-
-    fun carsharingWithSocar(){
-        viewModelScope.launch {
-            jejuHubRepositoryImpl.carsharingWithSocar(object : JejuHubRepositoryImpl.GetDataCallBack<CarsharingModel>{
-                override fun onSuccess(data: CarsharingModel) {
-                    Log.d("lys","carsharingWithSocar > $data")
-                }
-
-                override fun onFailure(throwable: Throwable) {
-                    throwable.printStackTrace()
-                }
-            })
         }
     }
 

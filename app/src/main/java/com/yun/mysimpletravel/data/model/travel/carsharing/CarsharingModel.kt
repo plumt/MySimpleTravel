@@ -1,7 +1,7 @@
 package com.yun.mysimpletravel.data.model.travel.carsharing
 
 data class CarsharingModel(
-    val list: List<CarsharingList>?,
+    var list: List<CarsharingList>?,
     val totCnt: Int,
     val hasMore: Boolean,
 )

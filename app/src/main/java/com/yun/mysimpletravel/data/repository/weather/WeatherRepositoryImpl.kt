@@ -1,6 +1,7 @@
 package com.yun.mysimpletravel.data.repository.weather
 
 import com.yun.mysimpletravel.data.model.weather.NowWeatherModel
+import com.yun.mysimpletravel.data.remote.GetDataCallBack
 import com.yun.mysimpletravel.util.WeatherUtil.weatherCompare
 import com.yun.mysimpletravel.util.WeatherUtil.weatherDetail
 import com.yun.mysimpletravel.util.WeatherUtil.weatherDust
@@ -15,10 +16,10 @@ class WeatherRepositoryImpl @Inject constructor(
     private val weatherRepository: WeatherRepository
 ) {
 
-    interface GetDataCallBack<T> {
-        fun onSuccess(data: T)
-        fun onFailure(throwable: Throwable)
-    }
+//    interface GetDataCallBack<T> {
+//        fun onSuccess(data: T)
+//        fun onFailure(throwable: Throwable)
+//    }
 
     suspend fun nowWeather(
         url: String, location: String,
@@ -37,9 +38,9 @@ class WeatherRepositoryImpl @Inject constructor(
                 weatherUV = doc.weatherUV(),
                 weatherCompare = doc.weatherCompare()
             )
-            callBack.onSuccess(data)
+            callBack.invoke(data, null)
         } catch (e: Exception) {
-            callBack.onFailure(e)
+            callBack.invoke(null, e)
         }
     }
 }

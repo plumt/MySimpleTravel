@@ -20,16 +20,18 @@ class JejuHubRepository @Inject constructor(
     }
 
     suspend fun searchCarsharingWithSocar(
+        page: String,
         onResponse: (CarsharingResponse) -> Unit,
         onFailure: (Throwable) -> Unit
     ) {
-        remoteDataSourceImpl.callApi(jejuHubService.searchCarsharingWithSocar(), onResponse, onFailure)
+        remoteDataSourceImpl.callApi(jejuHubService.searchCarsharingWithSocar(page,"100"), onResponse, onFailure)
     }
 
     suspend fun searchsearchCarsharing(
+        page: String,
         onResponse: (CarsharingResponse) -> Unit,
         onFailure: (Throwable) -> Unit
     ) {
-        remoteDataSourceImpl.callApi(jejuHubService.searchCarsharing(),onResponse, onFailure)
+        remoteDataSourceImpl.callApi(jejuHubService.searchCarsharing(page,"100"),onResponse, onFailure)
     }
 }

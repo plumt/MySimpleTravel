@@ -16,8 +16,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val connectTimeout: Long = 15
-    private const val readTimeout: Long = 15
+    private const val connectTimeout: Long = 5000
+    private const val readTimeout: Long = 5000
     private const val cacheSize = 10 * 1024 * 1024 // 10 MB (캐시 크기)
 
     @Singleton

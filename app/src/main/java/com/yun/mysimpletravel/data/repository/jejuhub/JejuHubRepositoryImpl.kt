@@ -2,6 +2,7 @@ package com.yun.mysimpletravel.data.repository.jejuhub
 
 import com.yun.mysimpletravel.data.model.travel.accommodation.AccommodationModel
 import com.yun.mysimpletravel.data.model.travel.carsharing.CarsharingModel
+import com.yun.mysimpletravel.data.remote.GetDataCallBack
 import com.yun.mysimpletravel.data.remote.api.jejuhub.jejuHubServiceImpl.toAccommodationModelList
 import com.yun.mysimpletravel.data.remote.api.jejuhub.jejuHubServiceImpl.toCarsharingModelList
 import javax.inject.Inject
@@ -10,10 +11,10 @@ class JejuHubRepositoryImpl @Inject constructor(
     private val jejuHubRepository: JejuHubRepository,
 ) {
 
-    interface GetDataCallBack<T> {
-        fun onSuccess(data: T)
-        fun onFailure(throwable: Throwable)
-    }
+//    interface GetDataCallBack<T> {
+//        fun onSuccess(data: T)
+//        fun onFailure(throwable: Throwable)
+//    }
 
     suspend operator fun invoke(
         page: String, companyName: String,
@@ -22,26 +23,35 @@ class JejuHubRepositoryImpl @Inject constructor(
 
         jejuHubRepository.searchAccommodation(
             page, companyName,
-            { callBack.onSuccess(it.toAccommodationModelList()) },
-            { callBack.onFailure(it) }
+            { callBack.invoke(it.toAccommodationModelList(), null) },
+            { callBack.invoke(null, it) }
         )
     }
 
     suspend fun carsharingWithSocar(
+        page: String = "1",
         callBack: GetDataCallBack<CarsharingModel>,
     ) {
         jejuHubRepository.searchCarsharingWithSocar(
-            { callBack.onSuccess(it.toCarsharingModelList()) },
-            { callBack.onFailure(it) }
+            page,
+            { callBack.invoke(it.toCarsharingModelList(), null) },
+            { callBack.invoke(null, it) }
         )
     }
 
     suspend fun carsharing(
+        page: String = "1",
         callBack: GetDataCallBack<CarsharingModel>,
     ) {
+//        jejuHubRepository.searchsearchCarsharing(
+//            page,
+//            { callBack.onSuccess(it.toCarsharingModelList()) },
+//            { callBack.onFailure(it) }
+//        )
         jejuHubRepository.searchsearchCarsharing(
-            { callBack.onSuccess(it.toCarsharingModelList()) },
-            { callBack.onFailure(it) }
+            page,
+            { callBack.invoke(it.toCarsharingModelList(), null) },
+            { callBack.invoke(null, it) }
         )
     }
 }

@@ -23,6 +23,7 @@ import com.yun.mysimpletravel.common.manager.SharedPreferenceManager
 import com.yun.mysimpletravel.data.model.location.LocationModel
 import com.yun.mysimpletravel.data.model.setting.SettingDataModel
 import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
+import com.yun.mysimpletravel.data.remote.GetDataCallBack
 import com.yun.mysimpletravel.data.repository.location.LocationRepository
 import com.yun.mysimpletravel.data.repository.location.LocationRepositoryImpl
 import com.yun.mysimpletravel.util.PreferenceUtil
@@ -93,7 +94,7 @@ class SettingViewModel @Inject constructor(
         _settingList.add(SettingDataModel(id, viewType, title, content))
     }
 
-    suspend fun searchLocCode(code: String, callBack: LocationRepositoryImpl.GetDataCallBack<List<LocationModel>>){
+    suspend fun searchLocCode(code: String, callBack: GetDataCallBack<List<LocationModel>>){
         locationRepositoryImpl(code,callBack)
     }
 

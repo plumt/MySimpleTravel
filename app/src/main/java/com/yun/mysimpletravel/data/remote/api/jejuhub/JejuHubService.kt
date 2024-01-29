@@ -14,7 +14,7 @@ interface JejuHubService {
 //    @Headers("Cache-Control: public, max-stale=10")
     @GET("ttbttaD3aaa3ta8bbtDtaDD18t37aD17/3err3be_jt2oeto22rtt_932291tp__2")
     suspend fun searchAccommodation(
-        @Query("page") page: String,
+        @Query("number") page: String,
         @Query("limit") limit: String,
         @Query("companyName") companyName: String
     ): Response<AccommodationResponse>
@@ -23,11 +23,17 @@ interface JejuHubService {
      * 카셰어링 With 쏘카
      */
     @GET("tta9at0b01a0181t11bttttt9b0tt9tt/3err3be_jt2oeto22rtt_932291tp__2")
-    suspend fun searchCarsharingWithSocar(): Response<CarsharingResponse>
+    suspend fun searchCarsharingWithSocar(
+        @Query("number") page: String,
+        @Query("limit") limit: String
+    ): Response<CarsharingResponse>
 
     /**
      * 카셰어링
      */
     @GET("88D0ba0a01a08D081tt8aDba21aabt28/3err3be_jt2oeto22rtt_932291tp__2")
-    suspend fun searchCarsharing(): Response<CarsharingResponse>
+    suspend fun searchCarsharing(
+        @Query("number") page: String,
+        @Query("limit") limit: String,
+    ): Response<CarsharingResponse>
 }

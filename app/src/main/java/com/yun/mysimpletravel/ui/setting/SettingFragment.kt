@@ -184,17 +184,15 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, SettingViewModel>()
 
     private fun searchLocationCode(code: String) {
         lifecycleScope.launch {
-            viewModel.searchLocCode(code,
-                object : LocationRepositoryImpl.GetDataCallBack<List<LocationModel>> {
-                    override fun onSuccess(data: List<LocationModel>) {
-                        changeLocation(data)
-                    }
-
-                    override fun onFailure(throwable: Throwable) {
-                        throwable.printStackTrace()
-                    }
+            viewModel.searchLocCode(code){ data, throwable ->
+                if(throwable != null){
+                    throwable.printStackTrace()
+                    return@searchLocCode
                 }
-            )
+                data?.let {
+                    changeLocation(it)
+                }
+            }
         }
     }
     private fun changeLocation(param: List<LocationModel>) {

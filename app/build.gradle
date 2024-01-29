@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace 'com.yun.mysimpletravel'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.yun.mysimpletravel"
         minSdk 26
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -38,8 +38,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = '1.8'
@@ -100,6 +100,9 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // splash screen
+    implementation 'androidx.core:core-splashscreen:1.1.0-alpha02'
 
     // hilt
     implementation "com.google.dagger:hilt-android:2.42"
