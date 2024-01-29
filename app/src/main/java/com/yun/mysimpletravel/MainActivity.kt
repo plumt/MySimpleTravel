@@ -6,6 +6,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
      * 초기 설정
      */
     private fun init() {
+        installSplashScreen()
         changeStatusBarAndScreen(this, isIconColor = true, isFullScreen = false)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.run {

@@ -22,8 +22,8 @@
 
     </style>
 
-    <style name="SplashTheme" parent="Theme.SplashScreen">
-<!--        <item name="windowSplashScreenBackground">#2381FF</item>-->
+    <style name="Theme.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#2381FF</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/launch_transparent</item>
         <item name="postSplashScreenTheme">@style/Theme.MySimpleTravel</item>
 
