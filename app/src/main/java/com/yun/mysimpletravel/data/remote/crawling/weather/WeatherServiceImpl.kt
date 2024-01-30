@@ -1,9 +1,6 @@
 package com.yun.mysimpletravel.data.remote.crawling.weather
 
-import com.yun.mysimpletravel.data.dto.AccommodationResponse
 import com.yun.mysimpletravel.data.dto.NowWeatherResponse
-import com.yun.mysimpletravel.data.model.travel.accommodation.AccommodationList
-import com.yun.mysimpletravel.data.model.travel.accommodation.AccommodationModel
 import com.yun.mysimpletravel.data.model.weather.NowWeatherModel
 
 class WeatherServiceImpl {

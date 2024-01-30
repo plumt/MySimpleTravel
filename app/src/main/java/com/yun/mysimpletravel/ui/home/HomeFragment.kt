@@ -1,6 +1,7 @@
 package com.yun.mysimpletravel.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -16,6 +17,7 @@ import com.yun.mysimpletravel.common.constants.NavigationConstants
 import com.yun.mysimpletravel.common.constants.WeatherConstants
 import com.yun.mysimpletravel.common.manager.NavigationManager
 import com.yun.mysimpletravel.databinding.FragmentHomeBinding
+import com.yun.mysimpletravel.util.LocationUtil.getAddressFromLocationName
 import com.yun.mysimpletravel.util.PreferenceUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +40,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observes()
+
+
     }
 
     private fun observes() {

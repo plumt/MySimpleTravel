@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.yun.mysimpletravel.base.BaseViewModel
-import com.yun.mysimpletravel.data.model.travel.carsharing.CarsharingList
-import com.yun.mysimpletravel.data.model.travel.carsharing.CarsharingModel
+import com.yun.mysimpletravel.data.model.jejuhub.carsharing.CarsharingList
+import com.yun.mysimpletravel.data.model.jejuhub.carsharing.CarsharingModel
 import com.yun.mysimpletravel.data.repository.jejuhub.JejuHubRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -31,6 +31,8 @@ class MapViewModel @Inject constructor(
     init {
         carsharingWithSocar()
         carsharing()
+
+        pharmacy()
     }
 
     /**
@@ -108,6 +110,13 @@ class MapViewModel @Inject constructor(
     }
 
 
+    fun pharmacy(){
+        viewModelScope.launch {
+            jejuHubRepositoryImpl.pharmacy("1"){ data, throwable ->
+                Log.d("lys","pharmacy > $data")
+            }
+        }
+    }
 
 
 }

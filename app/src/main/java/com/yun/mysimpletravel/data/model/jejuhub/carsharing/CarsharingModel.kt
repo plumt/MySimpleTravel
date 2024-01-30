@@ -1,13 +1,12 @@
-package com.yun.mysimpletravel.data.model.travel.souvenir
+package com.yun.mysimpletravel.data.model.jejuhub.carsharing
 
-
-data class SouvenirModel(
-    var list: List<SouvenirList>?,
+data class CarsharingModel(
+    var list: List<CarsharingList>?,
     val totCnt: Int,
     val hasMore: Boolean,
 )
 
-data class SouvenirList(
+data class CarsharingList(
     val placeName: String,
     val longitude: String,
     val latitude: String,

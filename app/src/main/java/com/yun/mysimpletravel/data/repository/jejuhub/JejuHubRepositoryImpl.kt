@@ -1,15 +1,20 @@
 package com.yun.mysimpletravel.data.repository.jejuhub
 
-import com.yun.mysimpletravel.data.model.travel.accommodation.AccommodationModel
-import com.yun.mysimpletravel.data.model.travel.carsharing.CarsharingModel
-import com.yun.mysimpletravel.data.model.travel.souvenir.SouvenirModel
+import android.content.Context
+import com.yun.mysimpletravel.data.model.jejuhub.accommodation.AccommodationModel
+import com.yun.mysimpletravel.data.model.jejuhub.carsharing.CarsharingModel
+import com.yun.mysimpletravel.data.model.jejuhub.pharmacy.PharmacyModel
+import com.yun.mysimpletravel.data.model.jejuhub.souvenir.SouvenirModel
 import com.yun.mysimpletravel.data.remote.GetDataCallBack
 import com.yun.mysimpletravel.data.remote.api.jejuhub.jejuHubServiceImpl.toAccommodationModelList
 import com.yun.mysimpletravel.data.remote.api.jejuhub.jejuHubServiceImpl.toCarsharingModelList
+import com.yun.mysimpletravel.data.remote.api.jejuhub.jejuHubServiceImpl.toPharmacyModelList
 import com.yun.mysimpletravel.data.remote.api.jejuhub.jejuHubServiceImpl.toSouvenirModelList
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class JejuHubRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val jejuHubRepository: JejuHubRepository,
 ) {
 
@@ -59,10 +64,19 @@ class JejuHubRepositoryImpl @Inject constructor(
 
     suspend fun souvenir(
         page: String = "1",
-        callBack: GetDataCallBack<SouvenirModel>
+        callBack: GetDataCallBack<SouvenirModel>,
     ) {
         jejuHubRepository.searchSouvenir(page,
             { callBack.invoke(it.toSouvenirModelList(), null) },
+            { callBack.invoke(null, it) })
+    }
+
+    suspend fun pharmacy(
+        page: String = "1",
+        callBack: GetDataCallBack<PharmacyModel>,
+    ) {
+        jejuHubRepository.searchPharmacy(page,
+            { callBack.invoke(it.toPharmacyModelList(context), null) },
             { callBack.invoke(null, it) })
     }
 }

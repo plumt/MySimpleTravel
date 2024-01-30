@@ -3,7 +3,6 @@ package com.yun.mysimpletravel.ui.home
 import android.app.Application
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,8 +10,6 @@ import com.yun.mysimpletravel.BuildConfig
 import com.yun.mysimpletravel.base.BaseViewModel
 import com.yun.mysimpletravel.common.constants.LocationConstants
 import com.yun.mysimpletravel.common.constants.NavigationConstants
-import com.yun.mysimpletravel.data.model.travel.accommodation.AccommodationModel
-import com.yun.mysimpletravel.data.model.travel.carsharing.CarsharingModel
 import com.yun.mysimpletravel.data.model.weather.NowWeatherModel
 import com.yun.mysimpletravel.data.repository.jejuhub.JejuHubRepositoryImpl
 import com.yun.mysimpletravel.data.repository.weather.WeatherRepositoryImpl

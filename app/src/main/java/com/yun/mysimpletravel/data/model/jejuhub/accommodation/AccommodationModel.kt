@@ -1,4 +1,4 @@
-package com.yun.mysimpletravel.data.model.travel.accommodation
+package com.yun.mysimpletravel.data.model.jejuhub.accommodation
 
 data class AccommodationModel(
     val list: List<AccommodationList>,
