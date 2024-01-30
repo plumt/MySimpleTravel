@@ -2,6 +2,7 @@ package com.yun.mysimpletravel.data.remote.api.jejuhub
 
 import com.yun.mysimpletravel.data.dto.AccommodationResponse
 import com.yun.mysimpletravel.data.dto.CarsharingResponse
+import com.yun.mysimpletravel.data.dto.SouvenirResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -36,4 +37,13 @@ interface JejuHubService {
         @Query("number") page: String,
         @Query("limit") limit: String,
     ): Response<CarsharingResponse>
+
+//    Souvenir
+    @GET("11D8at1abba0ttaDa8t8atta01188t81//3err3be_jt2oeto22rtt_932291tp__2")
+    suspend fun searchSouvenir(
+    @Query("number") page: String,
+    @Query("limit") limit: String,
+    ): Response<SouvenirResponse>
+
+
 }

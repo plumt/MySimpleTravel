@@ -2,13 +2,14 @@ package com.yun.mysimpletravel.data.repository.jejuhub
 
 import com.yun.mysimpletravel.data.dto.AccommodationResponse
 import com.yun.mysimpletravel.data.dto.CarsharingResponse
+import com.yun.mysimpletravel.data.dto.SouvenirResponse
 import com.yun.mysimpletravel.data.remote.RemoteDataSourceImpl
 import com.yun.mysimpletravel.data.remote.api.jejuhub.JejuHubService
 import javax.inject.Inject
 
 class JejuHubRepository @Inject constructor(
     private val jejuHubService: JejuHubService
-){
+) {
     private val remoteDataSourceImpl = RemoteDataSourceImpl()
 
     suspend fun searchAccommodation(
@@ -16,7 +17,11 @@ class JejuHubRepository @Inject constructor(
         onResponse: (AccommodationResponse) -> Unit,
         onFailure: (Throwable) -> Unit
     ) {
-        remoteDataSourceImpl.callApi(jejuHubService.searchAccommodation(page,"100",companyName), onResponse, onFailure)
+        remoteDataSourceImpl.callApi(
+            jejuHubService.searchAccommodation(page, "100", companyName),
+            onResponse,
+            onFailure
+        )
     }
 
     suspend fun searchCarsharingWithSocar(
@@ -24,7 +29,11 @@ class JejuHubRepository @Inject constructor(
         onResponse: (CarsharingResponse) -> Unit,
         onFailure: (Throwable) -> Unit
     ) {
-        remoteDataSourceImpl.callApi(jejuHubService.searchCarsharingWithSocar(page,"100"), onResponse, onFailure)
+        remoteDataSourceImpl.callApi(
+            jejuHubService.searchCarsharingWithSocar(page, "100"),
+            onResponse,
+            onFailure
+        )
     }
 
     suspend fun searchsearchCarsharing(
@@ -32,6 +41,22 @@ class JejuHubRepository @Inject constructor(
         onResponse: (CarsharingResponse) -> Unit,
         onFailure: (Throwable) -> Unit
     ) {
-        remoteDataSourceImpl.callApi(jejuHubService.searchCarsharing(page,"100"),onResponse, onFailure)
+        remoteDataSourceImpl.callApi(
+            jejuHubService.searchCarsharing(page, "100"),
+            onResponse,
+            onFailure
+        )
+    }
+
+    suspend fun searchSouvenir(
+        page: String,
+        onResponse: (SouvenirResponse) -> Unit,
+        onFailure: (Throwable) -> Unit
+    ) {
+        remoteDataSourceImpl.callApi(
+            jejuHubService.searchSouvenir(page, "100"),
+            onResponse,
+            onFailure
+        )
     }
 }

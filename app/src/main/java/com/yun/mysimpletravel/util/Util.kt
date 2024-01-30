@@ -11,6 +11,8 @@ import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.yun.mysimpletravel.BuildConfig
@@ -116,5 +118,46 @@ object Util {
         url.contains(BuildConfig.JEJU_VISIT_URL) -> true
         url.contains(BuildConfig.JEJU_ITS_URL) -> true
         else -> false
+    }
+
+    fun hideNavigationBar(activity: Activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val controller = activity.window.insetsController
+            controller?.hide(WindowInsets.Type.navigationBars())
+        } else {
+            activity.window.decorView.systemUiVisibility =
+                (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+        }
+    }
+
+    fun showNavigationBar(activity: Activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val controller = activity.window.insetsController
+            controller?.show(WindowInsets.Type.navigationBars())
+        } else {
+            activity.window.decorView.systemUiVisibility =
+                (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+        }
+    }
+
+    // 전체 화면으로 설정
+    fun setFullScreen(activity: Activity) {
+        activity.window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                )
+        activity.window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+    }
+
+    // 전체 화면 설정 취소
+    fun exitFullScreen(activity: Activity) {
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+        activity.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
     }
 }

@@ -40,6 +40,7 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>(), KakaoMapMa
             vm.carsharingWithSocar.observe(viewLifecycleOwner) {
                 it?.list?.let { data ->
                     if (!this::mapView.isInitialized || !this::kakaoMapManager.isInitialized) return@observe
+                    Log.d("lys","_socr carsharing data > ${data.size}")
                     data.forEachIndexed { index, item ->
                         kakaoMapManager.addMarker(
                             item.latitude.toDouble(),
@@ -54,7 +55,6 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>(), KakaoMapMa
 
             vm.carsharing.observe(viewLifecycleOwner){
                 it?.list?.let { data ->
-                    Log.d("lys","_carsharing data > $data")
                     Log.d("lys","_carsharing data > ${data.size}")
                     if (!this::mapView.isInitialized || !this::kakaoMapManager.isInitialized) return@observe
                     data.forEachIndexed { index, item ->

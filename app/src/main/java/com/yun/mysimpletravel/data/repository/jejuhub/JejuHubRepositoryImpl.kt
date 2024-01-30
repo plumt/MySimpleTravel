@@ -2,9 +2,11 @@ package com.yun.mysimpletravel.data.repository.jejuhub
 
 import com.yun.mysimpletravel.data.model.travel.accommodation.AccommodationModel
 import com.yun.mysimpletravel.data.model.travel.carsharing.CarsharingModel
+import com.yun.mysimpletravel.data.model.travel.souvenir.SouvenirModel
 import com.yun.mysimpletravel.data.remote.GetDataCallBack
 import com.yun.mysimpletravel.data.remote.api.jejuhub.jejuHubServiceImpl.toAccommodationModelList
 import com.yun.mysimpletravel.data.remote.api.jejuhub.jejuHubServiceImpl.toCarsharingModelList
+import com.yun.mysimpletravel.data.remote.api.jejuhub.jejuHubServiceImpl.toSouvenirModelList
 import javax.inject.Inject
 
 class JejuHubRepositoryImpl @Inject constructor(
@@ -53,5 +55,14 @@ class JejuHubRepositoryImpl @Inject constructor(
             { callBack.invoke(it.toCarsharingModelList(), null) },
             { callBack.invoke(null, it) }
         )
+    }
+
+    suspend fun souvenir(
+        page: String = "1",
+        callBack: GetDataCallBack<SouvenirModel>
+    ) {
+        jejuHubRepository.searchSouvenir(page,
+            { callBack.invoke(it.toSouvenirModelList(), null) },
+            { callBack.invoke(null, it) })
     }
 }

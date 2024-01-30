@@ -15,7 +15,12 @@ import com.yun.mysimpletravel.data.model.user.UserInfoDataModel
 import com.yun.mysimpletravel.databinding.FragmentSplashBinding
 import com.yun.mysimpletravel.util.PreferenceUtil
 import com.yun.mysimpletravel.util.Util.calculateTimeDifferenceInSeconds
+import com.yun.mysimpletravel.util.Util.changeStatusBarAndScreen
 import com.yun.mysimpletravel.util.Util.delayedHandler
+import com.yun.mysimpletravel.util.Util.exitFullScreen
+import com.yun.mysimpletravel.util.Util.hideNavigationBar
+import com.yun.mysimpletravel.util.Util.setFullScreen
+import com.yun.mysimpletravel.util.Util.showNavigationBar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -44,6 +49,9 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
         navigationManager = NavigationManager(view)
         kakaoManager = KakaoAuthManager(requireActivity(), kakaoInterface)
         sharedPreferenceManager = SharedPreferenceManager(requireActivity(), sPrefs)
+        changeStatusBarAndScreen(requireActivity(), false, true)
+//        hideNavigationBar(requireActivity())
+        setFullScreen(requireActivity())
     }
 
     /**
@@ -92,6 +100,12 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
         }
     }
 
+    override fun onDestroyView() {
+        changeStatusBarAndScreen(requireActivity(), true, false)
+//        showNavigationBar(requireActivity())
+        exitFullScreen(requireActivity())
+        super.onDestroyView()
+    }
 
     override fun onResume() {
         super.onResume()

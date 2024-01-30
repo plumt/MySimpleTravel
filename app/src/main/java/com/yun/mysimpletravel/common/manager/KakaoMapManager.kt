@@ -29,7 +29,7 @@ class KakaoMapManager(
         marker.markerType = when(type){
             KakaoMapConstants.MarkerType.Sorca -> MapPOIItem.MarkerType.BluePin
             KakaoMapConstants.MarkerType.CarShare -> MapPOIItem.MarkerType.RedPin
-            else -> MapPOIItem.MarkerType.RedPin
+            else -> MapPOIItem.MarkerType.YellowPin
         }
         mapView.addPOIItem(marker)
         mapPOIItems.addPoint(marker.mapPoint)
