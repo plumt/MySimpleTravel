@@ -34,6 +34,7 @@ import com.yun.mysimpletravel.ui.popup.ButtonPopup
 import com.yun.mysimpletravel.util.FirebaseUtil
 import com.yun.mysimpletravel.util.PreferenceUtil
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

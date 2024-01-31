@@ -25,7 +25,7 @@ class HomeViewModel @Inject constructor(
     application: Application,
     private val sPrefs: PreferenceUtil,
     private val jejuHubRepositoryImpl: JejuHubRepositoryImpl,
-    private val weatherRepositoryImpl: WeatherRepositoryImpl
+    private val weatherRepositoryImpl: WeatherRepositoryImpl,
 ) : BaseViewModel(application) {
 
     private val _isLoading = MutableLiveData<Boolean>(false)
@@ -58,24 +58,22 @@ class HomeViewModel @Inject constructor(
             return
         }
 
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    setWeatherLoading(true)
-                    weatherRepositoryImpl.nowWeather(
-                        BuildConfig.WEATHER_URL,
-                        location
-                    ) { data, throwable ->
-                        if (throwable != null) throw Exception(throwable)
-                        data?.let {
-                            setNowWeather(it)
-                        }
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                setWeatherLoading(true)
+                weatherRepositoryImpl.nowWeather(
+                    BuildConfig.WEATHER_URL,
+                    location
+                ) { data, throwable ->
+                    if (throwable != null) throw Exception(throwable)
+                    data?.let {
+                        setNowWeather(it)
                     }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                } finally {
-                    setWeatherLoading(false)
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                setWeatherLoading(false)
             }
         }
     }

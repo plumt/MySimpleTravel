@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -24,8 +25,7 @@
             android:id="@+id/coordinator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:translationZ="100dp">
-
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/dimLayout"
@@ -34,19 +34,26 @@
                 android:background="#00000000"
                 android:clickable="true"
                 android:focusable="true"
-                android:translationZ="0dp"
                 android:visibility="gone" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/bottom_sheet"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@drawable/bottom_sheet_background"
                 android:descendantFocusability="beforeDescendants"
                 android:elevation="16dp"
                 android:focusableInTouchMode="true"
                 app:behavior_hideable="false"
-                app:behavior_peekHeight="50dp"
+                app:behavior_draggable="true"
+
+                app:behavior_expandedOffset="200dp"
+                app:behavior_fitToContents="false"
+                app:behavior_halfExpandedRatio="0.45"
+                app:behavior_peekHeight="150dp"
+
+
+
                 app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
                 <LinearLayout
@@ -55,7 +62,7 @@
                     android:layout_height="50dp"
                     android:clickable="true"
                     android:gravity="center_horizontal"
-                    app:layout_constraintBottom_toTopOf="@id/layout_bottom_sheet">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <View
                         android:layout_width="36dp"
@@ -68,16 +75,19 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_bottom_sheet"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/layout_bottom_sheet_drag_line">
 
-                    <TextView
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_map"
+                        replaceAll="@{}"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:text="야호~~~"
-                        android:textColor="@color/black"
-                        />
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>

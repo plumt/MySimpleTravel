@@ -10,6 +10,7 @@ import com.yun.mysimpletravel.data.model.jejuhub.carsharing.CarsharingList
 import com.yun.mysimpletravel.data.model.jejuhub.carsharing.CarsharingModel
 import com.yun.mysimpletravel.data.repository.jejuhub.JejuHubRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,6 +29,7 @@ class MapViewModel @Inject constructor(
     private val _carsharing = MutableLiveData<CarsharingModel>()
     val carsharing: LiveData<CarsharingModel> get() = _carsharing
 
+
     init {
         carsharingWithSocar()
         carsharing()
@@ -38,25 +40,10 @@ class MapViewModel @Inject constructor(
     /**
      * 카셰어링 소카
      */
-//    fun carsharingWithSocar() {
-//        viewModelScope.launch {
-//            jejuHubRepositoryImpl.carsharingWithSocar(callBack = object :
-//                JejuHubRepositoryImpl.GetDataCallBack<CarsharingModel> {
-//                override fun onSuccess(data: CarsharingModel) {
-//                    _carsharingWithSocar.postValue(data)
-//                    Log.d("lys", "carsharingWithSocar > $data")
-//                }
-//
-//                override fun onFailure(throwable: Throwable) {
-//                    throwable.printStackTrace()
-//                }
-//            })
-//        }
-//    }
     fun carsharingWithSocar() {
-        viewModelScope.launch {
-            jejuHubRepositoryImpl.carsharingWithSocar(){ data, throwable ->
-                if(throwable != null){
+        viewModelScope.launch(Dispatchers.IO) {
+            jejuHubRepositoryImpl.carsharingWithSocar() { data, throwable ->
+                if (throwable != null) {
                     throwable.printStackTrace()
                     return@carsharingWithSocar
                 }
@@ -68,32 +55,10 @@ class MapViewModel @Inject constructor(
     /**
      * 카셰어링
      */
-//    fun carsharing(page: Int = 1, tempArray: List<CarsharingList> = arrayListOf()){
-//        viewModelScope.launch {
-//            jejuHubRepositoryImpl.carsharing(page.toString(),object : JejuHubRepositoryImpl.GetDataCallBack<CarsharingModel>{
-//                override fun onSuccess(data: CarsharingModel) {
-//                    val temp = (data.list ?: arrayListOf()).plus(tempArray)
-//                    if(data.hasMore){
-//                        carsharing(page+1, temp)
-//                    } else {
-//                        _carsharing.postValue(data.apply {
-//                            list = temp
-//                        })
-//                    }
-//                }
-//
-//                override fun onFailure(throwable: Throwable) {
-//                    throwable.printStackTrace()
-//                }
-//            })
-//        }
-//    }
-
     fun carsharing(page: Int = 1, tempArray: List<CarsharingList> = emptyList()) {
-        viewModelScope.launch {
-            jejuHubRepositoryImpl.carsharing(page.toString()){ data, throwable ->
-//                throwable?.printStackTrace()
-                if(throwable != null){
+        viewModelScope.launch(Dispatchers.IO) {
+            jejuHubRepositoryImpl.carsharing(page.toString()) { data, throwable ->
+                if (throwable != null) {
                     throwable.printStackTrace()
                     return@carsharing
                 }
@@ -110,10 +75,10 @@ class MapViewModel @Inject constructor(
     }
 
 
-    fun pharmacy(){
-        viewModelScope.launch {
-            jejuHubRepositoryImpl.pharmacy("1"){ data, throwable ->
-                Log.d("lys","pharmacy > $data")
+    fun pharmacy() {
+        viewModelScope.launch(Dispatchers.IO) {
+            jejuHubRepositoryImpl.pharmacy("1") { data, throwable ->
+                Log.d("lys", "pharmacy > $data")
             }
         }
     }
