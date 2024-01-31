@@ -2,15 +2,21 @@ package com.yun.mysimpletravel.ui.map
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.yun.mysimpletravel.BR
 import com.yun.mysimpletravel.R
 import com.yun.mysimpletravel.base.BaseFragment
 import com.yun.mysimpletravel.common.constants.KakaoMapConstants
+import com.yun.mysimpletravel.common.manager.BottomSheetManager
 import com.yun.mysimpletravel.common.manager.KakaoMapManager
 import com.yun.mysimpletravel.databinding.FragmentMapBinding
+import com.yun.mysimpletravel.util.Util.dpToPx
+import com.yun.mysimpletravel.util.Util.getNavigationBarHeight
 import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.MapView
 
@@ -29,10 +35,41 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>(), KakaoMapMa
     private lateinit var mapView: MapView
 
     private lateinit var kakaoMapManager: KakaoMapManager
+    private lateinit var bottomSheetManager: BottomSheetManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observe()
+
+        dragBottomSheetSetting()
+        binding.layoutBottomSheetDragLine.setOnTouchListener { _, motionEvent ->
+            when (motionEvent.actionMasked) {
+                MotionEvent.ACTION_DOWN, MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    bottomSheetManager.setTouchEnable(MotionEvent.ACTION_DOWN == motionEvent.actionMasked)
+                    true
+                }
+
+                else -> false
+            }
+        }
+    }
+
+    lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private fun dragBottomSheetSetting() {
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetManager = BottomSheetManager(
+            requireActivity(),
+            bottomSheetBehavior,
+            object : BottomSheetManager.BottomSheetInterface {
+                override fun isBottomSheetShow(isShow: Boolean) {
+//                    mainViewModel.isBottomSheetShow.value = isShow
+                }
+            })
+//        if (getNavigationBarHeight(requireActivity()) < 20) {
+//            binding.layoutBottomSheetDragLine.layoutParams.height = dpToPx(resources, 80).toInt()
+//            binding.layoutBottomSheetDragLine.requestLayout()
+//        }
     }
 
     private fun observe(){
