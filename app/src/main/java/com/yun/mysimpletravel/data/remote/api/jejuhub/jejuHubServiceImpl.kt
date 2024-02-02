@@ -31,8 +31,9 @@ object jejuHubServiceImpl {
     }
 
     fun CarsharingResponse.toCarsharingModelList(): CarsharingModel {
-        return CarsharingModel(list = this.data?.map {
+        return CarsharingModel(list = this.data?.mapIndexed { index, it ->
             CarsharingList(
+                id = index,
                 placeName = it.placeName,
                 longitude = it.longitude,
                 latitude = it.latitude,

@@ -46,16 +46,12 @@
                 android:focusableInTouchMode="true"
                 app:behavior_hideable="false"
                 app:behavior_draggable="true"
-
+                android:maxHeight="500dp"
                 app:behavior_expandedOffset="200dp"
-                app:behavior_fitToContents="false"
-                app:behavior_halfExpandedRatio="0.45"
+                app:behavior_fitToContents="true"
                 app:behavior_peekHeight="150dp"
-
-
-
                 app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
+<!--                app:behavior_halfExpandedRatio="0.0"-->
                 <LinearLayout
                     android:id="@+id/layout_bottom_sheet_drag_line"
                     android:layout_width="match_parent"
@@ -80,14 +76,15 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_map"
-                        replaceAll="@{}"
+                        replaceAll="@{map.carsharing.list}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="20dp"
                         android:overScrollMode="never"
+                        android:clipToPadding="false"
+                        android:paddingBottom="130dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/" />
-
+                        tools:listitem="@layout/item_map_category" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
