@@ -7,8 +7,8 @@ import com.yun.mysimpletravel.data.dto.PharmacyResponse
 import com.yun.mysimpletravel.data.dto.SouvenirResponse
 import com.yun.mysimpletravel.data.model.jejuhub.accommodation.AccommodationList
 import com.yun.mysimpletravel.data.model.jejuhub.accommodation.AccommodationModel
-import com.yun.mysimpletravel.data.model.jejuhub.carsharing.CarsharingList
-import com.yun.mysimpletravel.data.model.jejuhub.carsharing.CarsharingModel
+import com.yun.mysimpletravel.data.model.jejuhub.map.JejuHubMapList
+import com.yun.mysimpletravel.data.model.jejuhub.map.JejuHubMapModel
 import com.yun.mysimpletravel.data.model.jejuhub.pharmacy.PharmacyList
 import com.yun.mysimpletravel.data.model.jejuhub.pharmacy.PharmacyModel
 import com.yun.mysimpletravel.data.model.jejuhub.souvenir.SouvenirList
@@ -30,9 +30,9 @@ object jejuHubServiceImpl {
         } ?: emptyList(), this.totCnt, this.hasMore)
     }
 
-    fun CarsharingResponse.toCarsharingModelList(): CarsharingModel {
-        return CarsharingModel(list = this.data?.mapIndexed { index, it ->
-            CarsharingList(
+    fun CarsharingResponse.toCarsharingModelList(): JejuHubMapModel {
+        return JejuHubMapModel(list = this.data?.mapIndexed { index, it ->
+            JejuHubMapList(
                 id = index,
                 placeName = it.placeName,
                 longitude = it.longitude,
@@ -57,18 +57,20 @@ object jejuHubServiceImpl {
         } ?: emptyList(), this.totCnt, this.hasMore)
     }
 
-    fun PharmacyResponse.toPharmacyModelList(context: Context): PharmacyModel {
-        return PharmacyModel(list = this.data?.map {
+    fun PharmacyResponse.toPharmacyModelList(context: Context): JejuHubMapModel {
+        return JejuHubMapModel(list = this.data?.mapIndexed { index, it ->
             val latLng = getAddressFromLocationName(context,"제주특별자치도 제주시 번영로 500, 1층 (봉개동)")?.let {
 //                Log.d("lys","getAddressFromLocationName > ${it.latitude}  ${it.longitude}")
                 Pair(it.latitude.toString(), it.longitude.toString())
             }
-            PharmacyList(
-                companyName = it.companyName,
+            JejuHubMapList(
+                id = index,
+                placeName = it.companyName,
                 longitude = latLng?.second ?: "",
                 latitude = latLng?.first ?: "",
                 addressDoro = it.addressDoro,
-                addressJibun = it.addressJibun
+                addressJibun = it.addressJibun,
+                placeUrl = null
             )
         } ?: emptyList(), this.totCnt, this.hasMore)
     }

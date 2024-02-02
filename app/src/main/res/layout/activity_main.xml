@@ -61,14 +61,15 @@
             android:fitsSystemWindows="true"
             android:outlineAmbientShadowColor="@android:color/transparent"
             android:outlineSpotShadowColor="@android:color/transparent"
+            android:src="@{`Home` == main.moveScreen || main.moveScreen == null ? @drawable/baseline_home_24_white : @drawable/baseline_home_24_black}"
             android:stateListAnimator="@null"
             android:visibility="@{main.isBottomNav ? View.VISIBLE : View.GONE}"
             app:borderWidth="0dp"
             app:elevation="0dp"
-            android:src="@{`Home` == main.moveScreen || main.moveScreen == null ? @drawable/baseline_home_24_white : @drawable/baseline_home_24_black}"
             app:layout_anchor="@id/bottom_app_bar"
-            app:rippleColor="@null"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             app:onSingleClick="@{(v) -> main.bottomNavTabEvent(`HOME`)}"
+            app:rippleColor="@null"
             app:tint="@null" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

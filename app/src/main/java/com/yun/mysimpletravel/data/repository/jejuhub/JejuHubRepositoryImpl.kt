@@ -2,7 +2,7 @@ package com.yun.mysimpletravel.data.repository.jejuhub
 
 import android.content.Context
 import com.yun.mysimpletravel.data.model.jejuhub.accommodation.AccommodationModel
-import com.yun.mysimpletravel.data.model.jejuhub.carsharing.CarsharingModel
+import com.yun.mysimpletravel.data.model.jejuhub.map.JejuHubMapModel
 import com.yun.mysimpletravel.data.model.jejuhub.pharmacy.PharmacyModel
 import com.yun.mysimpletravel.data.model.jejuhub.souvenir.SouvenirModel
 import com.yun.mysimpletravel.data.remote.GetDataCallBack
@@ -37,7 +37,7 @@ class JejuHubRepositoryImpl @Inject constructor(
 
     suspend fun carsharingWithSocar(
         page: String = "1",
-        callBack: GetDataCallBack<CarsharingModel>,
+        callBack: GetDataCallBack<JejuHubMapModel>,
     ) {
         jejuHubRepository.searchCarsharingWithSocar(
             page,
@@ -48,7 +48,7 @@ class JejuHubRepositoryImpl @Inject constructor(
 
     suspend fun carsharing(
         page: String = "1",
-        callBack: GetDataCallBack<CarsharingModel>,
+        callBack: GetDataCallBack<JejuHubMapModel>,
     ) {
 //        jejuHubRepository.searchsearchCarsharing(
 //            page,
@@ -73,7 +73,7 @@ class JejuHubRepositoryImpl @Inject constructor(
 
     suspend fun pharmacy(
         page: String = "1",
-        callBack: GetDataCallBack<PharmacyModel>,
+        callBack: GetDataCallBack<JejuHubMapModel>,
     ) {
         jejuHubRepository.searchPharmacy(page,
             { callBack.invoke(it.toPharmacyModelList(context), null) },

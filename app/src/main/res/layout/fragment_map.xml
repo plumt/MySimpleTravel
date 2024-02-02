@@ -24,7 +24,7 @@
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -75,20 +75,35 @@
                     app:layout_constraintTop_toBottomOf="@id/layout_bottom_sheet_drag_line">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_map"
-                        replaceAll="@{map.carsharing.list}"
+                        android:id="@+id/rv_map_category"
+                        replaceAll="@{map.category}"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:overScrollMode="never"
+                        android:clipToPadding="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_map_category" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_map"
+                        replaceAll="@{map.mapItems.list}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/rv_map_category"
                         android:layout_marginTop="20dp"
                         android:overScrollMode="never"
                         android:clipToPadding="false"
                         android:paddingBottom="130dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_map_category" />
+                        tools:listitem="@layout/item_map" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
